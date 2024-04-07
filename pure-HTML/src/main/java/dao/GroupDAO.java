@@ -64,19 +64,18 @@ public class GroupDAO {
 		}
 	}
 	
-	public ArrayList<Group> getCreatedByUser(String email) throws SQLException, ParseException {
-		String query = "SELECT * FROM created WHERE user_email = ?";
-		return getGroups(query, email);
+	public ArrayList<Group> getCreatedByUser(int user_id) throws SQLException, ParseException {
+		String query = "SELECT * FROM created WHERE user_id = ?";
+		return getGroups(query, user_id);
 	}
 
-	public ArrayList<Group> getContainsUser(String email) throws SQLException, ParseException {
-		String query = "SELECT * FROM contains WHERE user_email = ?";
-		return getGroups(query, email);
+	public ArrayList<Group> getContainsUser(int user_id) throws SQLException, ParseException {
+		String query = "SELECT * FROM contains WHERE user_id = ?";
+		return getGroups(query, user_id);
 	}
 
-	// utilities to get the groups from the db
-	// TODO: check if this works
-	private Group getGroup(ResultSet result) throws SQLException, ParseException {
+	// create Group object from DB response
+	private Group getGroupFromResult(ResultSet result) throws SQLException, ParseException {
 		int group_id = Integer.parseInt(result.getString("id"));
 		String group_title = result.getString("title");
 		String creation_date = result.getString("creation_date");
@@ -94,18 +93,18 @@ public class GroupDAO {
 		return group;
 	}
 
-	private ArrayList<Group> getGroups(String query, String email) throws SQLException, ParseException {
+	private ArrayList<Group> getGroups(String query, int user_id) throws SQLException, ParseException {
 		ArrayList<Group> groups = new ArrayList<>();
 
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
-			pstatement.setString(1, email);
+			pstatement.setString(1, Integer.toString(user_id));
 
 			try (ResultSet result = pstatement.executeQuery()) {
 				if (!result.isBeforeFirst())
 					return null;
 				else {
 					while (result.next()) {
-						Group group = getGroup(result);
+						Group group = getGroupFromResult(result);
 						groups.add(group);
 					}
 					return groups;

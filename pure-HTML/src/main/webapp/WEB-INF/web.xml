@@ -20,7 +20,7 @@
   </context-param>
   
   <welcome-file-list>
-    <welcome-file>Welcome</welcome-file>
+    <welcome-file>App</welcome-file>
   </welcome-file-list>
   
 </web-app>
