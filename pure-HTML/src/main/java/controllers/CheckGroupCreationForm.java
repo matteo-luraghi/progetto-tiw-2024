@@ -7,11 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
+import java.sql.SQLException;
 import utils.ConnectionHandler;
 import javax.servlet.ServletContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
+
 /**
  * Servlet implementation class CheckGroupCreationForm
  */
@@ -19,13 +21,10 @@ import org.thymeleaf.templatemode.TemplateMode;
 public class CheckGroupCreationForm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
+	private TemplateEngine templateEngine;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public CheckGroupCreationForm() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     public void init() throws ServletException {
@@ -38,19 +37,11 @@ public class CheckGroupCreationForm extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	
