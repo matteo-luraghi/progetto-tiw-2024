@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import utils.ConnectionHandler;
 import javax.servlet.ServletContext;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.templatemode.TemplateMode;
+
+import dao.UserDAO;
+import beans.User;
 
 /**
  * Servlet implementation class CheckLogin
@@ -21,7 +21,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
-	private TemplateEngine templateEngine;
 
     public CheckLogin() {
         super();
@@ -30,11 +29,6 @@ public class CheckLogin extends HttpServlet {
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
 		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 	}
   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,7 +36,24 @@ public class CheckLogin extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		UserDAO user = new UserDAO(connection);
+		User u = null;
+		try {
+			u = user.checkCredentials(email, password);
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in database credential checking");
+		}
+		
+		String path = getServletContext().getContextPath();
+		if (u == null) {
+			path = getServletContext().getContextPath() + "/index.html";
+		} else {
+			request.getSession().setAttribute("user", u);
+			path = path + "/GoToHomepage";
+		}
+		response.sendRedirect(path);
 	}
 
 	public void destroy() {
