@@ -19,7 +19,6 @@ public class GroupDAO {
 		this.connection = connection;
 	}
 	
-	/* probably not needed
 	public Group getGroup(int id) throws SQLException, ParseException {
 		String query = "SELECT * FROM group WHERE id = ?";
 		
@@ -47,7 +46,6 @@ public class GroupDAO {
 			}		
 		}
 	}
-	*/
 	
 	public void createGroup(String title, Date creation_date, int duration, int min_participants, int max_participants) throws SQLException {
 		String query = "INSERT INTO group (title, creation_date, duration, min_participants, max_participants) VALUES (?, ?, ?, ?, ?)";

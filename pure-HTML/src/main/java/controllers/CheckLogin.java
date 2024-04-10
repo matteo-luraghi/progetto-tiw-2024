@@ -38,10 +38,10 @@ public class CheckLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		UserDAO user = new UserDAO(connection);
+		UserDAO uDao = new UserDAO(connection);
 		User u = null;
 		try {
-			u = user.checkCredentials(email, password);
+			u = uDao.checkCredentials(email, password);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in database credential checking");
 		}

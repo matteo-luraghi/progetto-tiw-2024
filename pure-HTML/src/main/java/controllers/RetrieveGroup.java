@@ -8,15 +8,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import java.text.ParseException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import utils.ConnectionHandler;
 import javax.servlet.ServletContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import beans.User;
+import beans.Group;
+import dao.GroupDAO;
+import dao.UserDAO;
 
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
 /**
@@ -56,6 +62,31 @@ public class RetrieveGroup extends HttpServlet {
 		} else {
 			u = (User) s.getAttribute("user");
 		}
+		
+		String groupId = request.getParameter("groupId");
+		GroupDAO gDao = new GroupDAO(connection);
+		Group group = null;
+		try {
+			group = gDao.getGroup(Integer.parseInt(groupId));
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+		} catch (ParseException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+		}
+		UserDAO uDao = new UserDAO(connection);
+		ArrayList<User> participants = new ArrayList<>();
+		try {
+			participants = uDao.getGroupParticipants(Integer.parseInt(groupId));
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+		}
+	
+		String path = "WEB-INF/GroupDetails.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("group", group);
+		ctx.setVariable("participants", participants);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 	
 	public void destroy() {
