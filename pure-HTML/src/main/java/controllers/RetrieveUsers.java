@@ -27,6 +27,8 @@ public class RetrieveUsers extends HttpServlet {
         super();
     }
     
+    //TODO check if this servlet is useful, maybe cascade of redirects click->retreivegroups->retreiveusers->groupdetail.html ?
+    
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
 		ServletContext servletContext = getServletContext();
