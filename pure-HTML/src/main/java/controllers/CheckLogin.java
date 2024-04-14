@@ -40,6 +40,7 @@ public class CheckLogin extends HttpServlet {
 		String password = request.getParameter("password");
 		UserDAO uDao = new UserDAO(connection);
 		User u = null;
+		
 		try {
 			u = uDao.checkCredentials(email, password);
 		} catch (SQLException e) {

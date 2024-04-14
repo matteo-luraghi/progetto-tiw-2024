@@ -13,22 +13,25 @@ import java.sql.SQLException;
 import utils.ConnectionHandler;
 import javax.servlet.ServletContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import java.util.ArrayList;
 
 import beans.User;
+import dao.UserDAO;
 
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
 /**
  * Servlet implementation class CheckGroupCreationForm
  */
 @WebServlet("/CheckGroupCreationForm")
-public class CheckGroupCreationForm extends HttpServlet {
+public class RetrieveAllUsers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
 
-    public CheckGroupCreationForm() {
+    public RetrieveAllUsers() {
         super();
     }
     
@@ -50,11 +53,33 @@ public class CheckGroupCreationForm extends HttpServlet {
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		User u = null;
 		HttpSession s = request.getSession();
+		ArrayList<User> registeredUsers = null;
+		
 		if (s.isNew() || s.getAttribute("user") == null) {
 			response.sendRedirect(loginpath);
 			return;
 		} else {
 			u = (User) s.getAttribute("user");
+		}
+		
+		// TODO: check if the group creation form is right?
+		
+		try {
+			UserDAO uDao = new UserDAO(connection);
+			registeredUsers = uDao.getRegisteredUsers();
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+		}
+		
+		if (registeredUsers != null) {
+			String path = "WEB-INF/RegisteredUsers.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("createdGroups", registeredUsers);
+			templateEngine.process(path, ctx, response.getWriter());	
+		} else {
+			String path = getServletContext().getContextPath() + "/GoToHomePage";
+			response.sendRedirect(path);
 		}
 	}
 	

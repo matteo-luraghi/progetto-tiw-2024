@@ -61,28 +61,36 @@ public class RetrieveGroup extends HttpServlet {
 		}
 		
 		String groupId = request.getParameter("groupId");
+		
 		GroupDAO gDao = new GroupDAO(connection);
 		Group group = null;
+		
+		UserDAO uDao = new UserDAO(connection);
+		ArrayList<User> participants = null;
+		
 		try {
 			group = gDao.getGroup(Integer.parseInt(groupId));
 		} catch (SQLException | ParseException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 		}
 
-		UserDAO uDao = new UserDAO(connection);
-		ArrayList<User> participants = new ArrayList<>();
 		try {
 			participants = uDao.getGroupParticipants(Integer.parseInt(groupId));
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 		}
 	
-		String path = "WEB-INF/GroupDetails.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("group", group);
-		ctx.setVariable("participants", participants);
-		templateEngine.process(path, ctx, response.getWriter());
+		if (group != null && participants != null) {
+			String path = "WEB-INF/GroupDetails.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("group", group);
+			ctx.setVariable("participants", participants);
+			templateEngine.process(path, ctx, response.getWriter());
+		} else {
+			String path = getServletContext().getContextPath() + "/GoToHomePage";
+			response.sendRedirect(path);
+		}
 	}
 	
 	public void destroy() {
