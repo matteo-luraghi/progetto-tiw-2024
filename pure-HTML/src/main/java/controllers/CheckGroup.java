@@ -181,7 +181,7 @@ public class CheckGroup extends HttpServlet {
 				ctx.setVariable("error_message", error_message);	
 				templateEngine.process(path, ctx, response.getWriter());	
 			} else {
-				String path = getServletContext().getContextPath() + "/GoToHomePage";
+				String path = getServletContext().getContextPath() + "/GoToHomepage";
 				response.sendRedirect(path);
 			}	
 		}

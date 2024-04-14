@@ -25,7 +25,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 /**
  * Servlet implementation class RetrieveAllUsers
  */
-@WebServlet("/RetreiveAllUsers")
+@WebServlet("/RetrieveAllUsers")
 public class RetrieveAllUsers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
@@ -97,7 +97,7 @@ public class RetrieveAllUsers extends HttpServlet {
 			ctx.setVariable("selectedUsers", new ArrayList<User>()); // passing empty array
 			templateEngine.process(path, ctx, response.getWriter());	
 		} else {
-			String path = getServletContext().getContextPath() + "/GoToHomePage";
+			String path = getServletContext().getContextPath() + "/GoToHomepage";
 			response.sendRedirect(path);
 		}
 	}
