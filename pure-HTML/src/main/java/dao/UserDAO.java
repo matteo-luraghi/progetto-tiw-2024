@@ -33,6 +33,22 @@ public class UserDAO {
 		}
 	}
 	
+	public User getUser(int userId) throws SQLException {
+		String query = "SELECT * FROM user WHERE id = ?";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
+			pstatement.setString(1, Integer.toString(userId));
+			
+			try (ResultSet result = pstatement.executeQuery()) {
+				if (!result.isBeforeFirst()) return null;
+				else {
+					result.next();
+					return getUserFromResult(result);
+				}
+			}
+		}
+	}
+	
 	public void createUser(String email, String password, String name, String surname) throws SQLException {
 		String query = "INSERT INTO user (email, password, name, surname) VALUES (?, ?, ?, ?)";
 		

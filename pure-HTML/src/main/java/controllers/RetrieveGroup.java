@@ -25,6 +25,9 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
+/**
+ * Servlet implementation class RetrieveGroup
+ */
 @WebServlet("/RetrieveGroup")
 public class RetrieveGroup extends HttpServlet {
 	private static final long serialVersionUID = 1L;

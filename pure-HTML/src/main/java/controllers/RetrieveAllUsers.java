@@ -23,7 +23,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
 /**
- * Servlet implementation class CheckGroupCreationForm
+ * Servlet implementation class RetrieveAllUsers
  */
 @WebServlet("/CheckGroupCreationForm")
 public class RetrieveAllUsers extends HttpServlet {
@@ -75,7 +75,9 @@ public class RetrieveAllUsers extends HttpServlet {
 			String path = "WEB-INF/RegisteredUsers.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("createdGroups", registeredUsers);
+			ctx.setVariable("registeredUsers", registeredUsers);
+			ctx.setVariable("highlighted", false);
+			// TODO maybe check for error_message variable and selectedUsers
 			templateEngine.process(path, ctx, response.getWriter());	
 		} else {
 			String path = getServletContext().getContextPath() + "/GoToHomePage";

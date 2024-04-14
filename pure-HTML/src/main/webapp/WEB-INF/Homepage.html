@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Homepage</title>
+</head>
+<body>
+	<div align="right">
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+	
+	<form
+		th:action="@{/CheckGroup}"
+		method="POST">
+		
+		<div>
+			<label for="title">Titolo:</label>
+			<input type="text" name="title" required>		
+		</div>
+		<div>
+			<label for="duration">Durata (in giorni):</label>
+			<input type="number" name="duration" min="1" required>
+		</div>
+		<div>
+			<label for="duration">Durata (in giorni):</label>
+			<input type="number" name="duration" min="1" required>
+		</div>	
+		<div>
+			<label for="min_participants">Numero minimo di partecipanti:</label>
+			<input type="number" name="min_participants" min="1" required>
+		</div>
+		<div>
+			<label for="max_participants">Numero massimo di partecipanti:</label>
+			<input type="number" name="max_participants" min="1" required>
+		</div>	
+		
+		<input type="submit" name="create" value="Crea Gruppo">		
+	</form>
+</body>
+</html>

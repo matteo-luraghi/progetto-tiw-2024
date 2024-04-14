@@ -11,14 +11,15 @@ import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import utils.ConnectionHandler;
 import javax.servlet.ServletContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import java.util.ArrayList;
 
 import beans.User;
+import dao.UserDAO;
 import dao.GroupDAO;
 import dao.RelationshipsDAO;
 
@@ -65,7 +66,24 @@ public class CheckGroup extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		// TODO: get the list of selected users and check if everything is ok
+		int min_participants = Integer.parseInt(request.getParameter("min_participants"));
+		int max_participants = Integer.parseInt(request.getParameter("max_participants"));
+		
+		UserDAO uDao = new UserDAO(connection);
+		// Hypothesis : I get the users IDs
+		String[] users = request.getParameterValues("users"); 
+		
+		ArrayList<User> selectedUsers = new ArrayList<>();
+		try {
+			for(String userId: users) {
+				selectedUsers.add(uDao.getUser(Integer.parseInt(userId)));
+			}	
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+		}
+		
+		String error_message = "";
+		boolean highlighted = false;
 				
 		// if the session doesn't have an attribute "errors", the variable will remain 0
 		int errors = 0;
@@ -73,26 +91,20 @@ public class CheckGroup extends HttpServlet {
 			errors = (int) s.getAttribute("errors");
 		}
 		
-		// TODO: check conditions to save the group (min, max participants satisfied)
-		if(true) { // save group details to database
+		if(users.length <= max_participants && users.length >= min_participants) { // save group details to database
 			s.removeAttribute("errors");
 			
 			try {
 				String title = request.getParameter("title");
-				String sdate = request.getParameter("creation_date");
-				int duration = Integer.parseInt(request.getParameter("duration"));
-				int min_participants = Integer.parseInt(request.getParameter("min_participants"));
-				int max_participants = Integer.parseInt(request.getParameter("max_participants"));
+				int duration = Integer.parseInt(request.getParameter("duration"));			
 				
-				// parse the string to get sql Date object
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");				
-				java.util.Date date = sdf.parse(sdate);
-				Date group_creation_date = new Date(date.getTime());
+				LocalDate today = LocalDate.now();	
+				Date creation_date = Date.valueOf(today); 
 				
 				GroupDAO g = new GroupDAO(connection);
-				group_id = g.createGroup(title, group_creation_date, duration, min_participants, max_participants);
+				group_id = g.createGroup(title, creation_date, duration, min_participants, max_participants);
 				
-			} catch(SQLException | ParseException e) {
+			} catch(SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
 			}
 			
@@ -102,18 +114,29 @@ public class CheckGroup extends HttpServlet {
 				// save the group creator
 				rel.setCreated(u.getId(), group_id);
 				// save the group participants
-				for(User user: participants) {
+				for(User user: selectedUsers) {
 					rel.setContains(user.getId(), group_id);
 				}	
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
-			}
-			
+			}		
 			
 			String path = getServletContext().getContextPath() + "/GoToHomepage";
 			response.sendRedirect(path);
+			return;
 			
-		} else if (errors == 3) { // redirect to the cancellation page
+		} else if (users.length < min_participants) {
+		
+			error_message = "Troppi pochi utenti selezionati, aggiungerne almeno " + Integer.toString(min_participants - users.length);
+		
+		} else if (users.length > max_participants) {
+			
+			error_message = "Trppi utenti selezionati, eliminarne almeno " + Integer.toString(users.length - max_participants);
+			highlighted = true;
+		
+		} 
+		
+		if (errors == 3) { // redirect to the cancellation page
 			s.removeAttribute("errors");
 			
 			String path = getServletContext().getContextPath() + "WEB-INF/Cancel.html";
@@ -128,13 +151,28 @@ public class CheckGroup extends HttpServlet {
 				// add 1 to the error counter
 				errors += 1;
 			}
-			s.setAttribute("errors", errors);	
-			// TODO: show an error message and redirect to the same page with the correct users selected
-			String path = "WEB-INF/RegisteredUsers.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("createdGroups", selectedUsers);
-			templateEngine.process(path, ctx, response.getWriter());
+			
+			ArrayList<User> registeredUsers = null;
+			try {
+				registeredUsers = uDao.getRegisteredUsers();
+			} catch(SQLException e) {
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			}
+			
+			if (registeredUsers != null && selectedUsers != null) {
+				s.setAttribute("errors", errors);	
+				String path = "WEB-INF/RegisteredUsers.html";
+				ServletContext servletContext = getServletContext();
+				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+				ctx.setVariable("registeredUsers", registeredUsers);
+				ctx.setVariable("selectedUsers", selectedUsers);
+				ctx.setVariable("highlighted", highlighted);
+				ctx.setVariable("error_message", error_message);	
+				templateEngine.process(path, ctx, response.getWriter());	
+			} else {
+				String path = getServletContext().getContextPath() + "/GoToHomePage";
+				response.sendRedirect(path);
+			}	
 		}
 		
 	}
