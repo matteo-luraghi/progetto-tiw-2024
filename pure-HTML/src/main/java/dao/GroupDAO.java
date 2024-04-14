@@ -47,7 +47,7 @@ public class GroupDAO {
 		}
 	}
 	
-	public void createGroup(String title, Date creation_date, int duration, int min_participants, int max_participants) throws SQLException {
+	public int createGroup(String title, Date creation_date, int duration, int min_participants, int max_participants) throws SQLException {
 		String query = "INSERT INTO group (title, creation_date, duration, min_participants, max_participants) VALUES (?, ?, ?, ?, ?)";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
@@ -59,7 +59,13 @@ public class GroupDAO {
 			pstatement.setString(5, Integer.toString(max_participants));
 			
 			pstatement.executeUpdate();
+			ResultSet generatedKeys = pstatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				int groupId = generatedKeys.getInt(1);
+				return groupId;
+			}
 		}
+		return -1;
 	}
 	
 	public ArrayList<Group> getCreatedByUser(int user_id) throws SQLException, ParseException {

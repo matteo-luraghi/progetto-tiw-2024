@@ -65,17 +65,13 @@ public class GoToHomepage extends HttpServlet {
 		
 		try {
 			createdGroups = gDao.getCreatedByUser(u.getId());	
-		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
-		} catch (ParseException e) {
+		} catch (SQLException | ParseException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 		}
 		
 		try {
 			activeGroups = gDao.getContainsUser(u.getId());	
-		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
-		} catch (ParseException e) {
+		} catch (SQLException | ParseException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 		}
 		

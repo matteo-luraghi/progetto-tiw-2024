@@ -9,12 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import utils.ConnectionHandler;
 import javax.servlet.ServletContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import beans.User;
+import dao.GroupDAO;
+import dao.RelationshipsDAO;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -47,8 +53,9 @@ public class CheckGroup extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+		String loginpath = getServletContext().getContextPath();
 		User u = null;
+		int group_id = -1;
 		HttpSession s = request.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {
 			response.sendRedirect(loginpath);
@@ -56,6 +63,68 @@ public class CheckGroup extends HttpServlet {
 		} else {
 			u = (User) s.getAttribute("user");
 		}
+		
+		try {
+			String title = request.getParameter("title");
+			String sdate = request.getParameter("creation_date");
+			int duration = Integer.parseInt(request.getParameter("duration"));
+			int min_participants = Integer.parseInt(request.getParameter("min_participants"));
+			int max_participants = Integer.parseInt(request.getParameter("max_participants"));
+			
+			// parse the string to get sql Date object
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");				
+			java.util.Date date = sdf.parse(sdate);
+			Date group_creation_date = new Date(date.getTime());
+			
+			GroupDAO g = new GroupDAO(connection);
+			group_id = g.createGroup(title, group_creation_date, duration, min_participants, max_participants);
+			
+		} catch(SQLException | ParseException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in passage of parameters");
+		}
+		
+		// TODO: get the list of selected users and check if everything is ok
+				
+		// if the session doesn't have an attribute "errors", the variable will remain 0
+		int errors = 0;
+		if (s.getAttribute("errors") != null) {
+			errors = (int) s.getAttribute("errors");
+		}
+		
+		// TODO: check conditions to save the group (min, max participants satisfied)
+		if(true) { // save group details to database
+			s.removeAttribute("errors");
+			
+			RelationshipsDAO rel = new RelationshipsDAO(connection);
+			rel.setCreated(u.getId(), group_id);
+			for(User user: participants) {
+				rel.setContains(user.getId(), group_id);
+			}
+			
+			String path = getServletContext().getContextPath() + "/GoToHomepage";
+			response.sendRedirect(path);
+			
+		} else if (errors == 3) {
+			s.removeAttribute("errors");
+			
+			String path = getServletContext().getContextPath() + "WEB-INF/Cancel.html";
+			response.sendRedirect(path);
+			
+		} else  {
+			if (errors == 0) {
+				// set to 1 the error counter
+				errors = 1;
+			}
+			else {
+				// add 1 to the error counter
+				errors += 1;
+			}
+			s.setAttribute("errors", errors);	
+			// TODO: show an error message and redirect to the same page with the correct users selected
+			String path = getServletContext().getContextPath() + "/CheckGroup";
+			response.sendRedirect(path);
+		}
+		
 	}
 
 	public void destroy() {

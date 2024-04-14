@@ -25,9 +25,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
-/**
- * Servlet implementation class RetrieveGroup
- */
 @WebServlet("/RetrieveGroup")
 public class RetrieveGroup extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -68,11 +65,10 @@ public class RetrieveGroup extends HttpServlet {
 		Group group = null;
 		try {
 			group = gDao.getGroup(Integer.parseInt(groupId));
-		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
-		} catch (ParseException e) {
+		} catch (SQLException | ParseException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 		}
+
 		UserDAO uDao = new UserDAO(connection);
 		ArrayList<User> participants = new ArrayList<>();
 		try {
