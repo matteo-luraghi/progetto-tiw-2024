@@ -17,6 +17,8 @@ import utils.ConnectionHandler;
 import javax.servlet.ServletContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import beans.User;
 import dao.UserDAO;
@@ -85,7 +87,7 @@ public class CheckGroup extends HttpServlet {
 		boolean highlighted = false;
 				
 		// if the session doesn't have an attribute "errors", the variable will remain 0
-		int errors = 0;
+		int errors = 1;
 		if (s.getAttribute("errors") != null) {
 			errors = (int) s.getAttribute("errors");
 		}
@@ -155,14 +157,7 @@ public class CheckGroup extends HttpServlet {
 			templateEngine.process(path, ctx, response.getWriter());
 			
 		} else  {
-			if (errors == 0) {
-				// set to 1 the error counter
-				errors = 1;
-			}
-			else {
-				// add 1 to the error counter
-				errors += 1;
-			}
+			errors += 1;
 			
 			ArrayList<User> registeredUsers = null;
 			try {
@@ -174,12 +169,16 @@ public class CheckGroup extends HttpServlet {
 			if (registeredUsers != null && selectedUsers != null) {
 				// remove self from the invite list
 				registeredUsers.remove(u);
+				
+				// map each user with its id
+				List<Integer> selectedId = selectedUsers.stream().map(x -> x.getId()).collect(Collectors.toList());
+				
 				s.setAttribute("errors", errors);	
 				String path = "WEB-INF/RegisteredUsers.html";
 				ServletContext servletContext = getServletContext();
 				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 				ctx.setVariable("registeredUsers", registeredUsers);
-				ctx.setVariable("selectedUsers", selectedUsers);
+				ctx.setVariable("selectedUsers", selectedId);
 				ctx.setVariable("highlighted", highlighted);
 				ctx.setVariable("error_message", error_message);	
 				templateEngine.process(path, ctx, response.getWriter());	

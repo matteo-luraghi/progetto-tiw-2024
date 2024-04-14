@@ -30,12 +30,12 @@
 					<td th:text="${user.getName}">Name</td>
 					<td th:text="${user.getSurname}">Surname</td>
 					<td>
-						<input type="checkbox" name="selected" th:value="${user.getId}" th:checked="${#lists.contains(selectedUsers, user)}"></input>
+						<input type="checkbox" name="selected" th:value="${user.getId}" th:checked="${#lists.contains(selectedUsers, user.getId)}"></input>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<button type="submit">INVITA</button>
+		<button type="submit">INVITA</button>		
 	</form>
 		
 </body>
