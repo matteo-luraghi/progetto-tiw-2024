@@ -18,7 +18,7 @@ public class UserDAO {
 	}
 	
 	public User checkCredentials(String email, String password) throws SQLException {
-		String query = "SELECT * FROM user WHERE email = ? AND password = ?";
+		String query = "SELECT * FROM `user` WHERE email = ? AND password = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
 			pstatement.setString(1, email);
@@ -35,7 +35,7 @@ public class UserDAO {
 	}
 	
 	public User getUser(int userId) throws SQLException {
-		String query = "SELECT * FROM user WHERE id = ?";
+		String query = "SELECT * FROM `user` WHERE id = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
 			pstatement.setString(1, Integer.toString(userId));
@@ -51,7 +51,7 @@ public class UserDAO {
 	}
 	
 	public int createUser(String email, String password, String name, String surname) throws SQLException {
-		String query = "INSERT INTO user (email, password, name, surname) VALUES (?, ?, ?, ?)";
+		String query = "INSERT INTO `user` (email, password, name, surname) VALUES (?, ?, ?, ?)";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 			pstatement.setString(1, email);
@@ -70,7 +70,7 @@ public class UserDAO {
 	}
 	
 	public boolean checkNewEmail(String email) throws SQLException {
-		String query = "SELECT email FROM user where email = ?";
+		String query = "SELECT email FROM `user` where email = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
 			pstatement.setString(1, email);
@@ -83,7 +83,7 @@ public class UserDAO {
 	
 	public ArrayList<User> getGroupParticipants(int group_id) throws SQLException {
 		// get all users in the group referenced by group_id
-		String query = "SELECT * FROM contains c RIGHT JOIN user u ON (c.user_id = u.id) WHERE group_id = ?";
+		String query = "SELECT * FROM `contains` c RIGHT JOIN user u ON (c.user_id = u.id) WHERE group_id = ?";
 		ArrayList<User> users = new ArrayList<>();
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
@@ -103,7 +103,7 @@ public class UserDAO {
 	}
 	
 	public ArrayList<User> getRegisteredUsers() throws SQLException {
-		String query = "SELECT * FROM user ORDER BY surname ASC, name ASC";
+		String query = "SELECT * FROM `user` ORDER BY surname ASC, name ASC";
 		ArrayList<User> users = new ArrayList<>();
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {

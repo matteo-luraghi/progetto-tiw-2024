@@ -27,10 +27,10 @@
 			</thead>
 			<tbody>
 				<tr th:each="user : ${registeredUsers}" th:class="${#lists.contains(selectedUsers, user) && highlighted} ? 'highlighted'">
-					<td th:text="${user.name}">Name</td>
-					<td th:text="${user.surname}">Surname</td>
+					<td th:text="${user.getName}">Name</td>
+					<td th:text="${user.getSurname}">Surname</td>
 					<td>
-						<input type="checkbox" name="selected" th:value="${user.id}" th:checked="${#lists.contains(selectedUsers, user)}"></input>
+						<input type="checkbox" name="selected" th:value="${user.getId}" th:checked="${#lists.contains(selectedUsers, user)}"></input>
 					</td>
 				</tr>
 			</tbody>

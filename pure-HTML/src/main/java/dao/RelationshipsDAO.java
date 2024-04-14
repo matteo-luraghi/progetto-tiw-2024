@@ -12,7 +12,7 @@ public class RelationshipsDAO {
 	}
 	
 	public void setCreated(int user_id, int group_id) throws SQLException {
-		String query = "INSERT INTO created (user_id, group_id) VALUES (?, ?)";
+		String query = "INSERT INTO `created` (user_id, group_id) VALUES (?, ?)";
 		
 		try(PreparedStatement pstatement = connection.prepareStatement(query)) {
 			pstatement.setString(1,	Integer.toString(user_id));
@@ -23,7 +23,7 @@ public class RelationshipsDAO {
 	}
 	
 	public void setContains(int user_id, int group_id) throws SQLException {
-		String query = "INSERT INTO contains (user_id, group_id) VALUES (?, ?)";
+		String query = "INSERT INTO `contains` (user_id, group_id) VALUES (?, ?)";
 		
 		try(PreparedStatement pstatement = connection.prepareStatement(query)) {
 			pstatement.setString(1,	Integer.toString(user_id));

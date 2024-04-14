@@ -10,7 +10,7 @@
 	</div>
 	
 	<form
-		th:action="@{/RetreiveAllUsers}"
+		th:action="@{/RetrieveAllUsers}"
 		method="POST">
 		
 		<div>
@@ -44,9 +44,9 @@
         </thead>
 		<tbody>
 		  <tr th:each="group : ${createdGroups}">
-		  	<td th:text="${group.title}">Title</td>
+		  	<td th:text="${group.getTitle}">Title</td>
 		  	<td th:text="${group.getDate}">Creation Date</td>
-		  	<td th:text="${group.duration}">Duration</td>
+		  	<td th:text="${group.getDuration}">Duration</td>
 		  	<td>
             	<a th:href="@{/RetrieveGroup(groupId=${group.id})}">Details</a>
             </td>
@@ -65,11 +65,11 @@
         </thead>
 		<tbody>
 		  <tr th:each="group : ${activeGroups}">
-		  	<td th:text="${group.title}">Title</td>
+		  	<td th:text="${group.getTitle}">Title</td>
 		  	<td th:text="${group.getDate}">Creation Date</td>
-		  	<td th:text="${group.duration}">Duration</td>
+		  	<td th:text="${group.getDuration}">Duration</td>
 		  	<td>
-            	<a th:href="@{/RetreiveGroup(groupId=${group.id})}">Details</a>
+            	<a th:href="@{/RetrieveGroup(groupId=${group.id})}">Details</a>
             </td>
 		  </tr>
 		</tbody>

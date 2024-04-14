@@ -21,7 +21,7 @@ public class GroupDAO {
 	}
 	
 	public Group getGroup(int id) throws SQLException, ParseException {
-		String query = "SELECT * FROM group WHERE id = ?";
+		String query = "SELECT * FROM `group` WHERE id = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
 			pstatement.setString(1, Integer.toString(id));
@@ -49,7 +49,7 @@ public class GroupDAO {
 	}
 	
 	public int createGroup(String title, Date creation_date, int duration, int min_participants, int max_participants) throws SQLException {
-		String query = "INSERT INTO group (title, creation_date, duration, min_participants, max_participants) VALUES (?, ?, ?, ?, ?)";
+		String query = "INSERT INTO `group` (title, creation_date, duration, min_participants, max_participants) VALUES (?, ?, ?, ?, ?)";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 			//pstatement.setString(1, Integer.toString(id)); not needed since we update automatically the group id
@@ -71,12 +71,12 @@ public class GroupDAO {
 	
 	// the 2 following methods filter the database for still active groups
 	public ArrayList<Group> getCreatedByUser(int user_id) throws SQLException, ParseException {
-		String query = "SELECT * FROM created c JOIN `group` g ON (c.group_id = g.id) WHERE user_id = ? AND DATE_ADD(creation_date, INTERVAL duration DAY) >= CURDATE()";
+		String query = "SELECT * FROM `created` c JOIN `group` g ON (c.group_id = g.id) WHERE user_id = ? AND DATE_ADD(creation_date, INTERVAL duration DAY) >= CURDATE()";
 		return getGroups(query, user_id);
 	}
 
 	public ArrayList<Group> getContainsUser(int user_id) throws SQLException, ParseException {
-		String query = "SELECT * FROM contains c JOIN `group` g ON (c.group_id = g.id) WHERE user_id = ? AND DATE_ADD(creation_date, INTERVAL duration DAY) >= CURDATE()";
+		String query = "SELECT * FROM `contains` c JOIN `group` g ON (c.group_id = g.id) WHERE user_id = ? AND DATE_ADD(creation_date, INTERVAL duration DAY) >= CURDATE()";
 		return getGroups(query, user_id);
 	}
 
