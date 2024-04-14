@@ -69,6 +69,22 @@ public class UserDAO {
 		return -1;
 	}
 	
+	public User getCreator(int groupId) throws SQLException {
+		String query = "SELECT * FROM `user` u JOIN `created` c ON (u.id = c.user_id) WHERE c.group_id = ?";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
+			pstatement.setString(1, Integer.toString(groupId));
+			
+			try (ResultSet result = pstatement.executeQuery()) {
+				if (!result.isBeforeFirst()) return null;
+				else {
+					result.next();
+					return getUserFromResult(result);
+				}
+			}
+		}
+	}
+	
 	public boolean checkNewEmail(String email) throws SQLException {
 		String query = "SELECT email FROM `user` where email = ?";
 		

@@ -70,7 +70,6 @@ public class CheckGroup extends HttpServlet {
 		int max_participants = (int) s.getAttribute("max_participants");
 		
 		UserDAO uDao = new UserDAO(connection);
-		// Hypothesis : I get the users IDs
 		String[] users = request.getParameterValues("selected"); 
 		
 		ArrayList<User> selectedUsers = new ArrayList<>();
@@ -148,7 +147,7 @@ public class CheckGroup extends HttpServlet {
 			s.removeAttribute("min_participants");
 			s.removeAttribute("max_participants");
 			
-			String path = getServletContext().getContextPath() + "WEB-INF/Cancel.html";
+			String path = getServletContext().getContextPath() + "/WEB-INF/Cancel.html";
 			response.sendRedirect(path);
 			
 		} else  {

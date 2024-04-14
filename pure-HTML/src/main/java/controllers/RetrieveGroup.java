@@ -79,6 +79,7 @@ public class RetrieveGroup extends HttpServlet {
 
 		try {
 			participants = uDao.getGroupParticipants(Integer.parseInt(groupId));
+			participants.add(uDao.getCreator(Integer.parseInt(groupId)));
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 		}
