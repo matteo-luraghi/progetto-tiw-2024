@@ -9,6 +9,8 @@
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
 	
+	<p th:if="${warning}">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
+	
 	<form
 		th:action="@{/RetrieveAllUsers}"
 		method="POST">
@@ -33,6 +35,7 @@
 		<input type="submit" name="create" value="Crea Gruppo">		
 	</form>
 	
+	<h3>Gruppi che hai creato:</h3>
 	<table>
 		<thead>
             <tr>
@@ -54,6 +57,7 @@
 		</tbody>
 	</table>
 	
+	<h3>Gruppi a cui partecipi:</h3>
 	<table>
 		<thead>
             <tr>

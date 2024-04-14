@@ -75,11 +75,20 @@ public class GoToHomepage extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 		}
 		
+		boolean warning;
+		if (s.getAttribute("warning") == null) {
+			warning = false;
+		} else {
+			warning = (boolean) s.getAttribute("warning");
+		}
+		s.removeAttribute("warning");
+		
 		String path = "WEB-INF/Homepage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("createdGroups", createdGroups);
 		ctx.setVariable("activeGroups", activeGroups);
+		ctx.setVariable("warning", warning);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
