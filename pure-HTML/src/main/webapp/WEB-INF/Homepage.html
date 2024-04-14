@@ -22,10 +22,6 @@
 			<input type="number" name="duration" min="1" required>
 		</div>
 		<div>
-			<label for="duration">Durata (in giorni):</label>
-			<input type="number" name="duration" min="1" required>
-		</div>	
-		<div>
 			<label for="min_participants">Numero minimo di partecipanti:</label>
 			<input type="number" name="min_participants" min="1" required>
 		</div>
@@ -36,5 +32,48 @@
 		
 		<input type="submit" name="create" value="Crea Gruppo">		
 	</form>
+	
+	<table>
+		<thead>
+            <tr>
+                <th>Titolo</th>
+                <th>Data di creazione</th>
+                <th>Durata (in giorni)</th>
+                <th>Dettagli</th>
+            </tr>
+        </thead>
+		<tbody>
+		  <tr th:each="group : ${createdGroups}">
+		  	<td th:text="${group.title}">Title</td>
+		  	<td th:text="${group.creation_date}">Creation Date</td>
+		  	<td th:text="${group.duration}">Duration</td>
+		  	<td>
+            	<a th:href="@{/RetreiveGroup(groupId=${group.id})}">Details</a>
+            </td>
+		  </tr>    
+		</tbody>
+	</table>
+	
+	<table>
+		<thead>
+            <tr>
+                <th>Titolo</th>
+                <th>Data di creazione</th>
+                <th>Durata (in giorni)</th>
+                <th>Dettagli</th>
+            </tr>
+        </thead>
+		<tbody>
+		  <tr th:each="group : ${activeGroups}">
+		  	<td th:text="${group.title}">Title</td>
+		  	<td th:text="${group.creation_date}">Creation Date</td>
+		  	<td th:text="${group.duration}">Duration</td>
+		  	<td>
+            	<a th:href="@{/RetreiveGroup(groupId=${group.id})}">Details</a>
+            </td>
+		  </tr>
+		</tbody>
+	</table>
+	
 </body>
 </html>

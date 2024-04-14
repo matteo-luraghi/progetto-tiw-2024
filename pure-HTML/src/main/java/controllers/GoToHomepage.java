@@ -79,7 +79,7 @@ public class GoToHomepage extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("createdGroups", createdGroups);
-		ctx.setVariable("acriveGroups", activeGroups);
+		ctx.setVariable("activeGroups", activeGroups);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
