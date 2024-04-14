@@ -66,8 +66,8 @@ public class CheckGroup extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		int min_participants = Integer.parseInt(request.getParameter("min_participants"));
-		int max_participants = Integer.parseInt(request.getParameter("max_participants"));
+		int min_participants = (int) s.getAttribute("min_participants");
+		int max_participants = (int) s.getAttribute("max_participants");
 		
 		UserDAO uDao = new UserDAO(connection);
 		// Hypothesis : I get the users IDs
@@ -95,8 +95,8 @@ public class CheckGroup extends HttpServlet {
 			s.removeAttribute("errors");
 			
 			try {
-				String title = request.getParameter("title");
-				int duration = Integer.parseInt(request.getParameter("duration"));			
+				String title = (String) s.getAttribute("title");
+				int duration = (int) s.getAttribute("duration");			
 				
 				LocalDate today = LocalDate.now();	
 				Date creation_date = Date.valueOf(today); 
@@ -121,8 +121,13 @@ public class CheckGroup extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
 			}		
 			
+			s.removeAttribute("title");
+			s.removeAttribute("duration");
+			s.removeAttribute("min_participants");
+			s.removeAttribute("max_participants");
+			
 			String path = getServletContext().getContextPath() + "/GoToHomepage";
-			response.sendRedirect(path);
+			response.sendRedirect(path);			
 			return;
 			
 		} else if (users.length < min_participants) {
@@ -138,6 +143,10 @@ public class CheckGroup extends HttpServlet {
 		
 		if (errors == 3) { // redirect to the cancellation page
 			s.removeAttribute("errors");
+			s.removeAttribute("title");
+			s.removeAttribute("duration");
+			s.removeAttribute("min_participants");
+			s.removeAttribute("max_participants");
 			
 			String path = getServletContext().getContextPath() + "WEB-INF/Cancel.html";
 			response.sendRedirect(path);

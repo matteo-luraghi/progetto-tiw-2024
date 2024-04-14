@@ -62,7 +62,16 @@ public class RetrieveAllUsers extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		// TODO: check if the group creation form is right?
+		
+		String title = request.getParameter("title");
+		int duration = Integer.parseInt(request.getParameter("duration"));
+		int min_participants = Integer.parseInt(request.getParameter("min_participants"));
+		int max_participants = Integer.parseInt(request.getParameter("max_participants"));
+		
+		s.setAttribute("title", title);
+		s.setAttribute("duration", duration);
+		s.setAttribute("min_participants", min_participants);
+		s.setAttribute("max_participants", max_participants);
 		
 		try {
 			UserDAO uDao = new UserDAO(connection);
