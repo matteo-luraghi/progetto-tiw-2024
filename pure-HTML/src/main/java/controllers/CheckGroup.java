@@ -71,7 +71,7 @@ public class CheckGroup extends HttpServlet {
 		
 		UserDAO uDao = new UserDAO(connection);
 		// Hypothesis : I get the users IDs
-		String[] users = request.getParameterValues("users"); 
+		String[] users = request.getParameterValues("selected"); 
 		
 		ArrayList<User> selectedUsers = new ArrayList<>();
 		try {

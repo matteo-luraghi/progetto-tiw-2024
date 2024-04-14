@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import beans.User;
 
@@ -52,7 +53,7 @@ public class UserDAO {
 	public int createUser(String email, String password, String name, String surname) throws SQLException {
 		String query = "INSERT INTO user (email, password, name, surname) VALUES (?, ?, ?, ?)";
 		
-		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
+		try (PreparedStatement pstatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 			pstatement.setString(1, email);
 			pstatement.setString(2, password);
 			pstatement.setString(3, name);

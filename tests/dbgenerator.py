@@ -33,10 +33,10 @@ def generate_password():
     password = ''.join(secrets.choice(characters) for _ in range(length))
     return password
 
-def generate_random_date(start_year=1900, end_year=2024):
-    year = random.randint(start_year, end_year)
-    month = random.randint(1, 12)
-    day = random.randint(1, 28)  # For simplicity, assume all months have up to 28 days
+def generate_random_date():
+    year = random.randint(2023, 2024)
+    month = random.randint(1, 4)
+    day = random.randint(1, 14)  # For simplicity, assume all months have up to 28 days
     random_date = datetime.date(year, month, day)
     return random_date.strftime("%Y-%m-%d")
 
