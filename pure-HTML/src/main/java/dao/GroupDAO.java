@@ -68,13 +68,14 @@ public class GroupDAO {
 		return -1;
 	}
 	
+	// the 2 following methods filter the database for still active groups
 	public ArrayList<Group> getCreatedByUser(int user_id) throws SQLException, ParseException {
-		String query = "SELECT * FROM created WHERE user_id = ?";
+		String query = "SELECT * FROM created WHERE user_id = ? AND DATE_ADD(creation_date, INTERVAL duration DAY) >= CURDATE()";
 		return getGroups(query, user_id);
 	}
 
 	public ArrayList<Group> getContainsUser(int user_id) throws SQLException, ParseException {
-		String query = "SELECT * FROM contains WHERE user_id = ?";
+		String query = "SELECT * FROM contains WHERE user_id = ? AND DATE_ADD(creation_date, INTERVAL duration DAY) >= CURDATE()";
 		return getGroups(query, user_id);
 	}
 
