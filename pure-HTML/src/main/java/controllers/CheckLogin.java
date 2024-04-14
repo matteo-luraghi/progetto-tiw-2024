@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import utils.ConnectionHandler;
-import javax.servlet.ServletContext;
 
 import dao.UserDAO;
 import beans.User;
@@ -28,7 +27,6 @@ public class CheckLogin extends HttpServlet {
 
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
-		ServletContext servletContext = getServletContext();
 	}
   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

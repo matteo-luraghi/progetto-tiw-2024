@@ -84,6 +84,8 @@ public class RetrieveGroup extends HttpServlet {
 		}
 	
 		if (group != null && participants != null) {
+			// TODO: think about this
+			//participants.remove(u);
 			String path = "WEB-INF/GroupDetails.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());

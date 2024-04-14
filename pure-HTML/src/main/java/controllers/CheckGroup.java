@@ -169,6 +169,8 @@ public class CheckGroup extends HttpServlet {
 			}
 			
 			if (registeredUsers != null && selectedUsers != null) {
+				// remove self from the invite list
+				registeredUsers.remove(u);
 				s.setAttribute("errors", errors);	
 				String path = "WEB-INF/RegisteredUsers.html";
 				ServletContext servletContext = getServletContext();

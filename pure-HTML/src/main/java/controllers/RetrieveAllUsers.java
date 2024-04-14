@@ -62,7 +62,6 @@ public class RetrieveAllUsers extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		
 		String title = request.getParameter("title");
 		int duration = Integer.parseInt(request.getParameter("duration"));
 		int min_participants = Integer.parseInt(request.getParameter("min_participants"));
@@ -81,6 +80,8 @@ public class RetrieveAllUsers extends HttpServlet {
 		}
 		
 		if (registeredUsers != null) {
+			// remove self from the invite list
+			registeredUsers.remove(u);
 			String path = "WEB-INF/RegisteredUsers.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
