@@ -67,6 +67,12 @@ public class RetrieveAllUsers extends HttpServlet {
 		int min_participants = Integer.parseInt(request.getParameter("min_participants"));
 		int max_participants = Integer.parseInt(request.getParameter("max_participants"));
 		
+		if (min_participants > max_participants) {
+			// TODO: display an error saying the thing
+			String path = getServletContext().getContextPath() + "/GoToHomePage";
+			response.sendRedirect(path);
+		}
+		
 		s.setAttribute("title", title);
 		s.setAttribute("duration", duration);
 		s.setAttribute("min_participants", min_participants);
