@@ -2,15 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Utenti Registrati</title>
+<title>Anagrafica</title>
 </head>
 <body>
-	<!-- submit to CheckGroup -->
+
 	<div align="right">
 		<a th:href="@{/GoToHomePage}">Homepage</a>
 	</div>
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
+	
+	<p th:if="${error_message != ''}" th:text="${error_message}">Error message</p>
+	
+	<form th:action="@{/CheckGroup}"
+		method="POST">
+		<table>
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Cognome</th>
+					<th>Seleziona</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${registeredUsers}" th:class="${#lists.contains(selectedUsers, user) && highlighted} ? 'highlighted'">
+					<td th:text="${user.name}">Name</td>
+					<td th:text="${user.surname}">Surname</td>
+					<td>
+						<input type="checkbox" name="selected" th:value="${user.id}" th:checked="${#lists.contains(selectedUsers, user)}"></input>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<button type="submit">INVITA</button>
+	</form>
+		
 </body>
 </html>

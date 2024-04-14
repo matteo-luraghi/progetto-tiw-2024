@@ -49,7 +49,7 @@ public class UserDAO {
 		}
 	}
 	
-	public void createUser(String email, String password, String name, String surname) throws SQLException {
+	public int createUser(String email, String password, String name, String surname) throws SQLException {
 		String query = "INSERT INTO user (email, password, name, surname) VALUES (?, ?, ?, ?)";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
@@ -59,7 +59,13 @@ public class UserDAO {
 			pstatement.setString(4, surname);
 			
 			pstatement.executeUpdate();
+			ResultSet generatedKeys = pstatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				int userId = generatedKeys.getInt(1);
+				return userId;
+			}
 		}
+		return -1;
 	}
 	
 	public boolean checkNewEmail(String email) throws SQLException {

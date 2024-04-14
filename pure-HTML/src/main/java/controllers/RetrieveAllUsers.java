@@ -86,7 +86,8 @@ public class RetrieveAllUsers extends HttpServlet {
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("registeredUsers", registeredUsers);
 			ctx.setVariable("highlighted", false);
-			// TODO maybe check for error_message variable and selectedUsers
+			ctx.setVariable("error_message", "");		
+			ctx.setVariable("selectedUsers", new ArrayList<User>()); // passing empty array
 			templateEngine.process(path, ctx, response.getWriter());	
 		} else {
 			String path = getServletContext().getContextPath() + "/GoToHomePage";
