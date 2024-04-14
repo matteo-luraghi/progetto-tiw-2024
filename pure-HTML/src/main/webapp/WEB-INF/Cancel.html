@@ -8,8 +8,8 @@
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
-	<h1>Cancellazione del gruppo</h1>
-	<p>Tre tentativi di definire un gruppo con un numero di partecipanti errato, il gruppo non sarà creato</p>
+	<h1>Cancellazione del gruppo: <span th:text="${groupTitle}"></span></h1>
+	<p>Tre tentativi di definire un gruppo con un numero di partecipanti errato, il gruppo non sara' creato</p>
 	<div align="center">
 		<a th:href="@{/GoToHomepage}">Homepage</a>
 	</div>

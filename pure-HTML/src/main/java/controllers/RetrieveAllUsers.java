@@ -69,7 +69,7 @@ public class RetrieveAllUsers extends HttpServlet {
 		
 		if (min_participants > max_participants) {
 			// TODO: display an error saying the thing
-			String path = getServletContext().getContextPath() + "/GoToHomePage";
+			String path = getServletContext().getContextPath() + "/GoToHomepage";
 			response.sendRedirect(path);
 		}
 		

@@ -141,14 +141,18 @@ public class CheckGroup extends HttpServlet {
 		} 
 		
 		if (errors == 3) { // redirect to the cancellation page
+			String groupTitle = (String) s.getAttribute("title");
 			s.removeAttribute("errors");
 			s.removeAttribute("title");
 			s.removeAttribute("duration");
 			s.removeAttribute("min_participants");
 			s.removeAttribute("max_participants");
 			
-			String path = getServletContext().getContextPath() + "/WEB-INF/Cancel.html";
-			response.sendRedirect(path);
+			String path = "WEB-INF/Cancel.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("groupTitle", groupTitle);
+			templateEngine.process(path, ctx, response.getWriter());
 			
 		} else  {
 			if (errors == 0) {
