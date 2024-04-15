@@ -39,8 +39,8 @@ public class RetrieveGroup extends HttpServlet {
     }
     
     public void init() throws ServletException {
-		connection = ConnectionHandler.getConnection(getServletContext());
 		ServletContext servletContext = getServletContext();
+		connection = ConnectionHandler.getConnection(servletContext);
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();

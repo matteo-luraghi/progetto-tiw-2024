@@ -8,33 +8,7 @@
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
-	
-	<p th:if="${minError}">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
-	
-	<form
-		th:action="@{/RetrieveAllUsers}"
-		method="POST">
-		
-		<div>
-			<label for="title">Titolo:</label>
-			<input type="text" name="title" required>		
-		</div>
-		<div>
-			<label for="duration">Durata (in giorni):</label>
-			<input type="number" name="duration" min="1" required>
-		</div>
-		<div>
-			<label for="min_participants">Numero minimo di partecipanti:</label>
-			<input type="number" name="min_participants" min="1" required>
-		</div>
-		<div>
-			<label for="max_participants">Numero massimo di partecipanti:</label>
-			<input type="number" name="max_participants" min="1" required>
-		</div>	
-		
-		<input type="submit" name="create" value="Crea Gruppo">		
-	</form>
-	
+
 	<h3>Gruppi che hai creato:</h3>
 	<table>
 		<thead>
@@ -78,6 +52,33 @@
 		  </tr>
 		</tbody>
 	</table>
+	
+	<br>
+	<h3>Crea un nuovo gruppo:</h3>
+	<form
+		th:action="@{/RetrieveAllUsers}"
+		method="POST">
+		
+		<div>
+			<label for="title">Titolo:</label>
+			<input type="text" name="title" required>		
+		</div>
+		<div>
+			<label for="duration">Durata (in giorni):</label>
+			<input type="number" name="duration" min="1" required>
+		</div>
+		<div>
+			<label for="min_participants">Numero minimo di partecipanti:</label>
+			<input type="number" name="min_participants" min="1" required>
+		</div>
+		<div>
+			<label for="max_participants">Numero massimo di partecipanti:</label>
+			<input type="number" name="max_participants" min="1" required>
+		</div>	
+		
+		<input type="submit" name="create" value="Crea Gruppo">		
+	</form>
+	<p th:if="${minError}">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
 	
 </body>
 </html>
