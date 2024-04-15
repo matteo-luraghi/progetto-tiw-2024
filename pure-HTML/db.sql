@@ -4,8 +4,9 @@ USE gruppidilavoro;
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  id int AUTO_INCREMENT,
-  email varchar(320) UNIQUE NOT NULL,
+  id int AUTO_INCREMENT NOT NULL,
+  username varchar(50) UNIQUE NOT NULL,
+  email varchar(320) NOT NULL,
   password varchar(30) NOT NULL,
   name varchar(50) NOT NULL,
   surname varchar(50) NOT NULL,
@@ -14,7 +15,7 @@ CREATE TABLE `user` (
 
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group` (
-  id int AUTO_INCREMENT,
+  id int AUTO_INCREMENT NOT NULL,
   title varchar(100) NOT NULL,
   creation_date DATE NOT NULL,
   duration int NOT NULL,

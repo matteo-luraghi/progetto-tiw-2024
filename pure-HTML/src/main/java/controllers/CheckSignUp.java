@@ -3,6 +3,8 @@ package controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,6 +37,7 @@ public class CheckSignUp extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String username = request.getParameter("username");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String repeatPassword = request.getParameter("repeatPassword");
@@ -45,22 +48,33 @@ public class CheckSignUp extends HttpServlet {
 		User u = null;
 		boolean validUser = true;
 		
+		String error = "";
+		
 		try {
-			validUser = uDao.checkNewEmail(email);
+			validUser = uDao.checkNewUsername(username);
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Email already present in the database");
+			error += "Username non disponibile\n";
+		}
+		
+		// email checking
+		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\\\.[a-zA-Z0-9-]+)*$";  
+		Pattern pattern = Pattern.compile(regex);  
+		Matcher matcher = pattern.matcher(email);  
+		if(matcher.matches()) {
+			validUser = false;
+			error += "Email non valida\n";
 		}
 		
 		if(!password.equals(repeatPassword)) {
 			validUser = false;
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Passwords do not match");
+			error += "Password e ripeti password diverse\n";
 		}
-		
+			
 		String path = getServletContext().getContextPath();
 		
 		if (validUser) {
 			try {
-				int userId = uDao.createUser(email, password, name, surname);
+				int userId = uDao.createUser(username, email, password, name, surname);
 				u = uDao.getUser(userId);	
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");

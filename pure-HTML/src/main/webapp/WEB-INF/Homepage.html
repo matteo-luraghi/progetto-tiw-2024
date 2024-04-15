@@ -9,7 +9,7 @@
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
 	
-	<p th:if="${warning}">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
+	<p th:if="${minError}">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
 	
 	<form
 		th:action="@{/RetrieveAllUsers}"

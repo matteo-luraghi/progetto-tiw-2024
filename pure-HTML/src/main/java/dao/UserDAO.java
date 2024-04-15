@@ -17,11 +17,11 @@ public class UserDAO {
 		this.connection = connection;
 	}
 	
-	public User checkCredentials(String email, String password) throws SQLException {
-		String query = "SELECT * FROM `user` WHERE email = ? AND password = ?";
+	public User checkCredentials(String username, String password) throws SQLException {
+		String query = "SELECT * FROM `user` WHERE username = ? AND password = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
-			pstatement.setString(1, email);
+			pstatement.setString(1, username);
 			pstatement.setString(2, password);
 			
 			try (ResultSet result = pstatement.executeQuery()) {
@@ -50,14 +50,15 @@ public class UserDAO {
 		}
 	}
 	
-	public int createUser(String email, String password, String name, String surname) throws SQLException {
-		String query = "INSERT INTO `user` (email, password, name, surname) VALUES (?, ?, ?, ?)";
+	public int createUser(String username, String email, String password, String name, String surname) throws SQLException {
+		String query = "INSERT INTO `user` (username, email, password, name, surname) VALUES (?, ?, ?, ?, ?)";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-			pstatement.setString(1, email);
-			pstatement.setString(2, password);
-			pstatement.setString(3, name);
-			pstatement.setString(4, surname);
+			pstatement.setString(1, username);
+			pstatement.setString(2, email);
+			pstatement.setString(3, password);
+			pstatement.setString(4, name);
+			pstatement.setString(5, surname);
 			
 			pstatement.executeUpdate();
 			ResultSet generatedKeys = pstatement.getGeneratedKeys();
@@ -85,13 +86,13 @@ public class UserDAO {
 		}
 	}
 	
-	public boolean checkNewEmail(String email) throws SQLException {
-		String query = "SELECT email FROM `user` where email = ?";
+	public boolean checkNewUsername(String username) throws SQLException {
+		String query = "SELECT email FROM `user` where username = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query)) {
-			pstatement.setString(1, email);
+			pstatement.setString(1, username);
 			try (ResultSet result = pstatement.executeQuery()) {
-				if (!result.isBeforeFirst()) return true; // no user with the same email in the db
+				if (!result.isBeforeFirst()) return true; // no user with the same username in the db
 				return false;
 			}
 		}
@@ -139,10 +140,11 @@ public class UserDAO {
 	// create User object from DB response
 	private User getUserFromResult(ResultSet result) throws SQLException {
 		int user_id = Integer.parseInt(result.getString("id"));
+		String user_username = result.getString("username");
 		String user_email = result.getString("email");
 		String user_name = result.getString("name");
 		String user_surname = result.getString("surname");
-		return new User(user_id, user_email, user_name, user_surname);
+		return new User(user_id, user_username, user_email, user_name, user_surname);
 	}
 	
 }

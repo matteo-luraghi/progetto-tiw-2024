@@ -5,8 +5,8 @@ Matteo Leonardo Luraghi - 10772886 983996
 ## Specifica
 
 ### Versione pure HTML
-Un’applicazione web consente la gestione di gruppi di lavoro. L’applicazione supporta registra-
-zione e login mediante una pagina pubblica con opportune form. La registrazione controlla la
+Un’applicazione web consente la gestione di gruppi di lavoro. L’applicazione supporta registrazione 
+e login mediante una pagina pubblica con opportune form. La registrazione controlla la
 validità sintattica dell’indirizzo di email e l’uguaglianza tra i campi “password” e “ripeti password”.
 La registrazione controlla l’unicità dello username.
 Un gruppo ha un titolo, una data di creazione, una durata dell’attività in giorni e un numero

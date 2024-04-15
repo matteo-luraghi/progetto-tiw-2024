@@ -5,15 +5,16 @@ from json import load
 import datetime
 
 class User:
-    def __init__(self, id, email, password, name, surname) -> None:
+    def __init__(self, id, username, email, password, name, surname) -> None:
         self.id = id
+        self.username = username
         self.email = email
         self.password = password
         self.name = name
         self.surname = surname
 
     def __str__(self) -> str:
-        return f' ({self.id}, "{self.email}", "{self.password}", "{self.name}", "{self.surname}"), '
+        return f' ({self.id}, "{self.username}", "{self.email}", "{self.password}", "{self.name}", "{self.surname}") '
 
 class Group:
     def __init__(self, id, title, duration, creation_date, min_participants, max_participants):
@@ -25,7 +26,7 @@ class Group:
         self.max_participants = max_participants
 
     def __str__(self) -> str:
-        return f' ({self.id}, "{self.title}", "{self.creation_date}", {self.duration}, {self.min_participants}, {self.max_participants}), '
+        return f' ({self.id}, "{self.title}", "{self.creation_date}", {self.duration}, {self.min_participants}, {self.max_participants}) '
 
 def generate_password():
     length = random.randint(5, 30)
@@ -46,15 +47,19 @@ def write_filler(users, groups, creators):
         text += "LOCK TABLES `user` WRITE;\n"
         text += "INSERT INTO `user` VALUES "
 
-        for user in users:
+        for i, user in enumerate(users):
             text += str(user)
+            if i < len(users) - 1:
+                text += ","
         text += ";\n"
 
         text += "LOCK TABLES `group` WRITE;\n"
         text += "INSERT INTO `group` VALUES "
 
-        for group in groups:
+        for i, group in enumerate(groups):
             text += str(group)
+            if i < len(groups) - 1:
+                text += ","
         text += ";\n"
 
         text += "LOCK TABLES `created` WRITE;\n"
@@ -62,22 +67,24 @@ def write_filler(users, groups, creators):
 
         for i in range(19):
             text += f" ({users[creators[i]].id}, {groups[i].id}), "
+        text = text[:-2]  # Remove the last comma and space
         text += ";\n"
 
         text += "LOCK TABLES `contains` WRITE;\n"
         text += "INSERT INTO `contains` VALUES "
-        
+
         # generate quite the number of groups for each user
-        for user in users:
+        for i, user in enumerate(users):
             rand = random.randint(1, 10)
             ids = random.sample(range(0, 20), rand)
             for num in ids:
-                if users.index(user) != num:
+                if i != num:
                     text += f" ({user.id}, {num}), "
+        text = text[:-2]  # Remove the last comma and space
         text += ";\n"
 
         text += "UNLOCK TABLES;"
-        
+
         f.write(text)
 
 if __name__ == "__main__":
@@ -87,6 +94,8 @@ if __name__ == "__main__":
         mails = load(f)
     with open("wordlist.json") as f:
         words = load(f)
+    with open("usernames.json") as f:
+        usernames = load(f)
 
     users = []
     groups = []
@@ -96,10 +105,13 @@ if __name__ == "__main__":
         name = names[random.randint(0, len(names)-1)]
         surname = names[random.randint(0, len(names)-1)]
         mail = mails[random.randint(0, len(mails)-1)]
+        username = random.choice(usernames)
+        #unique usernames
+        usernames.remove(username)
         email = f"{name}.{surname}@{mail}"
         password = generate_password()
 
-        user = User(id, email, password, name, surname)
+        user = User(id, username, email, password, name, surname)
         users.append(user)
 
     for id in range(1, 20):
