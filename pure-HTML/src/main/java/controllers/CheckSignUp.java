@@ -52,15 +52,18 @@ public class CheckSignUp extends HttpServlet {
 		
 		try {
 			validUser = uDao.checkNewUsername(username);
+			if (!validUser) {
+				error += "Username non disponibile\n";
+			}
 		} catch (SQLException e) {
-			error += "Username non disponibile\n";
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 		}
 		
 		// email checking
-		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\\\.[a-zA-Z0-9-]+)*$";  
+		String regex = "^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,})$";
 		Pattern pattern = Pattern.compile(regex);  
 		Matcher matcher = pattern.matcher(email);  
-		if(matcher.matches()) {
+		if(!matcher.matches()) {
 			validUser = false;
 			error += "Email non valida\n";
 		}
