@@ -62,6 +62,13 @@ public class RetrieveAllUsers extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
+		
+		if (request.getParameter("title") == null || request.getParameter("duration") == null || 
+				request.getParameter("min_participants") == null || request.getParameter("max_participants") == null) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Parameters not specified");
+			return;
+		}
+		
 		String title = request.getParameter("title");
 		int duration = Integer.parseInt(request.getParameter("duration"));
 		int min_participants = Integer.parseInt(request.getParameter("min_participants"));

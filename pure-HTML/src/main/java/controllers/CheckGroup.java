@@ -68,11 +68,21 @@ public class CheckGroup extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
+		if (s.getAttribute("min_participants") == null || s.getAttribute("max_participants") == null) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Parameters not specified");
+			return;
+		}
+		
 		int min_participants = (int) s.getAttribute("min_participants");
 		int max_participants = (int) s.getAttribute("max_participants");
 		
 		UserDAO uDao = new UserDAO(connection);
 		String[] users = request.getParameterValues("selected"); 
+		
+		if (users == null) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Parameters not specified");
+			return;
+		}
 		
 		ArrayList<User> selectedUsers = new ArrayList<>();
 		try {

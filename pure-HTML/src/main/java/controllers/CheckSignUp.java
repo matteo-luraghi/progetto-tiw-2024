@@ -57,6 +57,11 @@ public class CheckSignUp extends HttpServlet {
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
 		
+		if(username == null || email == null || password == null || repeatPassword == null || name == null || surname == null) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Signup parameters not specified");
+			return;
+		}
+		
 		UserDAO uDao = new UserDAO(connection);
 		User u = null;
 		boolean validUser = true;
@@ -81,12 +86,12 @@ public class CheckSignUp extends HttpServlet {
 		Matcher matcher = pattern.matcher(email);  
 		if(!matcher.matches()) {
 			validUser = false;
-			email_error = "Email non valida\n";
+			email_error = "Email non valida";
 		}
 		
 		if(!password.equals(repeatPassword)) {
 			validUser = false;
-			password_error = "Password e ripeti password diverse\n";
+			password_error = "Password e ripeti password diverse";
 		}
 			
 		String path = getServletContext().getContextPath();

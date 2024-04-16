@@ -65,6 +65,11 @@ public class RetrieveGroup extends HttpServlet {
 		
 		String groupId = request.getParameter("groupId");
 		
+		if (groupId == null) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "No group id selected");		
+			return;
+		}
+		
 		GroupDAO gDao = new GroupDAO(connection);
 		Group group = null;
 		
@@ -86,7 +91,7 @@ public class RetrieveGroup extends HttpServlet {
 			return;
 		}
 	
-		if (group != null && participants != null) {
+		if (group != null && participants != null && participants.contains(u)) {
 			// TODO: think about this
 			//participants.remove(u);
 			String path = "WEB-INF/GroupDetails.html";
