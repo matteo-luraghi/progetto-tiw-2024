@@ -81,6 +81,7 @@ public class CheckGroup extends HttpServlet {
 			}	
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			return;
 		}
 		
 		String error_message = "";
@@ -107,6 +108,7 @@ public class CheckGroup extends HttpServlet {
 				
 			} catch(SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
+				return;
 			}
 			
 			RelationshipsDAO rel = new RelationshipsDAO(connection);
@@ -120,6 +122,7 @@ public class CheckGroup extends HttpServlet {
 				}	
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
+				return;
 			}		
 			
 			s.removeAttribute("title");
@@ -164,6 +167,7 @@ public class CheckGroup extends HttpServlet {
 				registeredUsers = uDao.getRegisteredUsers();
 			} catch(SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+				return;
 			}
 			
 			if (registeredUsers != null && selectedUsers != null) {

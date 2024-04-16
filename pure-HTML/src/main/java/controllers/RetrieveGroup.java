@@ -75,6 +75,7 @@ public class RetrieveGroup extends HttpServlet {
 			group = gDao.getGroup(Integer.parseInt(groupId));
 		} catch (SQLException | ParseException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			return;
 		}
 
 		try {
@@ -82,6 +83,7 @@ public class RetrieveGroup extends HttpServlet {
 			participants.add(uDao.getCreator(Integer.parseInt(groupId)));
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			return;
 		}
 	
 		if (group != null && participants != null) {

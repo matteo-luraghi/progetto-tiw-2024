@@ -83,6 +83,7 @@ public class RetrieveAllUsers extends HttpServlet {
 			registeredUsers = uDao.getRegisteredUsers();
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			return;
 		}
 		
 		if (registeredUsers != null) {

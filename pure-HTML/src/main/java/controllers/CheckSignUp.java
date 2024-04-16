@@ -57,6 +57,7 @@ public class CheckSignUp extends HttpServlet {
 			}
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			return;
 		}
 		
 		// email checking
@@ -81,6 +82,7 @@ public class CheckSignUp extends HttpServlet {
 				u = uDao.getUser(userId);	
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
+				return;
 			}
 			request.getSession().setAttribute("user", u);
 			path = path + "/GoToHomepage";

@@ -43,6 +43,7 @@ public class CheckLogin extends HttpServlet {
 			u = uDao.checkCredentials(username, password);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in database credential checking");
+			return;
 		}
 		
 		String path = getServletContext().getContextPath();
