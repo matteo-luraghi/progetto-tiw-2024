@@ -61,12 +61,14 @@ public class CheckSignUp extends HttpServlet {
 		User u = null;
 		boolean validUser = true;
 		
-		String error = "";
+		String username_error = "";
+		String email_error = "";
+		String password_error = "";
 		
 		try {
 			validUser = uDao.checkNewUsername(username);
 			if (!validUser) {
-				error += "Username non disponibile\n";
+				username_error = "Username non disponibile";
 			}
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
@@ -79,12 +81,12 @@ public class CheckSignUp extends HttpServlet {
 		Matcher matcher = pattern.matcher(email);  
 		if(!matcher.matches()) {
 			validUser = false;
-			error += "Email non valida\n";
+			email_error = "Email non valida\n";
 		}
 		
 		if(!password.equals(repeatPassword)) {
 			validUser = false;
-			error += "Password e ripeti password diverse\n";
+			password_error = "Password e ripeti password diverse\n";
 		}
 			
 		String path = getServletContext().getContextPath();
@@ -98,7 +100,7 @@ public class CheckSignUp extends HttpServlet {
 				return;
 			}
 			request.getSession().setAttribute("user", u);
-			path = path + "/GoToHomepage";
+			path += "/GoToHomepage";
 			response.sendRedirect(path);
 		}
 		else {
@@ -106,7 +108,9 @@ public class CheckSignUp extends HttpServlet {
 			path = "/index.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("error", error);
+			ctx.setVariable("username_error", username_error);
+			ctx.setVariable("email_error", email_error);
+			ctx.setVariable("password_error", password_error);
 			templateEngine.process(path, ctx, response.getWriter());
 		}
 		
