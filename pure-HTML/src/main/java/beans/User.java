@@ -34,4 +34,16 @@ public class User {
 	public String getSurname() {
 		return this.surname;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (this.getClass() != o.getClass()) return false;
+		if (!this.getEmail().equals( ((User) o).getEmail())) return false;
+		if (this.getId() != ((User) o).getId()) return false;
+		if (!this.getName().equals(((User) o).getName())) return false;
+		if (!this.getSurname().equals(((User) o).getSurname())) return false;
+		if (!this.getUsername().equals(((User) o).getUsername())) return false;
+		return true;
+	}
 }

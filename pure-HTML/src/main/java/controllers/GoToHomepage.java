@@ -76,12 +76,12 @@ public class GoToHomepage extends HttpServlet {
 		}
 		
 		boolean warning;
-		if (s.getAttribute("warning") == null) {
+		if (s.getAttribute("minError") == null) {
 			warning = false;
 		} else {
-			warning = (boolean) s.getAttribute("warning");
+			warning = (boolean) s.getAttribute("minError");
 		}
-		s.removeAttribute("warning");
+		s.removeAttribute("minError");
 		
 		String path = "WEB-INF/Homepage.html";
 		ServletContext servletContext = getServletContext();
