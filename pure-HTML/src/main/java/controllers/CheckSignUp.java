@@ -6,11 +6,17 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import beans.User;
 import dao.UserDAO;
@@ -23,14 +29,21 @@ import utils.ConnectionHandler;
 public class CheckSignUp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
+	private TemplateEngine templateEngine;
+
 	
     public CheckSignUp() {
         super();
     }
     
     public void init() throws ServletException {
-		connection = ConnectionHandler.getConnection(getServletContext());
-	}
+    	ServletContext servletContext = getServletContext();
+ 		connection = ConnectionHandler.getConnection(servletContext);
+ 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+ 		templateResolver.setTemplateMode(TemplateMode.HTML);
+		this.templateEngine = new TemplateEngine();
+		this.templateEngine.setTemplateResolver(templateResolver);
+		templateResolver.setSuffix(".html");	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -86,12 +99,17 @@ public class CheckSignUp extends HttpServlet {
 			}
 			request.getSession().setAttribute("user", u);
 			path = path + "/GoToHomepage";
+			response.sendRedirect(path);
 		}
 		else {
-			path = getServletContext().getContextPath() + "/index.html";
+			// display the error in index.html
+			path = "/index.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("error", error);
+			templateEngine.process(path, ctx, response.getWriter());
 		}
 		
-		response.sendRedirect(path);
 	}
 
 	public void destroy() {
