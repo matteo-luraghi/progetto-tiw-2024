@@ -76,7 +76,7 @@ public class RetrieveAllUsers extends HttpServlet {
 		
 		if (min_participants > max_participants) {
 			s.setAttribute("minError", true);
-			String path = getServletContext().getContextPath() + "/GoToHomepage";
+			String path = getServletContext().getContextPath() + "/Homepage";
 			response.sendRedirect(path);
 		}
 		
@@ -106,7 +106,7 @@ public class RetrieveAllUsers extends HttpServlet {
 			ctx.setVariable("selectedUsers", new ArrayList<User>()); // passing empty array
 			templateEngine.process(path, ctx, response.getWriter());	
 		} else {
-			String path = getServletContext().getContextPath() + "/GoToHomepage";
+			String path = getServletContext().getContextPath() + "/Homepage";
 			response.sendRedirect(path);
 		}
 	}

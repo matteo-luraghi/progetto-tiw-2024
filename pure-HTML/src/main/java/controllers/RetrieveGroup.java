@@ -101,7 +101,7 @@ public class RetrieveGroup extends HttpServlet {
 			ctx.setVariable("participants", participants);
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
-			String path = getServletContext().getContextPath() + "/GoToHomepage";
+			String path = getServletContext().getContextPath() + "/Homepage";
 			response.sendRedirect(path);
 		}
 	}

@@ -114,7 +114,7 @@ public class CheckSignUp extends HttpServlet {
 				return;
 			}
 			s.setAttribute("user", u);
-			path += "/GoToHomepage";
+			path += "/Homepage";
 			response.sendRedirect(path);
 		}
 		else {

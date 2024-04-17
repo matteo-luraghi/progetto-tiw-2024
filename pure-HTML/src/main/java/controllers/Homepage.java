@@ -24,16 +24,16 @@ import beans.Group;
 import dao.GroupDAO;
 
 /**
- * Servlet implementation class GoToHomepage
+ * Servlet implementation class Homepage
  */
-@WebServlet("/GoToHomepage")
-public class GoToHomepage extends HttpServlet {
+@WebServlet("/Homepage")
+public class Homepage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
 
 	       
-    public GoToHomepage() {
+    public Homepage() {
         super();
     }
     
