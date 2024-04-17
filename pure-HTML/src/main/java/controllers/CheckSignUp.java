@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -50,12 +51,16 @@ public class CheckSignUp extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
 		String username = request.getParameter("username");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String repeatPassword = request.getParameter("repeatPassword");
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
+		HttpSession s = request.getSession();
 		
 		if(username == null || email == null || password == null || repeatPassword == null || name == null || surname == null) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Signup parameters not specified");
@@ -69,13 +74,13 @@ public class CheckSignUp extends HttpServlet {
 		String username_error = "";
 		String email_error = "";
 		String password_error = "";
-		
-		//TODO: save valid parameters and show them back to user (not password)
-		
+				
 		try {
 			validUser = uDao.checkNewUsername(username);
 			if (!validUser) {
 				username_error = "Username non disponibile";
+			} else {
+				ctx.setVariable("username", username);
 			}
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
@@ -89,6 +94,8 @@ public class CheckSignUp extends HttpServlet {
 		if(!matcher.matches()) {
 			validUser = false;
 			email_error = "Email non valida";
+		} else {
+			ctx.setVariable("email", email);
 		}
 		
 		if(!password.equals(repeatPassword)) {
@@ -96,7 +103,7 @@ public class CheckSignUp extends HttpServlet {
 			password_error = "Password e ripeti password diverse";
 		}
 			
-		String path = getServletContext().getContextPath();
+		String path = servletContext.getContextPath();
 		
 		if (validUser) {
 			try {
@@ -106,18 +113,19 @@ public class CheckSignUp extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
 				return;
 			}
-			request.getSession().setAttribute("user", u);
+			s.setAttribute("user", u);
 			path += "/GoToHomepage";
 			response.sendRedirect(path);
 		}
 		else {
 			// display the error in index.html
 			path = "/index.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("username_error", username_error);
 			ctx.setVariable("email_error", email_error);
 			ctx.setVariable("password_error", password_error);
+			// display the valid info in index.html
+			ctx.setVariable("name", name);
+			ctx.setVariable("surname", surname);
 			templateEngine.process(path, ctx, response.getWriter());
 		}
 		

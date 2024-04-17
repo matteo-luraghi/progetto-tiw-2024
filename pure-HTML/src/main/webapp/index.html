@@ -8,8 +8,8 @@
 	<h1>Welcome to the  project management application</h1>
 	<form action="CheckLogin"
 		method="POST">
-		username: <input type="text" name="username"> <br>
-		password: <input type="password" name="password"><br> 
+		username: <input type="text" name="username" required> <br>
+		password: <input type="password" name="password" required><br> 
 		<input type="submit" value="login">
 	</form>
 	
@@ -21,12 +21,12 @@
 	
 	<form action="CheckSignUp"
 		method="POST">
-		name: <input type="text" name="name"> <br>
-		surname: <input type="text" name="surname"> <br>
-		username: <input type="text" name="username"> <br>
-		email: <input type="text" name="email"> <br>
+		name: <input type="text" name="name" th:value="${name}" required> <br>
+		surname: <input type="text" name="surname" th:value="${surname}" required> <br>
+		username: <input type="text" name="username" th:value="${username}" required> <br>
+		email: <input type="email" name="email" th:value="${email}" required> <br>
 		password: <input type="password" name="password"><br> 
-		repeat password: <input type="password" name="repeatPassword"><br>
+		repeat password: <input type="password" name="repeatPassword" required><br>
 		<input type="submit" value="sign up">
 	</form>
 </body>
