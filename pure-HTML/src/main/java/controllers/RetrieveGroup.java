@@ -90,10 +90,10 @@ public class RetrieveGroup extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
 			return;
 		}
+		
+		s.removeAttribute("errors");
 	
 		if (group != null && participants != null && participants.contains(u)) {
-			// TODO: think about this
-			//participants.remove(u);
 			String path = "WEB-INF/GroupDetails.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());

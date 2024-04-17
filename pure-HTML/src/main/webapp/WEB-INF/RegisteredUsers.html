@@ -3,6 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Anagrafica</title>
+<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />
 </head>
 <body>
 
@@ -26,7 +27,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="user : ${registeredUsers}" th:class="${#lists.contains(selectedUsers, user) && highlighted} ? 'highlighted'">
+				<tr th:each="user : ${registeredUsers}" th:class="${#lists.contains(selectedUsers, user.getId) && highlighted} ? 'highlighted' : ''">
 					<td th:text="${user.getName}">Name</td>
 					<td th:text="${user.getSurname}">Surname</td>
 					<td>

@@ -84,6 +84,7 @@ public class RetrieveAllUsers extends HttpServlet {
 		s.setAttribute("duration", duration);
 		s.setAttribute("min_participants", min_participants);
 		s.setAttribute("max_participants", max_participants);
+		s.removeAttribute("errors");
 		
 		try {
 			UserDAO uDao = new UserDAO(connection);

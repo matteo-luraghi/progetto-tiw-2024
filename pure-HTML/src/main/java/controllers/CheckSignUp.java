@@ -70,6 +70,8 @@ public class CheckSignUp extends HttpServlet {
 		String email_error = "";
 		String password_error = "";
 		
+		//TODO: save valid parameters and show them back to user (not password)
+		
 		try {
 			validUser = uDao.checkNewUsername(username);
 			if (!validUser) {
