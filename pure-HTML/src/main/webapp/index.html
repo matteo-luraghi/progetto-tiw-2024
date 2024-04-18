@@ -3,31 +3,61 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Login</title>
+<link rel="stylesheet" type="text/css" media="all" href="css/style.css" th:href="@{/css/style.css}" />
 </head>
 <body>
 	<h1>Welcome to the  project management application</h1>
-	<form action="CheckLogin"
-		method="POST">
-		username: <input type="text" name="username" required> <br>
-		password: <input type="password" name="password" required><br> 
+
+	<div class="container">
+		<h3>Login</h3>
+
+		<p th:if="${username_login_error != null and username_login_error != ''}" th:text="${username_login_login_error}" class="error-message"></p>
+		<p th:if="${password_login_error != null and password_login_error != ''}" th:text="${password_login_error}" class="error-message"></p>
+
+		<form action="CheckLogin"
+		method="POST" class="form-container">
+			<div class="input-container">
+				username: <input type="text" name="username" th:value="${login_username}" required>
+			</div>
+			<div class="input-container">
+				password: <input type="password" name="password" required>
+			</div>
 		<input type="submit" value="login">
-	</form>
-	
+		</form>
+	</div>
+
 	<br>
+
+	<div class="container">
+		<h3>Registrati</h3>
 	
-	<p th:text="${username_error}"></p>
-	<p th:text="${email_error}"></p>
-	<p th:text="${password_error}"></p>
-	
-	<form action="CheckSignUp"
-		method="POST">
-		name: <input type="text" name="name" th:value="${name}" required> <br>
-		surname: <input type="text" name="surname" th:value="${surname}" required> <br>
-		username: <input type="text" name="username" th:value="${username}" required> <br>
-		email: <input type="email" name="email" th:value="${email}" required> <br>
-		password: <input type="password" name="password"><br> 
-		repeat password: <input type="password" name="repeatPassword" required><br>
-		<input type="submit" value="sign up">
-	</form>
+		<p th:if="${username_error != null and username_error != ''}" th:text="${username_error}" class="error-message"></p>
+		<p th:if="${email_error != null and email_error != ''}" th:text="${email_error}" class="error-message"></p>
+		<p th:if="${password_error != null and password_error != ''}" th:text="${password_error}" class="error-message"></p>
+
+		<form action="CheckSignUp"
+		method="POST" class="form-container">
+			<div class="input-container">
+				name: <input type="text" name="name" th:value="${name}" required>
+			</div>
+			<div class="input-container">
+				surname: <input type="text" name="surname" th:value="${surname}" required>
+			</div>
+			<div class="input-container">
+				username: <input type="text" name="username" th:value="${username}" required>
+			</div>
+			<div class="input-container">
+				email: <input type="email" name="email" th:value="${email}" required>
+			</div>
+			<div class="input-container">
+				password: <input type="password" name="password"><br> 
+			</div>
+			<div class="input-container">
+				repeat password: <input type="password" name="repeatPassword" required>
+			</div>
+			<input type="submit" value="sign up">
+		</form>
+	</div>
+
 </body>
 </html>
