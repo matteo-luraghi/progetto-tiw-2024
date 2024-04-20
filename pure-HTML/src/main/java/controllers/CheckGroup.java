@@ -140,7 +140,7 @@ public class CheckGroup extends HttpServlet {
 			s.removeAttribute("min_participants");
 			s.removeAttribute("max_participants");
 			
-			String path = getServletContext().getContextPath() + "/GoToHomepage";
+			String path = getServletContext().getContextPath() + "/Homepage";
 			response.sendRedirect(path);			
 			return;
 			
