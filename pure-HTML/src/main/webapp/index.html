@@ -11,8 +11,8 @@
 	<div class="container">
 		<h3>Login</h3>
 
-		<p th:if="${username_login_error != null and username_login_error != ''}" th:text="${username_login_login_error}" class="error-message"></p>
-		<p th:if="${password_login_error != null and password_login_error != ''}" th:text="${password_login_error}" class="error-message"></p>
+		<p th:text="${username_login_error}" th:class="${username_login_error != null and username_login_error != ''} ? 'error-message' : ''"></p>
+		<p th:text="${password_login_error}" th:class="${password_login_error != null and password_login_error != ''} ? 'error-message' : ''"></p>
 
 		<form action="CheckLogin"
 		method="POST" class="form-container">
@@ -31,9 +31,9 @@
 	<div class="container">
 		<h3>Registrati</h3>
 	
-		<p th:if="${username_error != null and username_error != ''}" th:text="${username_error}" class="error-message"></p>
-		<p th:if="${email_error != null and email_error != ''}" th:text="${email_error}" class="error-message"></p>
-		<p th:if="${password_error != null and password_error != ''}" th:text="${password_error}" class="error-message"></p>
+		<p th:text="${username_error}" th:class="${username_error != null and username_error != ''} ? 'error-message' : ''"></p>
+		<p th:text="${email_error}" th:class="${email_error != null and email_error != ''} ? 'error-message' : ''"></p>
+		<p th:text="${password_error}" th:class="${password_error != null and password_error != ''} ? 'error-message' :''"></p>
 
 		<form action="CheckSignUp"
 		method="POST" class="form-container">
