@@ -78,10 +78,17 @@ public class Homepage extends HttpServlet {
 		}
 		
 		boolean warning;
+		String group_title = "";
+		int group_duration = 0;
 		if (s.getAttribute("minError") == null) {
 			warning = false;
 		} else {
 			warning = (boolean) s.getAttribute("minError");
+			group_title = (String) s.getAttribute("group_creation_title");
+			group_duration = (int) s.getAttribute("group_creation_duration");
+			
+			s.removeAttribute("group_creation_title");
+			s.removeAttribute("group_creation_duration");
 		}
 		s.removeAttribute("minError");
 		s.removeAttribute("errors");
@@ -92,6 +99,10 @@ public class Homepage extends HttpServlet {
 		ctx.setVariable("createdGroups", createdGroups);
 		ctx.setVariable("activeGroups", activeGroups);
 		ctx.setVariable("minError", warning);
+		ctx.setVariable("group_creation_title", group_title);
+		if (group_duration != 0) {
+			ctx.setVariable("group_creation_duration", group_duration);
+		}
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

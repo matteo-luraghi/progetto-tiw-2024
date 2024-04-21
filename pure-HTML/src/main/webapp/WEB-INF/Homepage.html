@@ -66,11 +66,11 @@
 			
 			<div class="input-container">
 				<label for="title">Titolo:</label>
-				<input type="text" name="title" required>		
+				<input type="text" name="title" maxlength="100" th:value="${group_creation_title}" required>		
 			</div>
 			<div class="input-container">
 				<label for="duration">Durata (in giorni):</label>
-				<input type="number" name="duration" min="1" required>
+				<input type="number" name="duration" min="1" th:value="${group_creation_duration}" required>
 			</div>
 			<div class="input-container">
 				<label for="min_participants">Numero minimo di partecipanti:</label>

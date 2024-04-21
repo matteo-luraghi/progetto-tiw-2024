@@ -79,9 +79,8 @@ public class CheckGroup extends HttpServlet {
 		UserDAO uDao = new UserDAO(connection);
 		String[] users = request.getParameterValues("selected"); 
 		
-		if (users == null) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Parameters not specified");
-			return;
+		if (users == null) { // 0 users selected
+			users = new String[0];
 		}
 		
 		ArrayList<User> selectedUsers = new ArrayList<>();

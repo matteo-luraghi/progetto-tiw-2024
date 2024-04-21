@@ -76,6 +76,8 @@ public class RetrieveAllUsers extends HttpServlet {
 		
 		if (min_participants > max_participants) {
 			s.setAttribute("minError", true);
+			s.setAttribute("group_creation_title", title);
+			s.setAttribute("group_creation_duration", duration);
 			String path = getServletContext().getContextPath() + "/Homepage";
 			response.sendRedirect(path);
 		}

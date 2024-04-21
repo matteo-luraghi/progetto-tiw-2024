@@ -17,10 +17,10 @@
 		<form action="CheckLogin"
 		method="POST" class="form-container">
 			<div class="input-container">
-				username: <input type="text" name="username" th:value="${login_username}" required>
+				username: <input type="text" name="username" th:value="${login_username}" maxlength="50" required>
 			</div>
 			<div class="input-container">
-				password: <input type="password" name="password" required>
+				password: <input type="password" name="password" maxlength="30" required>
 			</div>
 		<input type="submit" value="login">
 		</form>
@@ -38,22 +38,22 @@
 		<form action="CheckSignUp"
 		method="POST" class="form-container">
 			<div class="input-container">
-				name: <input type="text" name="name" th:value="${name}" required>
+				name: <input type="text" name="name" th:value="${name}" maxlength="50" required>
 			</div>
 			<div class="input-container">
-				surname: <input type="text" name="surname" th:value="${surname}" required>
+				surname: <input type="text" name="surname" th:value="${surname}" maxlength="50" required>
 			</div>
 			<div class="input-container">
-				username: <input type="text" name="username" th:value="${username}" required>
+				username: <input type="text" name="username" th:value="${username}" maxlength="50" required>
 			</div>
 			<div class="input-container">
-				email: <input type="email" name="email" th:value="${email}" required>
+				email: <input type="email" name="email" th:value="${email}" maxlength="320" required>
 			</div>
 			<div class="input-container">
-				password: <input type="password" name="password">
+				password: <input type="password" name="password" maxlength="30" required>
 			</div>
 			<div class="input-container">
-				repeat password: <input type="password" name="repeatPassword" required>
+				repeat password: <input type="password" name="repeatPassword" maxlength="30" required>
 			</div>
 			<input type="submit" value="sign up">
 		</form>
