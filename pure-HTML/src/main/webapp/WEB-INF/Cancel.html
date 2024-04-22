@@ -9,9 +9,10 @@
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
-	<h1>Cancellazione del gruppo: <span th:text="${groupTitle}"></span></h1>
-	<p class="error-message">Tre tentativi di definire un gruppo con un numero di partecipanti errato, il gruppo non sara' creato</p>
-	<div align="center">
+
+	<div class="container">
+		<h1>Cancellazione del gruppo: <span th:text="${groupTitle}"></span></h1>
+		<p align="center" class="error-message">Tre tentativi di definire un gruppo con un numero di partecipanti errato, il gruppo non sara' creato</p>
 		<a th:href="@{/Homepage}">Homepage</a>
 	</div>
 

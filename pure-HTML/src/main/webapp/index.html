@@ -6,58 +6,64 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/style.css" th:href="@{/css/style.css}" />
 </head>
 <body>
-	<h1>Gruppi di Lavoro</h1>
 
 	<div class="container">
-		<h3>Login</h3>
+		<h1>Gruppi di Lavoro</h1>
 
-		<p th:text="${username_login_error}" th:class="${username_login_error != null and username_login_error != ''} ? 'error-message' : ''"></p>
-		<p th:text="${password_login_error}" th:class="${password_login_error != null and password_login_error != ''} ? 'error-message' : ''"></p>
+		<div class="login-container">
 
-		<form action="CheckLogin"
-		method="POST" class="form-container">
-			<div class="input-container">
-				username: <input type="text" name="username" th:value="${login_username}" maxlength="50" required>
+			<div class="login-form">
+				<h3>Login</h3>
+
+				<p th:text="${username_login_error}" th:class="${username_login_error != null and username_login_error != ''} ? 'error-message' : ''"></p>
+				<p th:text="${password_login_error}" th:class="${password_login_error != null and password_login_error != ''} ? 'error-message' : ''"></p>
+
+				<form action="CheckLogin"
+				method="POST" class="form-container">
+					<div class="input-container">
+						username: <input type="text" name="username" th:value="${login_username}" maxlength="50" required>
+					</div>
+					<div class="input-container">
+						password: <input type="password" name="password" maxlength="30" required>
+					</div>
+				<input type="submit" value="login">
+				</form>
 			</div>
-			<div class="input-container">
-				password: <input type="password" name="password" maxlength="30" required>
+
+			<br>
+
+			<div class="login-form">
+				<h3>Registrati</h3>
+			
+				<p th:text="${username_error}" th:class="${username_error != null and username_error != ''} ? 'error-message' : ''"></p>
+				<p th:text="${email_error}" th:class="${email_error != null and email_error != ''} ? 'error-message' : ''"></p>
+				<p th:text="${password_error}" th:class="${password_error != null and password_error != ''} ? 'error-message' :''"></p>
+
+				<form action="CheckSignUp"
+				method="POST" class="form-container">
+					<div class="input-container">
+						name: <input type="text" name="name" th:value="${name}" maxlength="50" required>
+					</div>
+					<div class="input-container">
+						surname: <input type="text" name="surname" th:value="${surname}" maxlength="50" required>
+					</div>
+					<div class="input-container">
+						username: <input type="text" name="username" th:value="${username}" maxlength="50" required>
+					</div>
+					<div class="input-container">
+						email: <input type="email" name="email" th:value="${email}" maxlength="320" required>
+					</div>
+					<div class="input-container">
+						password: <input type="password" name="password" maxlength="30" required>
+					</div>
+					<div class="input-container">
+						repeat password: <input type="password" name="repeatPassword" maxlength="30" required>
+					</div>
+					<input type="submit" value="sign up">
+				</form>
 			</div>
-		<input type="submit" value="login">
-		</form>
+		</div>
 	</div>
-
-	<br>
-
-	<div class="container">
-		<h3>Registrati</h3>
 	
-		<p th:text="${username_error}" th:class="${username_error != null and username_error != ''} ? 'error-message' : ''"></p>
-		<p th:text="${email_error}" th:class="${email_error != null and email_error != ''} ? 'error-message' : ''"></p>
-		<p th:text="${password_error}" th:class="${password_error != null and password_error != ''} ? 'error-message' :''"></p>
-
-		<form action="CheckSignUp"
-		method="POST" class="form-container">
-			<div class="input-container">
-				name: <input type="text" name="name" th:value="${name}" maxlength="50" required>
-			</div>
-			<div class="input-container">
-				surname: <input type="text" name="surname" th:value="${surname}" maxlength="50" required>
-			</div>
-			<div class="input-container">
-				username: <input type="text" name="username" th:value="${username}" maxlength="50" required>
-			</div>
-			<div class="input-container">
-				email: <input type="email" name="email" th:value="${email}" maxlength="320" required>
-			</div>
-			<div class="input-container">
-				password: <input type="password" name="password" maxlength="30" required>
-			</div>
-			<div class="input-container">
-				repeat password: <input type="password" name="repeatPassword" maxlength="30" required>
-			</div>
-			<input type="submit" value="sign up">
-		</form>
-	</div>
-
 </body>
 </html>

@@ -6,84 +6,87 @@
 <link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />
 </head>
 <body>
+
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
+	
+	<div class="container">
+		<h3>Gruppi che hai creato:</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Titolo</th>
+					<th>Data di creazione</th>
+					<th>Durata (in giorni)</th>
+					<th>Dettagli</th>
+				</tr>
+			</thead>
+			<tbody>
+			  <tr th:each="group : ${createdGroups}">
+				  <td th:text="${group.getTitle}">Title</td>
+				  <td th:text="${group.getDate}">Creation Date</td>
+				  <td th:text="${group.getDuration}">Duration</td>
+				  <td>
+					<a th:href="@{/RetrieveGroup(groupId=${group.id})}">Details</a>
+				</td>
+			  </tr>    
+			</tbody>
+		</table>
+		
+		<h3>Gruppi a cui partecipi:</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Titolo</th>
+					<th>Data di creazione</th>
+					<th>Durata (in giorni)</th>
+					<th>Dettagli</th>
+				</tr>
+			</thead>
+			<tbody>
+			  <tr th:each="group : ${activeGroups}">
+				  <td th:text="${group.getTitle}">Title</td>
+				  <td th:text="${group.getDate}">Creation Date</td>
+				  <td th:text="${group.getDuration}">Duration</td>
+				  <td>
+					<a th:href="@{/RetrieveGroup(groupId=${group.id})}">Details</a>
+				</td>
+			  </tr>
+			</tbody>
+		</table>
+		
+		<br>
+		<h3>Crea un nuovo gruppo:</h3>
+		
+		<p th:if="${minError}" class="error-message">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
 
-	<h3>Gruppi che hai creato:</h3>
-	<table>
-		<thead>
-            <tr>
-                <th>Titolo</th>
-                <th>Data di creazione</th>
-                <th>Durata (in giorni)</th>
-                <th>Dettagli</th>
-            </tr>
-        </thead>
-		<tbody>
-		  <tr th:each="group : ${createdGroups}">
-		  	<td th:text="${group.getTitle}">Title</td>
-		  	<td th:text="${group.getDate}">Creation Date</td>
-		  	<td th:text="${group.getDuration}">Duration</td>
-		  	<td>
-            	<a th:href="@{/RetrieveGroup(groupId=${group.id})}">Details</a>
-            </td>
-		  </tr>    
-		</tbody>
-	</table>
-	
-	<h3>Gruppi a cui partecipi:</h3>
-	<table>
-		<thead>
-            <tr>
-                <th>Titolo</th>
-                <th>Data di creazione</th>
-                <th>Durata (in giorni)</th>
-                <th>Dettagli</th>
-            </tr>
-        </thead>
-		<tbody>
-		  <tr th:each="group : ${activeGroups}">
-		  	<td th:text="${group.getTitle}">Title</td>
-		  	<td th:text="${group.getDate}">Creation Date</td>
-		  	<td th:text="${group.getDuration}">Duration</td>
-		  	<td>
-            	<a th:href="@{/RetrieveGroup(groupId=${group.id})}">Details</a>
-            </td>
-		  </tr>
-		</tbody>
-	</table>
-	
-	<br>
-	<h3>Crea un nuovo gruppo:</h3>
-	
-	<p th:if="${minError}" class="error-message">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
-
-	<div class="form-container">
-		<form
-			th:action="@{/RetrieveAllUsers}"
-			method="POST" class="form-container">
-			
-			<div class="input-container">
-				<label for="title">Titolo:</label>
-				<input type="text" name="title" maxlength="100" th:value="${group_creation_title}" required>		
-			</div>
-			<div class="input-container">
-				<label for="duration">Durata (in giorni):</label>
-				<input type="number" name="duration" min="1" th:value="${group_creation_duration}" required>
-			</div>
-			<div class="input-container">
-				<label for="min_participants">Numero minimo di partecipanti:</label>
-				<input type="number" name="min_participants" min="1" required>
-			</div>
-			<div class="input-container">
-				<label for="max_participants">Numero massimo di partecipanti:</label>
-				<input type="number" name="max_participants" min="1" required>
-			</div>	
-			
-			<input type="submit" name="create" value="Crea Gruppo">		
-		</form>
+		<div class="form-container">
+			<form
+				th:action="@{/RetrieveAllUsers}"
+				method="POST" class="form-container">
+				
+				<div class="input-container">
+					<label for="title">Titolo:</label>
+					<input type="text" name="title" maxlength="100" th:value="${group_creation_title}" required>		
+				</div>
+				<div class="input-container">
+					<label for="duration">Durata (in giorni):</label>
+					<input type="number" name="duration" min="1" th:value="${group_creation_duration}" required>
+				</div>
+				<div class="input-container">
+					<label for="min_participants">Numero minimo di partecipanti:</label>
+					<input type="number" name="min_participants" min="1" required>
+				</div>
+				<div class="input-container">
+					<label for="max_participants">Numero massimo di partecipanti:</label>
+					<input type="number" name="max_participants" min="1" required>
+				</div>	
+				
+				<input type="submit" name="create" value="Crea Gruppo">		
+			</form>
+		</div>
 	</div>
-	
+
 </body>
 </html>
