@@ -184,7 +184,10 @@ public class CheckGroup extends HttpServlet {
 				registeredUsers.remove(u);
 				
 				// map each user with its id
-				List<Integer> selectedId = selectedUsers.stream().map(x -> x.getId()).collect(Collectors.toList());
+				List<Integer> selectedId = selectedUsers.stream()
+						.parallel()
+						.map(x -> x.getId())
+						.collect(Collectors.toList());
 				
 				s.setAttribute("errors", errors);	
 				String path = "WEB-INF/RegisteredUsers.html";
