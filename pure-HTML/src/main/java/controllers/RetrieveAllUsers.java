@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import java.sql.Connection;
 import java.sql.SQLException;
 import utils.ConnectionHandler;
@@ -61,18 +62,27 @@ public class RetrieveAllUsers extends HttpServlet {
 		} else {
 			u = (User) s.getAttribute("user");
 		}
+	
+		String title = null;
+		Integer duration = null;
+		Integer min_participants = null;
+		Integer max_participants = null;
 		
-		
-		if (request.getParameter("title") == null || request.getParameter("duration") == null || 
-				request.getParameter("min_participants") == null || request.getParameter("max_participants") == null) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Parameters not specified");
+		try {
+			title = StringEscapeUtils.escapeJava(request.getParameter("title"));
+			duration = Integer.parseInt(request.getParameter("duration"));
+			min_participants = Integer.parseInt(request.getParameter("min_participants"));
+			max_participants = Integer.parseInt(request.getParameter("max_participants"));
+			
+			if(title == null || duration == null || min_participants == null || max_participants == null || 
+					title.isEmpty() || duration <= 0 || min_participants <= 0 || max_participants <= 0) {
+				throw new Exception("Missing or invalid credential value");
+			}
+			
+		} catch(Exception e) { // catches also NumberFormatException
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or invalid credential value");
 			return;
 		}
-		
-		String title = request.getParameter("title");
-		int duration = Integer.parseInt(request.getParameter("duration"));
-		int min_participants = Integer.parseInt(request.getParameter("min_participants"));
-		int max_participants = Integer.parseInt(request.getParameter("max_participants"));
 		
 		if (min_participants > max_participants) {
 			s.setAttribute("minError", true);
@@ -92,7 +102,7 @@ public class RetrieveAllUsers extends HttpServlet {
 			UserDAO uDao = new UserDAO(connection);
 			registeredUsers = uDao.getRegisteredUsers();
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 			return;
 		}
 		

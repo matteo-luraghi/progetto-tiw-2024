@@ -69,7 +69,7 @@ public class CheckGroup extends HttpServlet {
 		}
 		
 		if (s.getAttribute("min_participants") == null || s.getAttribute("max_participants") == null) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Parameters not specified");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameters not specified");
 			return;
 		}
 		
@@ -86,10 +86,15 @@ public class CheckGroup extends HttpServlet {
 		ArrayList<User> selectedUsers = new ArrayList<>();
 		try {
 			for(String userId: users) {
-				selectedUsers.add(uDao.getUser(Integer.parseInt(userId)));
+				try {
+					selectedUsers.add(uDao.getUser(Integer.parseInt(userId)));
+				} catch (NumberFormatException e) {
+					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid parameters");
+					return;
+				}
 			}	
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 			return;
 		}
 		
@@ -116,7 +121,7 @@ public class CheckGroup extends HttpServlet {
 				group_id = g.createGroup(title, creation_date, duration, min_participants, max_participants);
 				
 			} catch(SQLException e) {
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in update of the database");
 				return;
 			}
 			
@@ -130,7 +135,7 @@ public class CheckGroup extends HttpServlet {
 					rel.setContains(user.getId(), group_id);
 				}	
 			} catch (SQLException e) {
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in update of the database");
 				return;
 			}		
 			
@@ -175,7 +180,7 @@ public class CheckGroup extends HttpServlet {
 			try {
 				registeredUsers = uDao.getRegisteredUsers();
 			} catch(SQLException e) {
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 				return;
 			}
 			

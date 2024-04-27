@@ -42,10 +42,20 @@ public class GetGroupDetails extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		String groupId = request.getParameter("groupId");
-		if (groupId == null) {
+		String groupIdStr = request.getParameter("groupId");
+		if (groupIdStr == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("No group id selected");
+			return;
+		}
+			
+		int groupId;
+
+		try {
+			groupId = Integer.parseInt(groupIdStr);
+		} catch (NumberFormatException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Invalid group id");
 			return;
 		}
 		
@@ -53,7 +63,7 @@ public class GetGroupDetails extends HttpServlet {
 		Group group = null;
 		
 		try {
-			group = gDao.getGroup(Integer.parseInt(groupId));
+			group = gDao.getGroup(groupId);
 		} catch (SQLException | ParseException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover group details");

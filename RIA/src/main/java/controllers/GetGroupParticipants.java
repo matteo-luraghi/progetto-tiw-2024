@@ -41,10 +41,20 @@ public class GetGroupParticipants extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		String groupId = request.getParameter("groupId");
-		if (groupId == null) {
+		String groupIdStr = request.getParameter("groupId");
+		if (groupIdStr == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("No group id selected");
+			return;
+		}
+			
+		int groupId;
+
+		try {
+			groupId = Integer.parseInt(groupIdStr);
+		} catch (NumberFormatException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Invalid group id");
 			return;
 		}
 		
@@ -52,8 +62,8 @@ public class GetGroupParticipants extends HttpServlet {
 		ArrayList<User> participants = null;
 
 		try {
-			participants = uDao.getGroupParticipants(Integer.parseInt(groupId));
-			participants.add(uDao.getCreator(Integer.parseInt(groupId)));
+			participants = uDao.getGroupParticipants(groupId);
+			participants.add(uDao.getCreator(groupId));
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover group participants");

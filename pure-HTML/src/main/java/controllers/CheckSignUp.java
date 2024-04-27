@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import javax.servlet.ServletContext;
+import org.apache.commons.lang.StringEscapeUtils;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,16 +55,29 @@ public class CheckSignUp extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-		String username = request.getParameter("username");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		String repeatPassword = request.getParameter("repeatPassword");
-		String name = request.getParameter("name");
-		String surname = request.getParameter("surname");
+		String username = null;
+		String email = null;
+		String password = null;
+		String repeatPassword = null;
+		String name = null;
+		String surname = null;
 		HttpSession s = request.getSession();
 		
-		if(username == null || email == null || password == null || repeatPassword == null || name == null || surname == null) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Signup parameters not specified");
+		try {
+			username = StringEscapeUtils.escapeJava(request.getParameter("username"));
+			email = StringEscapeUtils.escapeJava(request.getParameter("email"));
+			password = StringEscapeUtils.escapeJava(request.getParameter("password"));
+			repeatPassword = StringEscapeUtils.escapeJava(request.getParameter("repeatPassword"));
+			name = StringEscapeUtils.escapeJava(request.getParameter("name"));
+			surname = StringEscapeUtils.escapeJava(request.getParameter("surname"));
+
+			if(username == null || email == null || password == null || repeatPassword == null 
+					|| name == null || surname == null || username.isEmpty() || email.isEmpty() 
+					|| password.isEmpty() || repeatPassword.isEmpty() || name.isEmpty() || surname.isEmpty()) {
+				throw new Exception("Missing or empty credential value");
+			}
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");	
 			return;
 		}
 		
@@ -83,7 +97,7 @@ public class CheckSignUp extends HttpServlet {
 				ctx.setVariable("username", username);
 			}
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 			return;
 		}
 		
@@ -110,7 +124,7 @@ public class CheckSignUp extends HttpServlet {
 				int userId = uDao.createUser(username, email, password, name, surname);
 				u = uDao.getUser(userId);	
 			} catch (SQLException e) {
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in update of the database");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in update of the database");
 				return;
 			}
 			s.setAttribute("user", u);

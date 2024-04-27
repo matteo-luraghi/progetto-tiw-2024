@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,11 +52,24 @@ public class CheckLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String username = null;
+		String password = null;
 		UserDAO uDao = new UserDAO(connection);
 		User u = null;
 		String user_error = "";
+		
+		try {
+			username = StringEscapeUtils.escapeJava(request.getParameter("username"));
+			password = StringEscapeUtils.escapeJava(request.getParameter("password"));
+			
+			if(username == null || password == null || username.isEmpty() || password.isEmpty()) {
+				throw new Exception("Missing or empty credential value");
+			}
+
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");	
+			return;
+		}
 		
 		try {
 			u = uDao.checkCredentials(username, password);
@@ -65,7 +79,7 @@ public class CheckLogin extends HttpServlet {
 				ctx.setVariable("login_username", username);
 			}
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in database credential checking");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database credential checking");
 			return;
 		}
 		

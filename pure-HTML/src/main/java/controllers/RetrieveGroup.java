@@ -63,10 +63,12 @@ public class RetrieveGroup extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		String groupId = request.getParameter("groupId");
+		Integer groupId = null;
 		
-		if (groupId == null) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "No group id selected");		
+		try {
+			groupId = Integer.parseInt(request.getParameter("groupId"));
+		} catch(Exception e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameter");
 			return;
 		}
 		
@@ -77,17 +79,17 @@ public class RetrieveGroup extends HttpServlet {
 		ArrayList<User> participants = null;
 		
 		try {
-			group = gDao.getGroup(Integer.parseInt(groupId));
+			group = gDao.getGroup(groupId);
 		} catch (SQLException | ParseException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 			return;
 		}
 
 		try {
-			participants = uDao.getGroupParticipants(Integer.parseInt(groupId));
-			participants.add(uDao.getCreator(Integer.parseInt(groupId)));
+			participants = uDao.getGroupParticipants(groupId);
+			participants.add(uDao.getCreator(groupId));
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 			return;
 		}
 		

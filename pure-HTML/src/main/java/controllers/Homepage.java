@@ -66,14 +66,14 @@ public class Homepage extends HttpServlet {
 		try {
 			createdGroups = gDao.getCreatedByUser(u.getId());
 		} catch (SQLException | ParseException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 			return;
 		}
 		
 		try {
 			activeGroups = gDao.getContainsUser(u.getId());	
 		} catch (SQLException | ParseException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in worker's project database extraction");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 			return;
 		}
 		
