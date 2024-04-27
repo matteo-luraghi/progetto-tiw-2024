@@ -42,19 +42,12 @@ public class GetGroupDetails extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		String groupIdStr = request.getParameter("groupId");
-		if (groupIdStr == null) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("No group id selected");
-			return;
-		}
-			
-		int groupId;
-
+		Integer groupId = null;
+		
 		try {
-			groupId = Integer.parseInt(groupIdStr);
+			groupId = Integer.parseInt(request.getParameter("groupId"));
 		} catch (NumberFormatException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Invalid group id");
 			return;
 		}
@@ -66,7 +59,7 @@ public class GetGroupDetails extends HttpServlet {
 			group = gDao.getGroup(groupId);
 		} catch (SQLException | ParseException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Not possible to recover group details");
+			response.getWriter().println("Not possible to extract group details");
 			return;
 		}
 
@@ -78,8 +71,8 @@ public class GetGroupDetails extends HttpServlet {
 			String group_json = gson.toJson(group);
 			response.getWriter().write(group_json);	
 		} else {
-			String error_json = gson.toJson("Error getting group's details");
-			response.getWriter().write(error_json);	
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Invalid group id");	
 		}
 
 	}

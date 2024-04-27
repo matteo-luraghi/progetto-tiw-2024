@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -37,26 +38,26 @@ public class CreateGroup extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Group group = null;
 		String title = null;
 		Integer duration = null;
-		int min_participants;
-		int max_participants;
+		Integer min_participants;
+		Integer max_participants;
 		
 		try {
-			title = request.getParameter("title");
+			title = StringEscapeUtils.escapeJava(request.getParameter("title"));
 			duration = Integer.parseInt(request.getParameter("duration"));
 			max_participants = Integer.parseInt(request.getParameter("max_participants"));
 			min_participants = Integer.parseInt(request.getParameter("min_participants"));
 			
-			if(min_participants > max_participants) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				response.getWriter().println("Incorrect param values");
-				return;
+			if(title == null || duration == null || min_participants == null || max_participants == null || 
+					title.isEmpty() || duration <= 0 || min_participants <= 0 || max_participants <= 0
+					|| min_participants > max_participants) {
+				throw new Exception("Incorrect or missing param values");
 			}
-		} catch(NumberFormatException | NullPointerException e) {
+			
+		} catch(Exception e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().write("Incorrect or missing param values");
+			response.getWriter().println("Incorrect or missing param values");
 			return;
 		}
 		
@@ -67,20 +68,19 @@ public class CreateGroup extends HttpServlet {
 
 		try {
 			group_id = gDao.createGroup(title, creation_date, duration, min_participants, max_participants);
-
-			// return to the app the new group id
-			Gson gson = new GsonBuilder().setDateFormat("yyyy MMM dd").create();
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-
-			String group_id_json = gson.toJson(group_id);
-			response.getWriter().write(group_id_json);
-			
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().write("Not possible to create the group");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Not possible to create the group");
 			return;
 		}
+		
+		// return to the app the new group id
+		Gson gson = new GsonBuilder().setDateFormat("yyyy MMM dd").create();
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
+		String group_id_json = gson.toJson(group_id);
+		response.getWriter().write(group_id_json);
 		
 	}
 

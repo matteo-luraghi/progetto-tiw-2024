@@ -27,7 +27,6 @@ public class CheckLogin extends HttpServlet {
 	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// obtain and escape params
 		String usrn = null;
 		String pwd = null;
 		usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
@@ -48,8 +47,6 @@ public class CheckLogin extends HttpServlet {
 			return;
 		}
 
-		// If the user exists, add info to the session and go to home page, otherwise
-		// return an error status code and message
 		if (user == null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().println("Incorrect credentials");

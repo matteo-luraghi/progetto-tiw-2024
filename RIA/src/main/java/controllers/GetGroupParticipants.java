@@ -41,23 +41,16 @@ public class GetGroupParticipants extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}
 		
-		String groupIdStr = request.getParameter("groupId");
-		if (groupIdStr == null) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("No group id selected");
-			return;
-		}
-			
-		int groupId;
-
+		Integer groupId = null;
+		
 		try {
-			groupId = Integer.parseInt(groupIdStr);
+			groupId = Integer.parseInt(request.getParameter("groupId"));
 		} catch (NumberFormatException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Invalid group id");
 			return;
 		}
-		
+
 		UserDAO uDao = new UserDAO(connection);
 		ArrayList<User> participants = null;
 
@@ -78,8 +71,8 @@ public class GetGroupParticipants extends HttpServlet {
 			String participants_json = gson.toJson(participants);
 			response.getWriter().write(participants_json);	
 		} else {
-			String error_json = gson.toJson("Error getting group participants");
-			response.getWriter().write(error_json);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Not possible to get group's participants");
 		}
 
 	}
