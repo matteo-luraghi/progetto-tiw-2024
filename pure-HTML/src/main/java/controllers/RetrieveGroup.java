@@ -87,7 +87,15 @@ public class RetrieveGroup extends HttpServlet {
 
 		try {
 			participants = uDao.getGroupParticipants(groupId);
-			participants.add(uDao.getCreator(groupId));
+			User creator = uDao.getCreator(groupId);
+			if (participants == null) {
+				if (creator != null) {
+					participants = new ArrayList<>();
+					participants.add(creator);
+				}
+			} else {
+				participants.add(creator);
+			}
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
 			return;
