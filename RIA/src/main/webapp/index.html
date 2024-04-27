@@ -7,11 +7,57 @@
 <script src="utils.js" charset="utf-8" defer></script>
 <script src="loginManagement.js" charset="utf-8" defer></script>
 <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
-
 </head>
 <body>
 
+	<div class="container">
 
+		<h1>Gruppi di Lavoro</h1>
 
+		<div class="login-container">
+			<div class="login-form">
+				<form action="#">
+				<fieldset>
+					<div class="input-container">
+						username: <input type="text" name="username" maxlength="50" required>
+					</div>
+					<div class="input-container">
+						password: <input type="password" name="password" maxlength="30" required>
+					</div>
+					<input id="loginbutton" type="button" value="login">
+					<p id="errormessage"></p>
+				</fieldset></form>
+			</div>
+
+		</div>
+		
+		<div class="login-form">
+			<form action="#">
+			<fieldset>
+			
+				<div class="input-container">
+						name: <input type="text" name="name" maxlength="50" required>
+				</div>
+				<div class="input-container">
+						surname: <input type="text" name="surname" maxlength="50" required>
+				</div>
+				<div class="input-container">
+						username: <input type="text" name="username" maxlength="50" required>
+				</div>
+				<div class="input-container">
+						email: <input type="email" name="email" maxlength="320" required>
+				</div>
+				<div class="input-container">
+						password: <input type="password" name="password" maxlength="30" required>
+				</div>
+				<div class="input-container">
+						repeat password: <input type="password" name="repeatPassword" maxlength="30" required>
+				</div>
+			</fieldset>
+			</form>		
+		</div>
+
+	</div>
+	
 </body>
 </html>

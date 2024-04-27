@@ -70,12 +70,14 @@ public class SetGroupParticipants extends HttpServlet {
 				try {
 					selectedUsers.add(uDao.getUser(Integer.parseInt(userId)));
 				} catch (NumberFormatException e) {
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid parameters");
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					response.getWriter().println("Invalid parameters");
 					return;
 				}
 			}	
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in database extraction");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Failure in database extraction");
 			return;
 		}
 		
@@ -89,7 +91,8 @@ public class SetGroupParticipants extends HttpServlet {
 				rel.setContains(user.getId(), group_id);
 			}	
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in update of the database");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Failure in update of the database");
 			return;
 		}
 
