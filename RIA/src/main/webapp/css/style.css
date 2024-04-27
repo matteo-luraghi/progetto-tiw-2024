@@ -1,0 +1,68 @@
+.highlighted {
+	background-color: yellow;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="number"],
+.form-container input[type="password"] {
+	box-sizing: border-box;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.form-container input[type="submit"] {
+	width: auto;
+}
+
+.input-container {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.user-table {
+	border-collapse:collapse;
+}
+
+.error-message {
+	background-color: #ff5c5c;
+	color: #fff;
+	padding: 10px 15px;
+	border-radius: 5px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	font-size: 14px;
+	width: 150px;
+}
+
+.login-container {
+	display: flex;
+	align-items: center;
+}
+
+.login-form {
+	margin-right: 5%;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 50%;
+	margin: auto;
+}
+
+th {
+	text-align: start;
+}
+
+button {
+	margin-left: 50%;
+	margin-right: 50%;
+}
