@@ -5,7 +5,8 @@
 <title>Login</title>
 
 <script src="utils.js" charset="utf-8" defer></script>
-<script src="loginManagement.js" charset="utf-8" defer></script>
+<script src="login.js" charset="utf-8" defer></script>
+<script src="signup.js" charset="utf-8" defer></script>
 <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
 </head>
 <body>
@@ -16,7 +17,7 @@
 
 		<div class="login-container">
 			<div class="login-form">
-				<form action="#">
+				<form id="loginform" action="#">
 				<fieldset>
 					<div class="input-container">
 						username: <input type="text" name="username" maxlength="50" required>
@@ -25,14 +26,14 @@
 						password: <input type="password" name="password" maxlength="30" required>
 					</div>
 					<input id="loginbutton" type="button" value="login">
-					<p id="errormessage"></p>
+					<p id="errormessageLogin"></p>
 				</fieldset></form>
 			</div>
 
 		</div>
 		
 		<div class="login-form">
-			<form action="#">
+			<form id="signupform" action="#">
 			<fieldset>
 			
 				<div class="input-container">
@@ -53,6 +54,9 @@
 				<div class="input-container">
 						repeat password: <input type="password" name="repeatPassword" maxlength="30" required>
 				</div>
+				<input id="signupbutton" type="button" value="login">
+				<p id="errormessageSignup"></p>
+
 			</fieldset>
 			</form>		
 		</div>

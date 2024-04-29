@@ -80,6 +80,13 @@ public class CheckSignUp extends HttpServlet {
 				return;
 			}
 			s.setAttribute("user", u);
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().println(username);
+		} else {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().println("Invalid signup");
 		}
 
 	}

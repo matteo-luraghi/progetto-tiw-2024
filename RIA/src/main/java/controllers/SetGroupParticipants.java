@@ -38,7 +38,6 @@ public class SetGroupParticipants extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String loginpath = getServletContext().getContextPath();
 		User u = null;
-		int group_id = -1;
 		HttpSession s = request.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {
 			response.sendRedirect(loginpath);
@@ -85,10 +84,10 @@ public class SetGroupParticipants extends HttpServlet {
 		
 		try {
 			// save the group creator
-			rel.setCreated(u.getId(), group_id);
+			rel.setCreated(u.getId(), groupId);
 			// save the group participants
 			for(User user: selectedUsers) {
-				rel.setContains(user.getId(), group_id);
+				rel.setContains(user.getId(), groupId);
 			}	
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
