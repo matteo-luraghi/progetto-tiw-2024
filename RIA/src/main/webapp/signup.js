@@ -5,11 +5,16 @@
  (function() {
 	 document.getElementById("signupbutton").addEventListener('click', (e) => {
 		var form = document.getElementById("signupform");
-		document.getElementById("errormessageSignup").textContent = "";
+		
+		const errors = ["name", "surname", "username", "email", "password", "repeat-password"];
+		
+		for (error_old of errors) {
+			removeError(error_old, "signup");
+		}
+
 		if (form.checkValidity()) {
 			
 			let valid = true;
-			let error = "";
 			
 			const name = form.name.value;
 			const surname = form.surname.value;
@@ -20,32 +25,32 @@
 			
 			if (!name || name.length > 50) {
 				valid = false;
-				error += "invalid name!";
+				createError("name", "signup", "Nome non valido!");
 			}
 			
 			if (!surname || surname.length > 50) {
 				valid = false;
-				error += "invalid surname!";
+				createError("surname","signup", "Cognome non valido!");
 			}
 			
 			if (!username || username.length > 50) {
 				valid = false;
-				error += "invalid username!";
+				createError("username", "signup", "Username non valido!");
 			}
 			
 			if (!email || email.length > 320 || !email.includes("@") || !email.includes(".")) {
 				valid = false;
-				error += "invalid email!"
+				createError("email", "signup", "Email non valida!");
 			}
 			
 			if (!password || password.length > 30) {
 				valid = false;
-				error += "password is too long!";
+				createError("password", "signup", "Password non valida!");
 			}
 			
 			if (password !== repeatPassword) {
 				valid = false;
-				error += "password and repeat password must be equal!";
+				createError("repeat-password", "signup", "Password e ripeti password diverse!");
 			} 
 		
 			if(valid) {
@@ -59,24 +64,19 @@
 								window.location.href = "Home.html";
 								break;
 							case 400: // bad request
-								document.getElementById("errormessageSignup").textContent = message;
+								document.getElementById("error-message-signup").textContent = message;
 								break;
 							case 401: // unauthorized
-								document.getElementById("errormessageSignup").textContent = message;
+								document.getElementById("error-message-signup").textContent = message;
 								break;
 							case 500: // server error
-								document.getElementById("errormessageSignup").textContent = message;
+								document.getElementById("error-message-signup").textContent = message;
 								break;
 							}
 						} 	
 					}
 				);
-			} else {
-				document.getElementById("errormessageSignup").textContent = error;
-			}
-			
-			
-			
+			} 			
 		} else {
 			form.reportValidity();
 		}

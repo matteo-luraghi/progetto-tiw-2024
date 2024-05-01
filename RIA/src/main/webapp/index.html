@@ -19,14 +19,14 @@
 			<div class="login-form">
 				<form id="loginform" action="#">
 				<fieldset>
-					<div class="input-container">
+					<div id="username-input-login" class="input-container">
 						username: <input type="text" name="username" maxlength="50" required>
 					</div>
-					<div class="input-container">
+					<div id="password-input-login" class="input-container">
 						password: <input type="password" name="password" maxlength="30" required>
 					</div>
 					<input id="loginbutton" type="button" value="login">
-					<p id="errormessageLogin"></p>
+					<p id="error-message-login" class="error-message"></p>
 				</fieldset></form>
 			</div>
 
@@ -36,26 +36,26 @@
 			<form id="signupform" action="#">
 			<fieldset>
 			
-				<div class="input-container">
+				<div id="name-input-signup" class="input-container">
 						name: <input type="text" name="name" maxlength="50" required>
 				</div>
-				<div class="input-container">
+				<div id="surname-input-signup" class="input-container">
 						surname: <input type="text" name="surname" maxlength="50" required>
 				</div>
-				<div class="input-container">
+				<div id="username-input-signup" class="input-container">
 						username: <input type="text" name="username" maxlength="50" required>
 				</div>
-				<div class="input-container">
+				<div id="email-input-signup" class="input-container">
 						email: <input type="email" name="email" maxlength="320" required>
 				</div>
-				<div class="input-container">
+				<div id="password-input-signup" class="input-container">
 						password: <input type="password" name="password" maxlength="30" required>
 				</div>
-				<div class="input-container">
+				<div id="repeat-password-input-signup" class="input-container">
 						repeat password: <input type="password" name="repeatPassword" maxlength="30" required>
 				</div>
 				<input id="signupbutton" type="button" value="login">
-				<p id="errormessageSignup"></p>
+				<p id="error-message-signup" class="error-message"></p>
 
 			</fieldset>
 			</form>		

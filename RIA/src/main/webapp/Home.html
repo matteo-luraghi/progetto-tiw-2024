@@ -61,20 +61,18 @@
 		<br>
 		<h3>Crea un nuovo gruppo:</h3>
 		
-		<p th:if="${minError}" class="error-message">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
+		<p id="errorminmax" class="error-message">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
 
 		<div class="form-container">
-			<form
-				th:action="@{/RetrieveAllUsers}"
-				method="POST" class="form-container">
+			<form id="newgroup" action="#" class="form-container">
 				
 				<div class="input-container">
 					<label for="title">Titolo:</label>
-					<input type="text" name="title" maxlength="100" th:value="${group_creation_title}" required>		
+					<input type="text" name="title" maxlength="100" required>		
 				</div>
 				<div class="input-container">
 					<label for="duration">Durata (in giorni):</label>
-					<input type="number" name="duration" min="1" th:value="${group_creation_duration}" required>
+					<input type="number" name="duration" min="1" required>
 				</div>
 				<div class="input-container">
 					<label for="min_participants">Numero minimo di partecipanti:</label>

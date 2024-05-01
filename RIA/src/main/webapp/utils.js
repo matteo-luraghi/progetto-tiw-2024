@@ -25,3 +25,27 @@
 		formElement.reset();
 	 }
  }
+ 
+ /**
+  * error creator
+  */
+ 
+ function createError(field, type, error_message) {
+	const error = document.createElement("p");
+	const container = document.getElementById(`${field}-input-${type}`);
+	error.setAttribute("id", `${field}-error-${type}`);
+	error.classList.add("error-message");
+	error.textContent = error_message;
+	container.parentNode.insertBefore(error, container);
+}
+
+/**
+ * error remover
+ */
+
+function removeError(field, type) {
+	const error_old = document.getElementById(`${field}-error-${type}`);
+	if (error_old) {
+		error_old.remove();
+	}
+}
