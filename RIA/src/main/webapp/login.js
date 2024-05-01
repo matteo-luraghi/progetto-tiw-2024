@@ -4,9 +4,28 @@
 
  (function() {
 	 document.getElementById("loginbutton").addEventListener('click', (e) => {
-		var form = e.target.closest("form");
+		var form = document.getElementById("loginform");
+		document.getElementById("errormessageLogin").textContent = "";
 		if (form.checkValidity()) {
-			makeCall("POST", 'CheckLogin', form, 
+			
+			let valid = true;
+			let error = "";
+			
+			const username = form.username.value;
+			const password = form.password.value;
+			
+			if (!username || username.length > 50) {
+				valid = false;
+				error += "invalid username!"
+			}
+			
+			if (!password || password.length > 30) {
+				valid = false;
+				error += "invalid password!";
+			}
+			
+			if (valid) {
+				makeCall("POST", 'CheckLogin', form, 
 				function(x) {
 					if (x.readyState == XMLHttpRequest.DONE) {
 						var message = x.responseText;
@@ -24,14 +43,17 @@
 							case 500: // server error
 								document.getElementById("errormessageLogin").textContent = message;
 								break;
-						}
-					} else {
-						console.log("Form not valid!");
+							}
+						} 
 					}
-				}
-			)
+				);
+			} else {
+				document.getElementById("errormessageLogin").textContent = error;
+			}
+			
+			
 		} else {
 			form.reportValidity();
 		}
 	 });
- }());
+ })();
