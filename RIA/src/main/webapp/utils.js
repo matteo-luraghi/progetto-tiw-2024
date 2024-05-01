@@ -30,10 +30,10 @@
   * error creator
   */
  
- function createError(field, type, error_message) {
+ function createError(id, container_id, error_message) {
 	const error = document.createElement("p");
-	const container = document.getElementById(`${field}-input-${type}`);
-	error.setAttribute("id", `${field}-error-${type}`);
+	const container = document.getElementById(`${container_id}`);
+	error.setAttribute("id", `${id}`);
 	error.classList.add("error-message");
 	error.textContent = error_message;
 	container.parentNode.insertBefore(error, container);
@@ -43,8 +43,8 @@
  * error remover
  */
 
-function removeError(field, type) {
-	const error_old = document.getElementById(`${field}-error-${type}`);
+function removeError(id) {
+	const error_old = document.getElementById(`${id}`);
 	if (error_old) {
 		error_old.remove();
 	}
