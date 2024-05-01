@@ -4,6 +4,7 @@
 <title>Home</title>
 <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
 <script src="utils.js" charset="utf-8" defer></script>
+<script src="homepage.js" charset="utf-8" defer></script>
 <!-- LINK OTHER,, JS FILES HERE -->
 </head>
 
@@ -61,29 +62,28 @@
 		<br>
 		<h3>Crea un nuovo gruppo:</h3>
 		
-		<p id="errorminmax" class="error-message">Errore! Numero minimo di partecipanti maggiore del numero massimo di partecipanti!</p>
-
 		<div class="form-container">
-			<form id="newgroup" action="#" class="form-container">
+			<form id="newgroupform" action="#" class="form-container">
 				
-				<div class="input-container">
+				<div id="title-input-newgroup" class="input-container">
 					<label for="title">Titolo:</label>
 					<input type="text" name="title" maxlength="100" required>		
 				</div>
-				<div class="input-container">
+				<div id="duration-input-newgroup" class="input-container">
 					<label for="duration">Durata (in giorni):</label>
 					<input type="number" name="duration" min="1" required>
 				</div>
-				<div class="input-container">
+				<div id="min_participants-input-newgroup" class="input-container">
 					<label for="min_participants">Numero minimo di partecipanti:</label>
 					<input type="number" name="min_participants" min="1" required>
 				</div>
-				<div class="input-container">
+				<div id="max_participants-input-newgroup" class="input-container">
 					<label for="max_participants">Numero massimo di partecipanti:</label>
 					<input type="number" name="max_participants" min="1" required>
 				</div>	
 				
-				<input type="submit" name="create" value="Crea Gruppo">		
+				<input id="newgroupbutton" type="submit" name="create" value="Crea Gruppo">		
+				<div id="error-newgroup-container"></div>
 			</form>
 		</div>
 	</div>

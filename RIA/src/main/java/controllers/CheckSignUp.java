@@ -50,10 +50,13 @@ public class CheckSignUp extends HttpServlet {
 		password = StringEscapeUtils.escapeJava(request.getParameter("password"));
 		repeatPassword = StringEscapeUtils.escapeJava(request.getParameter("repeatPassword"));
 
+		// check if the parameters are valid
 		if (name == null || surname == null || username == null || email == null || password == null || repeatPassword == null ||
-				name.isEmpty() || surname.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
+				name.isEmpty() || surname.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty() || repeatPassword.isEmpty() ||
+				name.length()>50 || surname.length() > 50 || username.length() > 50 || email.length() > 320 || password.length() > 30 || 
+				!password.equals(repeatPassword)) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Credentials must be not null");
+			response.getWriter().println("Invalid credentials");
 			return;
 		}
 
@@ -67,8 +70,6 @@ public class CheckSignUp extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Failure in database extraction");
 		}
-		
-		//TODO: other checks on parameters, both here and in js 
 				
 		if (validUser) {
 			try {
@@ -86,7 +87,7 @@ public class CheckSignUp extends HttpServlet {
 			response.getWriter().println(username);
 		} else {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.getWriter().println("Invalid signup");
+			response.getWriter().println("Invalid signup, username already present");
 		}
 
 	}

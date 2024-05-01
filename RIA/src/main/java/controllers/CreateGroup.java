@@ -16,8 +16,6 @@ import com.google.gson.GsonBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import utils.ConnectionHandler;
-import beans.User;
-import beans.Group;
 import dao.GroupDAO;
 
 @WebServlet("/CreateGroup")
