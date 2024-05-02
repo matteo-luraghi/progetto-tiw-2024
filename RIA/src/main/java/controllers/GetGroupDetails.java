@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
-
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +17,7 @@ import utils.ConnectionHandler;
 import beans.User;
 import beans.Group;
 import dao.GroupDAO;
+import dao.UserDAO;
 
 @WebServlet("/GetGroup")
 public class GetGroupDetails extends HttpServlet {
@@ -63,11 +64,23 @@ public class GetGroupDetails extends HttpServlet {
 			return;
 		}
 
+		// check if the user asking for the details is in the group
+		UserDAO uDao = new UserDAO(connection);
+		ArrayList<User> participants = null;
+		try {
+			participants = uDao.getGroupParticipants(groupId);
+			participants.add(uDao.getCreator(groupId));
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Not possible to recover group participants");
+			return;
+		}
+
 		Gson gson = new GsonBuilder().setDateFormat("yyyy MMM dd").create();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		if (group != null) {
+		if (group != null && participants.contains(u)) {
 			String group_json = gson.toJson(group);
 			response.getWriter().write(group_json);	
 		} else {
