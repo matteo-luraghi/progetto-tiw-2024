@@ -36,22 +36,24 @@ function viewGroup(details, participants) {
 	document.getElementById("group-details-container").classList.remove("hidden");
 	
 	// set the group's details
-	document.getElementById("group-title").textContent = details.title;
-	document.getElementById("group-duration").textContent = details.duration;
-	document.getElementById("group-creation_date").textContent = formatDate(details.creation_date);
-	document.getElementById("group-min_participants").textContent = details.min_participants;
-	document.getElementById("group-max_participants").textContent = details.max_participants;
+	details["creation_date"] = formatDate(details["creation_date"]);
+	const attributes = ["title", "duration", "creation_date", "min_participants", "max_participants"];
+	for (attribute of attributes) {
+		document.getElementById(`group-${attribute}`).textContent = details[`${attribute}`];
+	}
 	
 	// fill participants table
 	const group_table = document.getElementById("group-participants-table");
 	for (participant of participants) {
 		const row = document.createElement("tr");
-		const name = document.createElement("td");
-		name.textContent = participant.name;
-		const surname = document.createElement("td");
-		surname.textContent = participant.surname;
-		row.appendChild(name);
-		row.appendChild(surname);
+		
+		const participant_attributes = ["name", "surname"];
+		for (p_attr of participant_attributes) {
+			const td = document.createElement("td");
+			td.textContent = participant[`${p_attr}`];
+			row.appendChild(td);
+		}
+
 		group_table.appendChild(row);
 	}
 }
