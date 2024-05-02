@@ -1,7 +1,6 @@
 /**
  * AJAX call manager 
  */
-
  function makeCall(method, url, formData, cback) {
 	var req = new XMLHttpRequest(); // closure
 	req.onreadystatechange = function() {
@@ -22,9 +21,8 @@
  }
  
  /**
-  * error creator
+  * error message creator
   */
- 
  function createError(id, container_id, error_message) {
 	const error = document.createElement("p");
 	const container = document.getElementById(`${container_id}`);
@@ -35,9 +33,8 @@
 }
 
 /**
- * error remover
+ * error message remover
  */
-
 function removeError(id) {
 	const error_old = document.getElementById(`${id}`);
 	if (error_old) {
