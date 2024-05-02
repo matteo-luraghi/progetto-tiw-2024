@@ -38,8 +38,8 @@ public class CreateGroup extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String title = null;
 		Integer duration = null;
-		Integer min_participants;
-		Integer max_participants;
+		Integer min_participants = null;
+		Integer max_participants = null;
 		
 		try {
 			title = StringEscapeUtils.escapeJava(request.getParameter("title"));

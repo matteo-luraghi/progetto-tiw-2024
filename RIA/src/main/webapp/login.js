@@ -3,7 +3,7 @@
  */
 
  (function() {
-	 document.getElementById("loginbutton").addEventListener('click', (e) => {
+	document.getElementById("loginbutton").addEventListener('click', (e) => {
 		var form = document.getElementById("loginform");
 
 		const errors = ["username", "password"];

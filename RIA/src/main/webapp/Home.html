@@ -25,15 +25,8 @@
 					<th>Dettagli</th>
 				</tr>
 			</thead>
-			<tbody>
-			  <tr th:each="group : ${createdGroups}">
-				  <td th:text="${group.getTitle}">Title</td>
-				  <td th:text="${group.getDate}">Creation Date</td>
-				  <td th:text="${group.getDuration}">Duration</td>
-				  <td>
-					<a th:href="@{/RetrieveGroup(groupId=${group.id})}">Dettagli</a>
-				</td>
-			  </tr>    
+			<tbody id="createdgroupstable">
+		   
 			</tbody>
 		</table>
 		
@@ -47,15 +40,8 @@
 					<th>Dettagli</th>
 				</tr>
 			</thead>
-			<tbody>
-			  <tr th:each="group : ${activeGroups}">
-				  <td th:text="${group.getTitle}">Title</td>
-				  <td th:text="${group.getDate}">Creation Date</td>
-				  <td th:text="${group.getDuration}">Duration</td>
-				  <td>
-					<a th:href="@{/RetrieveGroup(groupId=${group.id})}">Dettagli</a>
-				</td>
-			  </tr>
+			<tbody id="activegroupstable">
+			 
 			</tbody>
 		</table>
 		
@@ -66,23 +52,19 @@
 			<form id="newgroupform" action="#" class="form-container">
 				
 				<div id="title-input-newgroup" class="input-container">
-					<label for="title">Titolo:</label>
-					<input type="text" name="title" maxlength="100" required>		
+					Titolo: <input type="text" name="title" maxlength="100" required>		
 				</div>
 				<div id="duration-input-newgroup" class="input-container">
-					<label for="duration">Durata (in giorni):</label>
-					<input type="number" name="duration" min="1" required>
+					Durata (in giorni): <input type="number" name="duration" min="1" required>
 				</div>
 				<div id="min_participants-input-newgroup" class="input-container">
-					<label for="min_participants">Numero minimo di partecipanti:</label>
-					<input type="number" name="min_participants" min="1" required>
+					Numero minimo di partecipanti: <input type="number" name="min_participants" min="1" required>
 				</div>
 				<div id="max_participants-input-newgroup" class="input-container">
-					<label for="max_participants">Numero massimo di partecipanti:</label>
-					<input type="number" name="max_participants" min="1" required>
+					Numero massimo di partecipanti: <input type="number" name="max_participants" min="1" required>
 				</div>	
 				
-				<input id="newgroupbutton" type="submit" name="create" value="Crea Gruppo">		
+				<input id="newgroupbutton" type="submit" value="Crea Gruppo">		
 				<div id="error-newgroup-container"></div>
 			</form>
 		</div>

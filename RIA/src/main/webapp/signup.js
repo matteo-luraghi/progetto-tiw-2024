@@ -3,7 +3,7 @@
  */
 
  (function() {
-	 document.getElementById("signupbutton").addEventListener('click', (e) => {
+	document.getElementById("signupbutton").addEventListener('click', (e) => {
 		var form = document.getElementById("signupform");
 		
 		const errors = ["name", "surname", "username", "email", "password", "repeat-password"];
