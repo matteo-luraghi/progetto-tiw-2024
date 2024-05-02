@@ -14,7 +14,11 @@
 		<a href="Logout">Logout</a>
 	</div>
 	
-	<div class="container">
+	<div align="right">
+		<a id="homepage-button" class="hidden" href="">Homepage</a>
+	</div>
+	
+	<div id="homepage-container" class="container">
 		<h3>Gruppi che hai creato:</h3>
 		<table>
 			<thead>
@@ -25,7 +29,7 @@
 					<th>Dettagli</th>
 				</tr>
 			</thead>
-			<tbody id="createdgroupstable">
+			<tbody id="created-groups-table">
 		   
 			</tbody>
 		</table>
@@ -40,7 +44,7 @@
 					<th>Dettagli</th>
 				</tr>
 			</thead>
-			<tbody id="activegroupstable">
+			<tbody id="active-groups-table">
 			 
 			</tbody>
 		</table>
@@ -49,7 +53,7 @@
 		<h3>Crea un nuovo gruppo:</h3>
 		
 		<div class="form-container">
-			<form id="newgroupform" action="#" class="form-container">
+			<form id="new-group-form" action="#" class="form-container">
 				
 				<div id="title-input-newgroup" class="input-container">
 					Titolo: <input type="text" name="title" maxlength="100" required>		
@@ -64,10 +68,31 @@
 					Numero massimo di partecipanti: <input type="number" name="max_participants" min="1" required>
 				</div>	
 				
-				<input id="newgroupbutton" type="submit" value="Crea Gruppo">		
+				<input id="new-group-button" type="submit" value="Crea Gruppo">		
 				<div id="error-newgroup-container"></div>
 			</form>
 		</div>
+	</div>
+	
+	<div id="group-details-container" class="container hidden">
+	
+		<h2 id="group-title"></h2>
+		<p>Data di creazione: <span id="group-creation_date"></span></p>
+		<p>Durata: <span id="group-duration"></span></p>
+		<p>Numero minimo di partecipanti: <span id="group-min_participants"></span></p>
+		<p>Numero massimo di partecipanti: <span id="group-max_participants"></span></p>
+		
+		<table>
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Cognome</th>
+				</tr>
+			</thead>
+			<tbody id="group-participants-table">
+			</tbody>
+		</table>
+	
 	</div>
 
 </body>

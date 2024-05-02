@@ -3,8 +3,8 @@
  */
 
  (function() {
-	document.getElementById("signupbutton").addEventListener('click', (e) => {
-		var form = document.getElementById("signupform");
+	document.getElementById("signup-button").addEventListener('click', (e) => {
+		var form = document.getElementById("signup-form");
 		
 		const errors = ["name", "surname", "username", "email", "password", "repeat-password"];
 		
@@ -55,7 +55,7 @@
 			} 
 		
 			if(valid) {
-				makeCall("POST", 'CheckSignUp', form, 
+				makeCall("POST", 'CheckSignUp', new FormData(form), 
 				function(x) {
 					if (x.readyState == XMLHttpRequest.DONE) {
 						var message = x.responseText;
