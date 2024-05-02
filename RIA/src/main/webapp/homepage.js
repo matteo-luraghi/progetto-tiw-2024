@@ -7,7 +7,7 @@
 		// set the homepage container as visible
 		document.getElementById("homepage-container").classList.remove("hidden");
 		// set the homepage button as hidden
-		document.getElementById("homepage-button").classList.add("hidden");
+		document.getElementById("homepage-button-container").classList.add("hidden");
 		// set the group container as hidden
 		document.getElementById("group-details-container").classList.add("hidden");
 	});
@@ -31,7 +31,7 @@ function viewGroup(details, participants) {
 	// set the homepage container as hidden
 	document.getElementById("homepage-container").classList.add("hidden");
 	// set the homepage button as visible
-	document.getElementById("homepage-button").classList.remove("hidden");
+	document.getElementById("homepage-button-container").classList.remove("hidden");
 	// set the group container as visible
 	document.getElementById("group-details-container").classList.remove("hidden");
 	
