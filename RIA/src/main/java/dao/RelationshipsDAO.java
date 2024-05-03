@@ -32,5 +32,16 @@ public class RelationshipsDAO {
 			pstatement.executeUpdate();
 		}
 	}
+	
+	public void removeUser(int user_id, int group_id) throws SQLException {
+		String query = "DELETE FROM `contains` WHERE user_id= ? AND group_id = ?";
+		
+		try(PreparedStatement pstatement = connection.prepareStatement(query)) {
+			pstatement.setString(1, Integer.toString(user_id));
+			pstatement.setString(2, Integer.toString(group_id));
+			
+			pstatement.executeUpdate();
+		}
+	}
 
 }
