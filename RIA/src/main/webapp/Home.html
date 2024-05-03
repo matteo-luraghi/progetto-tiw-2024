@@ -6,7 +6,7 @@
 <script src="utils.js" charset="utf-8" defer></script>
 <script src="homepage.js" charset="utf-8" defer></script>
 <script src="groupdetails.js" charset="utf-8" defer></script>
-<!-- LINK OTHER,, JS FILES HERE -->
+<script src="users.js" charset="utf-8" defer></script>
 </head>
 
 <body>
@@ -99,9 +99,26 @@
 	
 	<section id="modal-panel" class="modal hidden">
 		<div class="container">
-			<button id="modal-close-button" class="close-button">X</button>
-			<div class="registered-users-container">
-				<p>ALL THE USERS</p>
+			<button id="modal-close-button" class="close-button" align="right" >X</button>
+			<h2>Seleziona gli utenti da invitare nel gruppo</h2>	
+			<div class="container">
+					
+				<div id="users-error"></div>
+				
+				<form action="#">
+					<table class="user-table">
+						<thead>
+							<tr>
+								<th>Nome</th>
+								<th>Cognome</th>
+								<th>Seleziona</th>
+							</tr>
+						</thead>
+						<tbody id="users-table-body">
+						</tbody>
+					</table>
+					<button id="invite-users-button" type="submit">INVITA</button>		
+				</form>
 			</div>
 		</div>
 	</section>

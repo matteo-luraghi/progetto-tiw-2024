@@ -29,6 +29,7 @@
 
 .user-table {
 	border-collapse:collapse;
+	min-width: 300px;
 }
 
 .error-message {
@@ -83,7 +84,6 @@
   	flex-direction: column;
   	justify-content: center;
 	gap: 0.4rem;
-	width: 450px;
 	padding: 1.3rem;
 	min-height: 250px;
 	position: absolute;
@@ -93,10 +93,11 @@
 	border-radius: 15px;
 	z-index: 2;
 	align-self: center;
+	min-width: 500px;
 }
 
 .close-button {
-	transform: translate(210px, -85px);
+	align-self: flex-end;
 	padding: 0.5rem 0.7rem;
 	background: #eee;
 	border-radius: 25%;

@@ -112,21 +112,24 @@ function createDetailsAnchor(group_id) {
 										break;
 									case 400:
 										console.error(x.responseText);
+										break;
 									case 500:
 										console.error(x.responseText);
+										break;
 								}
 							}
 						});
 						break;
 					case 400:
 						console.error(x.responseText);
+						break;
 					case 500:
 						console.error(x.responseText);
+						break;
 				}
 			}
 		});
 		
-
 	});
 	
 	return anchor;
@@ -193,7 +196,10 @@ function createDetailsAnchor(group_id) {
 				// show the modal window
 				document.getElementById("modal-panel").classList.remove("hidden");
 				document.getElementById("modal-overlay").classList.remove("hidden");
-
+				
+				// show users in the modal panel
+				showUsers();
+				
 				/*
 				sessionStorage.setItem('title', title);
 				sessionStorage.setItem('duration', duration);
