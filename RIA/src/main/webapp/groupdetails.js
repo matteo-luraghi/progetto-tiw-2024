@@ -2,6 +2,9 @@
  * set the group detail view
  */
 function viewGroup(details, participants) {
+	
+	// TODO: add bin if the user is the group creator
+	
 	// set the homepage container as hidden
 	document.getElementById("homepage-container").classList.add("hidden");
 	// set the homepage button as visible

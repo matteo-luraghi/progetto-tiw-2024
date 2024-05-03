@@ -2,8 +2,8 @@
  * homepage button function
  */
 (function() {
-	document.getElementById("homepage-button").addEventListener("click", () => {
-		event.preventDefault();
+	document.getElementById("homepage-button").addEventListener("click", (e) => {
+		e.preventDefault();
 		// set the homepage container as visible
 		document.getElementById("homepage-container").classList.remove("hidden");
 		// set the homepage button as hidden
@@ -189,15 +189,35 @@ function createDetailsAnchor(group_id) {
 			
 			// TODO: before creating the new group call for the GetRegisteredUsers servlet and check if selected is correct 
 			if (valid) {
+				
+				// show the modal window
+				document.getElementById("modal-panel").classList.remove("hidden");
+				document.getElementById("modal-overlay").classList.remove("hidden");
 
+				/*
 				sessionStorage.setItem('title', title);
 				sessionStorage.setItem('duration', duration);
 				sessionStorage.setItem('min_participants', min_participants);
 				sessionStorage.setItem('max_participants', max_participants);
 				sessionStorage.setItem('creation_date', getCurrentDate(new Date().toDateString()));
+				*/
 			} 			
 		} else {
 			form.reportValidity();
 		}
 	 });
+ })();
+ 
+ // set the modal panel close button function
+ (function() {
+	document.getElementById("modal-close-button").addEventListener('click', (e) => {
+		e.preventDefault();
+
+		// hide the modal window
+		document.getElementById("modal-panel").classList.add("hidden");
+		document.getElementById("modal-overlay").classList.add("hidden");
+		
+		//TODO: reset users? 
+
+	})	 
  })();

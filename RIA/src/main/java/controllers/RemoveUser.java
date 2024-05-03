@@ -41,13 +41,13 @@ public class RemoveUser extends HttpServlet {
 			u = (User) s.getAttribute("user");
 		}	
 		
-		Integer group_id = null;
-		Integer user_id = null;
+		Integer groupId = null;
+		Integer userId = null;
 		try {
-			group_id = Integer.parseInt(request.getParameter("groupId"));
-			user_id = Integer.parseInt(request.getParameter("userId"));
+			groupId = Integer.parseInt(request.getParameter("groupId"));
+			userId = Integer.parseInt(request.getParameter("userId"));
 			
-			if (group_id == null || group_id <= 0 || user_id == null || user_id <= 0) {
+			if (groupId == null || groupId <= 0 || userId == null || userId <= 0) {
 				throw new Exception("Invalid group id");
 			}
 		} catch (Exception e) { // catch also NumberFormatException
@@ -59,7 +59,7 @@ public class RemoveUser extends HttpServlet {
 		RelationshipsDAO relDao = new RelationshipsDAO(connection);
 		
 		try {
-			relDao.removeUser(user_id, group_id);
+			relDao.removeUser(userId, groupId);
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Error removing the user from the database");
