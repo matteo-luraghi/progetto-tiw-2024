@@ -200,13 +200,10 @@ function createDetailsAnchor(group_id) {
 				// show users in the modal panel
 				showUsers();
 				
-				/*
 				sessionStorage.setItem('title', title);
 				sessionStorage.setItem('duration', duration);
 				sessionStorage.setItem('min_participants', min_participants);
 				sessionStorage.setItem('max_participants', max_participants);
-				sessionStorage.setItem('creation_date', getCurrentDate(new Date().toDateString()));
-				*/
 			} 			
 		} else {
 			form.reportValidity();
@@ -223,7 +220,23 @@ function createDetailsAnchor(group_id) {
 		document.getElementById("modal-panel").classList.add("hidden");
 		document.getElementById("modal-overlay").classList.add("hidden");
 		
-		//TODO: reset users? 
+		// remove the group info from session storage and the attempt number
+		sessionStorage.removeItem("title");
+		sessionStorage.removeItem("duration");
+		sessionStorage.removeItem("min_participants");
+		sessionStorage.removeItem("max_participants");
+		sessionStorage.removeItem("error-min-max");
+		
+		// remove the error message and the highlight
+		removeError("error-user-selection");
+		const user_table = document.getElementById("users-table-body");
+		const inputs = user_table.getElementsByTagName("input");
+		for (checkbox of inputs) {
+			const row = checkbox.parentNode;
+			row.classList.remove("highlighted");
+		}
+		
+		//TODO: reset users
 
 	})	 
  })();

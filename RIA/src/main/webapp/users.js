@@ -47,14 +47,63 @@ function showUsers() {
 (function() {
 	document.getElementById("invite-users-button").addEventListener('click', (e) => {
 		e.preventDefault();
+		
+		
+		removeError("error-user-selection");
+
+		
 		const user_table = document.getElementById("users-table-body");
-		const checkboxes_html = user_table.getElementsByTagName("input");
+		const inputs = user_table.getElementsByTagName("input");
+
+		// remove the highlighted class from every row
+		for (checkbox of inputs) {
+			const row = checkbox.parentNode;
+			row.classList.remove("highlighted");
+		}
 		
 		// get all the checked user ids
-		const checkboxes = Array.from(checkboxes_html).filter((c) => c.checked).map((c) => c.value);
-		
-		if (checkboxes.length < sessionStorage.getItem("min_participants") || checkboxes.length > sessionStorage.getItem("max_participants")) {
-			console.log("ERROR");
+		const checkboxes_html = Array.from(inputs).filter((c) => c.checked);
+		const checkboxes = checkboxes_html.map((c) => c.value);
+
+		let error = sessionStorage.getItem("error-min-max");
+		let valid = true;
+		if (!error) {
+			error = 0;
 		}
-	})
+		
+		const min_participants = sessionStorage.getItem("min_participants");
+		const max_participants = sessionStorage.getItem("max_participants");
+		
+		if (checkboxes.length < min_participants) {
+			const delta = min_participants - checkboxes.length;
+			error++;
+			sessionStorage.setItem("error-min-max", error);
+			valid = false;
+			createError("error-user-selection", "error-user-selection-container", `Troppi pochi utenti selezionati, aggiungerne almeno ${delta}`);
+		}
+		else if (checkboxes.length > max_participants) {
+			const delta = checkboxes.length - max_participants;
+			error++;
+			sessionStorage.setItem("error-min-max", error);
+			valid = false;
+			createError("error-user-selection", "error-user-selection-container", `Troppi utenti selezionati, rimuoverne almeno ${delta}`);
+			// highlight the selected users
+			for (checkbox of checkboxes_html) {
+				const row = checkbox.parentNode;
+				row.classList.add("highlighted");
+			}
+		}
+		
+		if (error == 3) {
+
+		}
+		if (valid) {
+			sessionStorage.removeItem("title");
+			sessionStorage.removeItem("duration");
+			sessionStorage.removeItem("min_participants");
+			sessionStorage.removeItem("max_participants");
+			sessionStorage.removeItem("error-min-max");
+		}
+		
+	});
 })();

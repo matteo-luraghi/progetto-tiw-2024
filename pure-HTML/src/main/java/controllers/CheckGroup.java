@@ -154,7 +154,7 @@ public class CheckGroup extends HttpServlet {
 		
 		} else if (users.length > max_participants) {
 			
-			error_message = "Trppi utenti selezionati, eliminarne almeno " + Integer.toString(users.length - max_participants);
+			error_message = "Troppi utenti selezionati, eliminarne almeno " + Integer.toString(users.length - max_participants);
 			highlighted = true;
 		
 		} 
