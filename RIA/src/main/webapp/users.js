@@ -95,15 +95,28 @@ function showUsers() {
 		}
 		
 		if (error == 3) {
+			
+			// hide the homepage
+			document.getElementById("homepage-container").classList.add("hidden");
+			// set the group name in the cancel page
+			document.getElementById("cancel-group-name").textContent = sessionStorage.getItem("title");
+			// reset form and close the modal panel
+			document.getElementById("modal-close-button").click();
+			document.getElementById("new-group-form").reset();
+			// show the cancel page
+			document.getElementById("cancel-container").classList.remove("hidden");
 
 		}
 		if (valid) {
-			sessionStorage.removeItem("title");
-			sessionStorage.removeItem("duration");
-			sessionStorage.removeItem("min_participants");
-			sessionStorage.removeItem("max_participants");
-			sessionStorage.removeItem("error-min-max");
+			
+			//make call to call group and set group participants/creator
+		
+			// reset form and close modal panel
+			document.getElementById("modal-close-button").click();
+			document.getElementById("new-group-form").reset();
 		}
+		
+		window.scrollTo(0,0);
 		
 	});
 })();
