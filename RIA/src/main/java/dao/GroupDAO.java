@@ -37,7 +37,7 @@ public class GroupDAO {
 					int group_max_participants = Integer.parseInt(result.getString("max_participants"));
 					
 					// parse the string to get sql Date object
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");				
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");				
 					java.util.Date date = sdf.parse(creation_date);
 					Date group_creation_date = new Date(date.getTime());
 					
@@ -90,7 +90,7 @@ public class GroupDAO {
 		int group_max_participants = Integer.parseInt(result.getString("max_participants"));
 
 		// parse the string to get sql Date object
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date date = sdf.parse(creation_date);
 		Date group_creation_date = new Date(date.getTime());
 
