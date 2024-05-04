@@ -55,7 +55,7 @@ public class SetGroupParticipants extends HttpServlet {
 			return;
 		}
 		
-		String[] users = request.getParameterValues("selected"); 
+		String[] users = request.getParameter("selected").split(","); 
 		
 		if (users == null) { // 0 users selected
 			users = new String[0];
@@ -89,6 +89,7 @@ public class SetGroupParticipants extends HttpServlet {
 			for(User user: selectedUsers) {
 				rel.setContains(user.getId(), groupId);
 			}	
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Failure in update of the database");

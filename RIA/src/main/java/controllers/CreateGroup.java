@@ -74,6 +74,7 @@ public class CreateGroup extends HttpServlet {
 		
 		// return to the app the new group id
 		Gson gson = new GsonBuilder().setDateFormat("yyyy MMM dd").create();
+		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
