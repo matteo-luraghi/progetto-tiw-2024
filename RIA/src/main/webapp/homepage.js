@@ -227,13 +227,16 @@ function createDetailsAnchor(group_id) {
 		sessionStorage.removeItem("max_participants");
 		sessionStorage.removeItem("error-min-max");
 		
-		// remove the error message and the highlight
+		// remove the error message
 		removeError("error-user-selection");
+		
+		// remove teh highlighted class and the check
 		const user_table = document.getElementById("users-table-body");
 		const inputs = user_table.getElementsByTagName("input");
 		for (checkbox of inputs) {
 			const row = checkbox.parentNode;
 			row.classList.remove("highlighted");
+			checkbox.checked = false;
 		}
 		
 		//TODO: reset users
