@@ -68,12 +68,17 @@ function viewGroup(details, participants) {
 	// manage item dropping
 	trash.addEventListener('drop', (e) => {
 		e.preventDefault();
+		
+		trash.setAttribute("src", "images/trash.svg");
+
 		const id = e.dataTransfer.getData('text/plain');
 		const element = document.getElementById(id);
 		
 		if (element) {
 			// checks for participants and if positive remove participant
-			console.log(element);
+			const min_participants = document.getElementById("group-min_participants").textContent;
+			const max_participants = document.getElementById("group-max_participants").textContent;
+			console.log(max_participants, min_participants);
 		}
 	});
 })();

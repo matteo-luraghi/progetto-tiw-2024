@@ -16,27 +16,27 @@
 /**
  * created-groups getter
  */
-(function() {
-	var req = new XMLHttpRequest();
-	req.onreadystatechange = function() {
-		createGroups(req, "created-groups-table");
-	}
-	
-	req.open("POST", 'GetCreatedGroups');
-	req.send();
-})();
+function loadCreatedGroups() {
+	makeCall("POST", 'GetCreatedGroups', null, function(x) {
+		createGroups(x, "created-groups-table");
+	});
+}
 
 /**
  * active-groups getter
  */
+function loadActiveGroups() {
+	makeCall("POST", 'GetActiveGroups', null, function(x) {
+		createGroups(x, "active-groups-table");
+	});
+}
+
+/**
+ * groups loader at startup
+ */
 (function() {
-	var req = new XMLHttpRequest();
-	req.onreadystatechange = function() {
-		createGroups(req, "active-groups-table");
-	}
-	
-	req.open("POST", 'GetActiveGroups');
-	req.send();
+	loadCreatedGroups();
+	loadActiveGroups();
 })();
 
 /**
@@ -211,35 +211,4 @@ function createDetailsAnchor(group_id) {
 	 });
  })();
  
- // set the modal panel close button function
- (function() {
-	document.getElementById("modal-close-button").addEventListener('click', (e) => {
-		e.preventDefault();
-
-		// hide the modal window
-		document.getElementById("modal-panel").classList.add("hidden");
-		document.getElementById("modal-overlay").classList.add("hidden");
-		
-		// remove the group info from session storage and the attempt number
-		sessionStorage.removeItem("title");
-		sessionStorage.removeItem("duration");
-		sessionStorage.removeItem("min_participants");
-		sessionStorage.removeItem("max_participants");
-		sessionStorage.removeItem("error-min-max");
-		
-		// remove the error message
-		removeError("error-user-selection");
-		
-		// remove teh highlighted class and the check
-		const user_table = document.getElementById("users-table-body");
-		const inputs = user_table.getElementsByTagName("input");
-		for (checkbox of inputs) {
-			const row = checkbox.parentNode;
-			row.classList.remove("highlighted");
-			checkbox.checked = false;
-		}
-		
-		//TODO: reset users
-
-	})	 
- })();
+ 

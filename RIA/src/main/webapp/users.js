@@ -1,5 +1,5 @@
 /**
- * 
+ * users tavle creator
  */
 function showUsers() {
 	
@@ -44,6 +44,9 @@ function showUsers() {
 	
 }
 
+/**
+ * invite button handler
+ */
 (function() {
 	document.getElementById("invite-users-button").addEventListener('click', (e) => {
 		e.preventDefault();
@@ -62,7 +65,8 @@ function showUsers() {
 		// get all the checked user ids
 		const checkboxes_html = Array.from(inputs).filter((c) => c.checked);
 		const checkboxes = checkboxes_html.map((c) => c.value);
-
+	
+		// load or initialize the error number
 		let error = sessionStorage.getItem("error-min-max");
 		let valid = true;
 		if (!error) {
@@ -126,6 +130,7 @@ function showUsers() {
 			document.getElementById("new-group-form").reset();
 		}
 		
+		// scroll back to the top of the page	
 		window.scrollTo(0,0);
 		
 	});
@@ -151,6 +156,7 @@ function createGroup(title, duration, min_participants, max_participants, select
 					} else {
 						saveParticipants(group_id, selected);
 					}
+					break;
 				case 400:
 					console.error(x.responseText);
 					break;
@@ -174,6 +180,18 @@ function saveParticipants(group_id, selected) {
 		if (x.readyState == XMLHttpRequest.DONE) {
 			switch (x.status) {
 				case 200:
+					
+					// delete all groups
+					const created_body = document.getElementById("created-groups-table");
+					const created_table = created_body.parentNode;
+					created_body.remove();
+					const new_body = document.createElement("tbody");
+					new_body.setAttribute("id", "created-groups-table");
+					created_table.appendChild(new_body);
+					
+					// reload created groups
+					loadCreatedGroups();
+					// show success message
 					showSavedMessage();
 					return;
 				case 400:
@@ -186,6 +204,39 @@ function saveParticipants(group_id, selected) {
 		}
 	});
 }
+
+// set the modal panel close button function
+ (function() {
+	document.getElementById("modal-close-button").addEventListener('click', (e) => {
+		e.preventDefault();
+
+		// hide the modal window
+		document.getElementById("modal-panel").classList.add("hidden");
+		document.getElementById("modal-overlay").classList.add("hidden");
+		
+		// remove the group info from session storage and the attempt number
+		sessionStorage.removeItem("title");
+		sessionStorage.removeItem("duration");
+		sessionStorage.removeItem("min_participants");
+		sessionStorage.removeItem("max_participants");
+		sessionStorage.removeItem("error-min-max");
+		
+		// remove the error message
+		removeError("error-user-selection");
+		
+		// scroll back to the top of the page	
+		window.scrollTo(0,0);
+		
+		// reset users in the modal panel (so that if a new user signs up they'll be immediatly present in the list)
+		const users_body = document.getElementById("users-table-body");
+		const users_table = users_body.parentNode;
+		users_body.remove();
+		const new_body = document.createElement("tbody");
+		new_body.setAttribute("id", "users-table-body");
+		users_table.appendChild(new_body);
+
+	})	 
+ })();
 
 /**
  * success message handler
