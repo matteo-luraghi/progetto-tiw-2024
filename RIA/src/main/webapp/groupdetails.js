@@ -3,7 +3,8 @@
  */
 function viewGroup(details, participants) {
 	
-	// TODO: add bin if the user is the group creator
+	// clear the group details table
+	clearTable("group-participants-table");
 	
 	// set the homepage container as hidden
 	document.getElementById("homepage-container").classList.add("hidden");
@@ -21,15 +22,12 @@ function viewGroup(details, participants) {
 	
 	// fill participants table
 	const group_table = document.getElementById("group-participants-table");
-	// start the participant counter
-	// TODO: use real users id? or some way to identify them
-	let counter = 0;
 	
 	for (participant of participants) {
-		counter++;
 
 		const row = document.createElement("tr");
-		row.setAttribute("id", `user-${counter}`)
+		const user_id = participant.id;
+		row.setAttribute("id", user_id);
 		
 		const participant_attributes = ["name", "surname"];
 		for (p_attr of participant_attributes) {
@@ -76,10 +74,54 @@ function viewGroup(details, participants) {
 		const element = document.getElementById(id);
 		
 		if (element) {
-			// TODO: checks for participants and if positive remove participant (need to catch response unauthorized from servlet)
 			const min_participants = document.getElementById("group-min_participants").textContent;
-			const max_participants = document.getElementById("group-max_participants").textContent;
-			console.log(max_participants, min_participants);
+			
+			const participants_num = document.querySelectorAll("tr.draggable").length - 1; // TOOD: check if the creator is included in the number
+			
+			if (participants_num - 1 < min_participants) {
+				createError("remove-user-error", "remove-user-error-container", "Numero minimo di partecipanti non rispettato!");
+				setTimeout(function() {
+					removeError("remove-user-error");
+				}, 4*1000);
+			} else {
+				const group_id = sessionStorage.getItem("group_id");
+				const params = new FormData();
+				params.append("userId", id);
+				params.append("groupId", group_id);
+				makeCall("POST", 'RemoveUser', params, function(x) {
+					if (x.readyState == XMLHttpRequest.DONE) {
+						switch (x.status) {
+							case 200:
+								element.remove();
+								break;
+							case 400: // bad request
+								createError("remove-user-error", "remove-user-error-container", x.responseText);
+								setTimeout(function() {
+									removeError("remove-user-error");
+								}, 4*1000);
+								break;
+							case 401: // unauthorized
+								createError("remove-user-error", "remove-user-error-container", x.responseText);
+								setTimeout(function() {
+									removeError("remove-user-error");
+								}, 4*1000);
+								break;
+							case 403: // forbidden
+								createError("remove-user-error", "remove-user-error-container", x.responseText);
+								setTimeout(function() {
+									removeError("remove-user-error");
+								}, 4*1000);
+								break;
+							case 500: // server error
+								createError("remove-user-error", "remove-user-error-container", x.responseText);
+								setTimeout(function() {
+									removeError("remove-user-error");
+								}, 4*1000);
+								break;
+						}
+					}
+				});
+			}
 		}
 	});
 })();

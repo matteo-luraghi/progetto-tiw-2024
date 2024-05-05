@@ -10,6 +10,8 @@
 		document.getElementById("homepage-button-container").classList.add("hidden");
 		// set the group container as hidden
 		document.getElementById("group-details-container").classList.add("hidden");
+		// remove detail group id
+		sessionStorage.removeItem("group_id");
 	});
 })();
 
@@ -108,6 +110,7 @@ function createDetailsAnchor(group_id) {
 								switch (x.status) {
 									case 200:
 										var participants = JSON.parse(x.responseText);
+										sessionStorage.setItem("group_id", group_id);
 										viewGroup(details, participants);
 										break;
 									case 400:

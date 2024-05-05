@@ -41,3 +41,15 @@ function removeError(id) {
 		error_old.remove();
 	}
 }
+
+/**
+ * remove all rows from a table
+ */
+function clearTable(table_id) {
+	const body = document.getElementById(table_id);
+	const table = body.parentNode;
+	body.remove();
+	const new_body = document.createElement("tbody");
+	new_body.setAttribute("id", table_id);
+	table.appendChild(new_body);
+}

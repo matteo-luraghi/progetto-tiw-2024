@@ -182,13 +182,7 @@ function saveParticipants(group_id, selected) {
 				case 200:
 					
 					// delete all groups
-					const created_body = document.getElementById("created-groups-table");
-					const created_table = created_body.parentNode;
-					created_body.remove();
-					const new_body = document.createElement("tbody");
-					new_body.setAttribute("id", "created-groups-table");
-					created_table.appendChild(new_body);
-					
+					clearTable("created-groups-table");
 					// reload created groups
 					loadCreatedGroups();
 					// show success message
@@ -228,12 +222,7 @@ function saveParticipants(group_id, selected) {
 		window.scrollTo(0,0);
 		
 		// reset users in the modal panel (so that if a new user signs up they'll be immediatly present in the list)
-		const users_body = document.getElementById("users-table-body");
-		const users_table = users_body.parentNode;
-		users_body.remove();
-		const new_body = document.createElement("tbody");
-		new_body.setAttribute("id", "users-table-body");
-		users_table.appendChild(new_body);
+		clearTable("users-table-body");
 
 	})	 
  })();
