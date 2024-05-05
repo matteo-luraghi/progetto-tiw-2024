@@ -16,12 +16,13 @@ function viewGroup(details, participants) {
 	details["creation_date"] = formatDate(details["creation_date"]);
 	const attributes = ["title", "duration", "creation_date", "min_participants", "max_participants"];
 	for (attribute of attributes) {
-		document.getElementById(`group-${attribute}`).textContent = details[`${attribute}`];
+		document.getElementById(`group-${attribute}`).textContent = details[attribute];
 	}
 	
 	// fill participants table
 	const group_table = document.getElementById("group-participants-table");
 	// start the participant counter
+	// TODO: use real users id? or some way to identify them
 	let counter = 0;
 	
 	for (participant of participants) {
@@ -33,7 +34,7 @@ function viewGroup(details, participants) {
 		const participant_attributes = ["name", "surname"];
 		for (p_attr of participant_attributes) {
 			const td = document.createElement("td");
-			td.textContent = participant[`${p_attr}`];
+			td.textContent = participant[p_attr];
 			row.appendChild(td);
 		}
 		
@@ -75,7 +76,7 @@ function viewGroup(details, participants) {
 		const element = document.getElementById(id);
 		
 		if (element) {
-			// checks for participants and if positive remove participant
+			// TODO: checks for participants and if positive remove participant (need to catch response unauthorized from servlet)
 			const min_participants = document.getElementById("group-min_participants").textContent;
 			const max_participants = document.getElementById("group-max_participants").textContent;
 			console.log(max_participants, min_participants);

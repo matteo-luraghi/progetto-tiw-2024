@@ -25,8 +25,8 @@
   */
  function createError(id, container_id, error_message) {
 	const error = document.createElement("p");
-	const container = document.getElementById(`${container_id}`);
-	error.setAttribute("id", `${id}`);
+	const container = document.getElementById(container_id);
+	error.setAttribute("id", id);
 	error.classList.add("error-message");
 	error.textContent = error_message;
 	container.parentNode.insertBefore(error, container);
@@ -36,7 +36,7 @@
  * error message remover
  */
 function removeError(id) {
-	const error_old = document.getElementById(`${id}`);
+	const error_old = document.getElementById(id);
 	if (error_old) {
 		error_old.remove();
 	}

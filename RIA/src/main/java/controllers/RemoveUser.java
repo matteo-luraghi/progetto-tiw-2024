@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.RelationshipsDAO;
+import dao.UserDAO;
 import beans.User;
 import utils.ConnectionHandler;
 
@@ -57,9 +58,16 @@ public class RemoveUser extends HttpServlet {
 		}
 		
 		RelationshipsDAO relDao = new RelationshipsDAO(connection);
+		UserDAO uDao = new UserDAO(connection);
 		
 		try {
-			relDao.removeUser(userId, groupId);
+			User creator = uDao.getCreator(groupId);
+			if (creator.equals(u)) {
+				relDao.removeUser(userId, groupId);
+			} else {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().println("The user is not allowed to perform that action");
+			}
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Error removing the user from the database");
