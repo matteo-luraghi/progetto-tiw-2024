@@ -83,9 +83,15 @@ public class RemoveUser extends HttpServlet {
 		}
 		
 		try {
-			// check if the user is the group creator
 			User creator = uDao.getCreator(groupId);
-			if (creator.equals(u)) {
+			// prevents from removing the group creator
+			if (creator.getId() == userId) {
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("Can't remove the group creator");
+				return;
+			} 
+			// check if the user is the group creator
+			else if (creator.equals(u)) {
 				relDao.removeUser(userId, groupId);
 			} else {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
