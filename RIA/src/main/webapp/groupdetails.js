@@ -1,7 +1,7 @@
 /**
  * set the group detail view
  */
-function viewGroup(details, participants) {
+function viewGroup(details, participants, creator) {
 	
 	// clear the group details table
 	clearTable("group-participants-table");
@@ -12,6 +12,13 @@ function viewGroup(details, participants) {
 	document.getElementById("homepage-button-container").classList.remove("hidden");
 	// set the group container as visible
 	document.getElementById("group-details-container").classList.remove("hidden");
+	
+	// hide or show the bin depending on user role
+	if (creator) {
+		document.getElementById("trash").classList.remove("hidden");
+	} else {
+		document.getElementById("trash").classList.add("hidden");
+	}
 	
 	// set the group's details
 	details["creation_date"] = formatDate(details["creation_date"]);
@@ -36,7 +43,7 @@ function viewGroup(details, participants) {
 			row.appendChild(td);
 		}
 		
-		if(true) { //group creator
+		if(creator) { 
 			row.setAttribute("draggable", true);
 			row.classList.add("draggable");
 			// add listeners to determine when the row is being dragged

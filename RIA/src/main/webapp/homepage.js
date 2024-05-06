@@ -70,7 +70,8 @@ function createGroups(req, tableName) {
 
 						}
 						
-						row.appendChild(createDetailsAnchor(group.id));
+						// automatically set the boolean true if the user is the group's creator
+						row.appendChild(createDetailsAnchor(group.id, tableName === "created-groups-table"));
 						table.appendChild(row);
 					}
 					break;
@@ -87,13 +88,13 @@ function createGroups(req, tableName) {
 /**
  * create the button that loads the group's details
  */
-function createDetailsAnchor(group_id) {
+function createDetailsAnchor(group_id, creator=false) {
 	const anchor = document.createElement("a");
 	anchor.textContent = "Dettagli";
 	anchor.href = "";
 	
-	anchor.addEventListener('click', () => {
-		event.preventDefault();
+	anchor.addEventListener('click', (e) => {
+		e.preventDefault();
 		const params = new FormData();
 		params.append("groupId", group_id);
 		// get the group details
@@ -111,7 +112,8 @@ function createDetailsAnchor(group_id) {
 									case 200:
 										var participants = JSON.parse(x.responseText);
 										sessionStorage.setItem("group_id", group_id);
-										viewGroup(details, participants);
+										
+										viewGroup(details, participants, creator);
 										break;
 									case 400:
 										createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
