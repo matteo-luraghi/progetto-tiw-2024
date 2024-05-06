@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import dao.RelationshipsDAO;
 import dao.UserDAO;
@@ -64,19 +66,26 @@ public class RemoveUser extends HttpServlet {
 		UserDAO uDao = new UserDAO(connection);
 		GroupDAO gDao = new GroupDAO(connection);
 		Group group = null;
-		int participants_num = -1;
+		ArrayList<User> participants = new ArrayList<>();
 		
 		try {
 			group = gDao.getGroup(groupId);
-			participants_num = uDao.getGroupParticipants(groupId).size();
+			participants = uDao.getGroupParticipants(groupId);
 		} catch (SQLException | ParseException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to get group");
 			return;
 		}
 		
+		ArrayList<Integer> participants_ids = (ArrayList<Integer>) participants.stream().parallel().map(user -> user.getId()).collect(Collectors.toList());
+		if (!participants_ids.contains(userId)) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.getWriter().println("User not present in group");
+			return;
+		}
+		
 		// check if the minimum number of participants is still satisfied
-		if (participants_num != -1 && participants_num - 1 < group.getMinParticipants()) {
+		if (participants.size() != -1 && participants.size() - 1 < group.getMinParticipants()) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			response.getWriter().println("Too few participants would remain");
 			return;		
