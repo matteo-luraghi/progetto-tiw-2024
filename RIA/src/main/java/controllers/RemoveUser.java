@@ -67,16 +67,26 @@ public class RemoveUser extends HttpServlet {
 		GroupDAO gDao = new GroupDAO(connection);
 		Group group = null;
 		ArrayList<User> participants = new ArrayList<>();
+		User creator = null;
 		
 		try {
 			group = gDao.getGroup(groupId);
 			participants = uDao.getGroupParticipants(groupId);
+			creator = uDao.getCreator(groupId);
 		} catch (SQLException | ParseException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to get group");
 			return;
 		}
-		
+
+		// prevents from removing the group creator
+		if (creator.getId() == userId) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.getWriter().println("Can't remove the group creator");
+			return;
+		}
+
+		// check if the user is in the group participants
 		ArrayList<Integer> participants_ids = (ArrayList<Integer>) participants.stream().parallel().map(user -> user.getId()).collect(Collectors.toList());
 		if (!participants_ids.contains(userId)) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -92,15 +102,8 @@ public class RemoveUser extends HttpServlet {
 		}
 		
 		try {
-			User creator = uDao.getCreator(groupId);
-			// prevents from removing the group creator
-			if (creator.getId() == userId) {
-				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-				response.getWriter().println("Can't remove the group creator");
-				return;
-			} 
 			// check if the user is the group creator
-			else if (creator.equals(u)) {
+			if (creator.equals(u)) {
 				relDao.removeUser(userId, groupId);
 			} else {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

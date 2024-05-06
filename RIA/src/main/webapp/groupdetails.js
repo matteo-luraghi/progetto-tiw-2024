@@ -92,7 +92,14 @@ function viewGroup(details, participants) {
 					if (x.readyState == XMLHttpRequest.DONE) {
 						switch (x.status) {
 							case 200:
+								// update table by removing user
 								element.remove();
+								// show success message
+								const user_removed_success = document.getElementById("user-removed-message");
+								user_removed_success.classList.remove("hidden");
+								setTimeout(function() {
+									user_removed_success.classList.add("hidden");
+								}, 4*1000);
 								break;
 							case 400: // bad request
 								createErrorWithTimeout("remove-user-error", "remove-user-error-container", x.responseText, 4*1000);
