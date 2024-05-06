@@ -75,10 +75,10 @@ function createGroups(req, tableName) {
 					}
 					break;
 				case 400: // bad request
-					console.error(req.responseText);
+					createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 					break;
 				case 500: // server error
-					console.error(req.responseText);
+					createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 					break;
 		}
 	}
@@ -114,20 +114,20 @@ function createDetailsAnchor(group_id) {
 										viewGroup(details, participants);
 										break;
 									case 400:
-										console.error(x.responseText);
+										createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 										break;
 									case 500:
-										console.error(x.responseText);
+										createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 										break;
 								}
 							}
 						});
 						break;
 					case 400:
-						console.error(x.responseText);
+						createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 						break;
 					case 500:
-						console.error(x.responseText);
+						createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 						break;
 				}
 			}

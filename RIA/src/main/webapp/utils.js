@@ -33,6 +33,16 @@
 }
 
 /**
+ * create an error message that will disappear after some time
+ */
+function createErrorWithTimeout(id, container_id, error_message, time) {
+	createError(id, container_id, error_message);
+	setTimeout(function() {
+		removeError(id);
+	}, time);
+}
+
+/**
  * error message remover
  */
 function removeError(id) {

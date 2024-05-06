@@ -95,28 +95,16 @@ function viewGroup(details, participants) {
 								element.remove();
 								break;
 							case 400: // bad request
-								createError("remove-user-error", "remove-user-error-container", x.responseText);
-								setTimeout(function() {
-									removeError("remove-user-error");
-								}, 4*1000);
+								createErrorWithTimeout("remove-user-error", "remove-user-error-container", x.responseText, 4*1000);
 								break;
 							case 401: // unauthorized
-								createError("remove-user-error", "remove-user-error-container", x.responseText);
-								setTimeout(function() {
-									removeError("remove-user-error");
-								}, 4*1000);
+								createErrorWithTimeout("remove-user-error", "remove-user-error-container", x.responseText, 4*1000);
 								break;
 							case 403: // forbidden
-								createError("remove-user-error", "remove-user-error-container", x.responseText);
-								setTimeout(function() {
-									removeError("remove-user-error");
-								}, 4*1000);
+								createErrorWithTimeout("remove-user-error", "remove-user-error-container", x.responseText, 4*1000);
 								break;
 							case 500: // server error
-								createError("remove-user-error", "remove-user-error-container", x.responseText);
-								setTimeout(function() {
-									removeError("remove-user-error");
-								}, 4*1000);
+								createErrorWithTimeout("remove-user-error", "remove-user-error-container", x.responseText, 4*1000);
 								break;
 						}
 					}

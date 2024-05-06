@@ -32,10 +32,10 @@ function showUsers() {
 					
 					break;
 				case 400:
-					console.error(x.responseText);
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
 					break;
 				case 500:
-					console.error(x.responseText);
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
 					break;
 			}
 		}
@@ -77,7 +77,8 @@ function showUsers() {
 		const max_participants = parseInt(sessionStorage.getItem("max_participants"));
 		
 		if (isNaN(min_participants) || isNaN(max_participants)) {
-			
+			createError("error-user-selection", "error-user-selection-container", "Numero massimo o minimo di partecipanti invalido!");
+			return;
 		}
 		
 		if (checkboxes.length < min_participants) {
@@ -119,7 +120,8 @@ function showUsers() {
 			const duration = parseInt(sessionStorage.getItem("duration"));
 			
 			if (isNaN(duration)) {
-				
+				createError("error-user-selection", "error-user-selection-container", "Durata invalida!");
+				return;
 			}
 			
 			// checkboxes is the array of user ids
@@ -152,16 +154,16 @@ function createGroup(title, duration, min_participants, max_participants, select
 				case 200:
 					const group_id = parseInt(x.responseText);
 					if (isNaN(group_id)) {
-
+						createError("error-user-selection", "error-user-selection-container", "Unable to find group");
 					} else {
 						saveParticipants(group_id, selected);
 					}
 					break;
 				case 400:
-					console.error(x.responseText);
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
 					break;
 				case 500:
-					console.error(x.responseText);
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
 					break;
 			}
 		}
@@ -189,10 +191,10 @@ function saveParticipants(group_id, selected) {
 					showSavedMessage();
 					return;
 				case 400:
-					console.error(x.responseText);
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
 					break;
 				case 500:
-					console.error(x.responseText);
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
 					break;
 			}
 		}
