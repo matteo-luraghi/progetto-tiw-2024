@@ -11,10 +11,10 @@ function showUsers() {
 					var users = JSON.parse(x.responseText);
 					const users_table = document.getElementById("users-table-body");
 					
-					for (user of users) {
+					for (const user of users) {
 						const row = document.createElement("tr");
 						const user_values = ["name", "surname"];
-						for (user_value of user_values) {
+						for (const user_value of user_values) {
 							const td = document.createElement("td");
 							td.textContent = user[user_value];
 							row.appendChild(td);
@@ -57,7 +57,7 @@ function showUsers() {
 		const inputs = user_table.getElementsByTagName("input");
 
 		// remove the highlighted class from every row
-		for (checkbox of inputs) {
+		for (const checkbox of inputs) {
 			const row = checkbox.parentNode;
 			row.classList.remove("highlighted");
 		}
@@ -95,7 +95,7 @@ function showUsers() {
 			valid = false;
 			createError("error-user-selection", "error-user-selection-container", `Troppi utenti selezionati, rimuoverne almeno ${delta}`);
 			// highlight the selected users
-			for (checkbox of checkboxes_html) {
+			for (const checkbox of checkboxes_html) {
 				const row = checkbox.parentNode;
 				row.classList.add("highlighted");
 			}

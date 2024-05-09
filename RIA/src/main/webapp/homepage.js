@@ -51,7 +51,7 @@ function createGroups(req, tableName) {
 					var message = JSON.parse(req.responseText);
 					const table = document.getElementById(tableName);
 
-					for (group of message) {
+					for (const group of message) {
 
 						const row = document.createElement("tr");
 
@@ -155,7 +155,7 @@ function createDetailsAnchor(group_id, creator=false) {
 
 		const errors = ["title", "duration", "min_participants", "max_participants"];
 		
-		for (error_old of errors) {
+		for (const error_old of errors) {
 			removeError(error_old + "-error-newgroup");
 		}
 		removeError("error-newgroup");

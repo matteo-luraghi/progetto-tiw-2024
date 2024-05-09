@@ -23,21 +23,21 @@ function viewGroup(details, participants, creator) {
 	// set the group's details
 	details["creation_date"] = formatDate(details["creation_date"]);
 	const attributes = ["title", "duration", "creation_date", "min_participants", "max_participants"];
-	for (attribute of attributes) {
+	for (const attribute of attributes) {
 		document.getElementById(`group-${attribute}`).textContent = details[attribute];
 	}
 	
 	// fill participants table
 	const group_table = document.getElementById("group-participants-table");
 	
-	for (participant of participants) {
+	for (const participant of participants) {
 
 		const row = document.createElement("tr");
 		const user_id = participant.id;
 		row.setAttribute("id", user_id);
 		
 		const participant_attributes = ["name", "surname"];
-		for (p_attr of participant_attributes) {
+		for (const p_attr of participant_attributes) {
 			const td = document.createElement("td");
 			td.textContent = participant[p_attr];
 			row.appendChild(td);

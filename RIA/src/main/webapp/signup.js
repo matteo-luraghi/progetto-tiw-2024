@@ -8,7 +8,7 @@
 		
 		const errors = ["name", "surname", "username", "email", "password", "repeat-password"];
 		
-		for (error_old of errors) {
+		for (const error_old of errors) {
 			removeError(error_old + "-error-signup");
 		}
 		removeError("error-message-signup");
