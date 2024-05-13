@@ -147,49 +147,19 @@ function createGroup(title, duration, min_participants, max_participants, select
 	params.append("duration", duration);
 	params.append("min_participants", min_participants);
 	params.append("max_participants", max_participants);
+	params.append("selected", selected);
 	
 	makeCall("POST", 'CreateGroup', params, function(x) {
 		if (x.readyState == XMLHttpRequest.DONE) {
 			switch (x.status) {
 				case 200:
-					const group_id = parseInt(x.responseText);
-					if (isNaN(group_id)) {
-						createError("error-user-selection", "error-user-selection-container", "Unable to find group");
-					} else {
-						saveParticipants(group_id, selected);
-					}
-					break;
-				case 400:
-					createError("error-user-selection", "error-user-selection-container", x.responseText);
-					break;
-				case 500:
-					createError("error-user-selection", "error-user-selection-container", x.responseText);
-					break;
-			}
-		}
-	});
-}
-
-/**
- * user adder
- */
-function saveParticipants(group_id, selected) {
-	const params = new FormData();
-	params.append("groupId", group_id);
-	params.append("selected", selected);
-	
-	makeCall("POST", 'SetGroupParticipants', params, function(x) {
-		if (x.readyState == XMLHttpRequest.DONE) {
-			switch (x.status) {
-				case 200:
-					
 					// delete all groups
 					clearTable("created-groups-table");
 					// reload created groups
 					loadCreatedGroups();
 					// show success message
 					showSavedMessage();
-					return;
+					break;
 				case 400:
 					createError("error-user-selection", "error-user-selection-container", x.responseText);
 					break;
