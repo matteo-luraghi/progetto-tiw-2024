@@ -75,7 +75,7 @@ public class RetrieveAllUsers extends HttpServlet {
 			max_participants = Integer.parseInt(request.getParameter("max_participants"));
 			
 			if(title == null || duration == null || min_participants == null || max_participants == null || 
-					title.isEmpty() || duration <= 0 || min_participants <= 0 || max_participants <= 0) {
+					title.isEmpty() || title.length() > 100 || duration <= 0 || min_participants <= 0 || max_participants <= 0) {
 				throw new Exception("Missing or invalid credential value");
 			}
 			

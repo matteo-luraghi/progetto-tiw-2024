@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import beans.User;
+import beans.Group;
 import dao.UserDAO;
-import dao.GroupDAO;
 import dao.RelationshipsDAO;
 
 import org.thymeleaf.TemplateEngine;
@@ -59,7 +59,6 @@ public class CheckGroup extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String loginpath = getServletContext().getContextPath();
 		User u = null;
-		int group_id = -1;
 		HttpSession s = request.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {
 			response.sendRedirect(loginpath);
@@ -110,30 +109,17 @@ public class CheckGroup extends HttpServlet {
 		if(users.length <= max_participants && users.length >= min_participants) { // save group details to database
 			s.removeAttribute("errors");
 			
-			try {
-				String title = (String) s.getAttribute("title");
-				int duration = (int) s.getAttribute("duration");			
-				
-				LocalDate today = LocalDate.now();	
-				Date creation_date = Date.valueOf(today); 
-				
-				GroupDAO g = new GroupDAO(connection);
-				group_id = g.createGroup(title, creation_date, duration, min_participants, max_participants);
-				
-			} catch(SQLException e) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in update of the database");
-				return;
-			}
+			String title = (String) s.getAttribute("title");
+			int duration = (int) s.getAttribute("duration");			
 			
+			LocalDate today = LocalDate.now();	
+			Date creation_date = Date.valueOf(today); 
+				
+			Group group = new Group(-1, title, creation_date, duration, min_participants, max_participants);
 			RelationshipsDAO rel = new RelationshipsDAO(connection);
 			
 			try {
-				// save the group creator
-				rel.setCreated(u.getId(), group_id);
-				// save the group participants
-				for(User user: selectedUsers) {
-					rel.setContains(user.getId(), group_id);
-				}	
+				rel.createGroup(group, selectedUsers, u.getId());
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failure in update of the database");
 				return;
