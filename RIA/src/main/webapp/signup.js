@@ -39,7 +39,10 @@
 				createError("username-error-signup", "username-input-signup", "Username non valido!");
 			}
 			
-			if (!email || email.length > 320 || !email.includes("@") || !email.includes(".")) {
+			// regular expression to check email's validity
+			const re = new RegExp("^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,})$");
+			
+			if (!email || email.length > 320 || !re.test(email)) {
 				valid = false;
 				createError("email-error-signup", "email-input-signup", "Email non valida!");
 			}
