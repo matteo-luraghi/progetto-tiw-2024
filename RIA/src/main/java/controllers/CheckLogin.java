@@ -35,9 +35,10 @@ public class CheckLogin extends HttpServlet {
 		String password = null;
 		username = StringEscapeUtils.escapeJava(request.getParameter("username"));
 		password = StringEscapeUtils.escapeJava(request.getParameter("password"));
-		if (username == null || password == null || username.isEmpty() || password.isEmpty() ) {
+		if (username == null || password == null || username.isEmpty() || password.isEmpty()
+				|| username.length() > 50 || password.length() > 30) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Credentials must be not null");
+			response.getWriter().println("Invalid parameters");
 			return;
 		}
 
