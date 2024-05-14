@@ -75,11 +75,39 @@ public class CreateGroup extends HttpServlet {
 			return;
 		}
 		
-		
-		if (users.length < min_participants || users.length > max_participants) { 
-			//TODO error handling
+		boolean valid = true;
+		int errors = 1;
+		if (s.getAttribute("errors") != null) {
+			errors = (int) s.getAttribute("errors");
 		}
-
+		
+		if (errors == 3) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Too many attempts");
+			s.removeAttribute("errors");
+			return;
+		}
+		
+		if (users.length < min_participants) { 
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Too few participants selected, add at least " + (min_participants - users.length));
+			valid = false;
+		} else if(users.length > max_participants) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Too many participants selected, removed at least " + (users.length - max_participants));
+			valid = false;
+		}
+		
+		// update the error num
+		if (valid == false) {
+			errors += 1;
+			s.setAttribute("errors", errors);
+			return;
+		}
+		
+		// success
+		s.removeAttribute("errors");
+		
 		UserDAO uDao = new UserDAO(connection);
 		ArrayList<User> selectedUsers = new ArrayList<>();
 

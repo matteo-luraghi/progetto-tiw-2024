@@ -16,129 +16,12 @@
 })();
 
 /**
- * created-groups getter
- */
-function loadCreatedGroups() {
-	makeCall("POST", 'GetCreatedGroups', null, function(x) {
-		createGroups(x, "created-groups-table");
-	});
-}
-
-/**
- * active-groups getter
- */
-function loadActiveGroups() {
-	makeCall("POST", 'GetActiveGroups', null, function(x) {
-		createGroups(x, "active-groups-table");
-	});
-}
-
-/**
  * groups loader at startup
  */
 (function() {
 	loadCreatedGroups();
 	loadActiveGroups();
 })();
-
-/**
- * create the table rows with the group info
- */
-function createGroups(req, tableName) {
-		if(req.readyState == XMLHttpRequest.DONE) {
-			switch (req.status) {
-				case 200:
-					var message = JSON.parse(req.responseText);
-					const table = document.getElementById(tableName);
-
-					for (const group of message) {
-
-						const row = document.createElement("tr");
-
-						for (const [key, value] of Object.entries(group)) {
-
-							if (key === "creation_date") {
-								const td = document.createElement("td");
-								td.textContent = formatDate(value);
-								row.appendChild(td);
-					
-							} else if(key !== "min_participants" && key !== "max_participants" && key !== "id") {
-								const td = document.createElement("td");
-								td.textContent = value;
-								row.appendChild(td);
-							}
-
-						}
-						
-						// automatically set the boolean true if the user is the group's creator
-						row.appendChild(createDetailsAnchor(group.id, tableName === "created-groups-table"));
-						table.appendChild(row);
-					}
-					break;
-				case 400: // bad request
-					createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
-					break;
-				case 500: // server error
-					createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
-					break;
-		}
-	}
-};
-
-/**
- * create the button that loads the group's details
- */
-function createDetailsAnchor(group_id, creator=false) {
-	const anchor = document.createElement("a");
-	anchor.textContent = "Dettagli";
-	anchor.href = "";
-	
-	anchor.addEventListener('click', (e) => {
-		e.preventDefault();
-		const params = new FormData();
-		params.append("groupId", group_id);
-		// get the group details
-		makeCall("POST", "GetGroup", params, function(x) {
-			if (x.readyState == XMLHttpRequest.DONE) {
-		
-				switch (x.status) {
-					case 200:
-						var details = JSON.parse(x.responseText);
-						// get the group participants
-						makeCall("POST", "GetGroupParticipants", params, function(x) {
-							if (x.readyState == XMLHttpRequest.DONE) {
-								
-								switch (x.status) {
-									case 200:
-										var participants = JSON.parse(x.responseText);
-										sessionStorage.setItem("group_id", group_id);
-										
-										viewGroup(details, participants, creator);
-										break;
-									case 400:
-										createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
-										break;
-									case 500:
-										createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
-										break;
-								}
-							}
-						});
-						break;
-					case 400:
-						createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
-						break;
-					case 500:
-						createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
-						break;
-				}
-			}
-		});
-		
-	});
-	
-	return anchor;
-}
 
 // prevent page from reloading
 (function() {
@@ -160,6 +43,13 @@ function createDetailsAnchor(group_id, creator=false) {
 		}
 		removeError("error-newgroup");
 		removeError("error-min-max");
+		
+		// remove all the previous errors in the select user panel
+		const user_errors_container_old = document.getElementById("errors-user-selection-container");
+		const user_errors_old = user_errors_container_old.getElementsByTagName('p');
+		for (const user_error_old of user_errors_old) {
+			user_errors_container_old.removeChild(user_error_old);
+		}
 		
 		if (form.checkValidity()) {
 			
@@ -216,4 +106,119 @@ function createDetailsAnchor(group_id, creator=false) {
 	 });
  })();
  
+/**
+ * created-groups getter
+ */
+function loadCreatedGroups() {
+	makeCall("POST", 'GetCreatedGroups', null, function(x) {
+		createGroups(x, "created-groups-table");
+	});
+}
+
+/**
+ * active-groups getter
+ */
+function loadActiveGroups() {
+	makeCall("POST", 'GetActiveGroups', null, function(x) {
+		createGroups(x, "active-groups-table");
+	});
+}
  
+/**
+ * create the table rows with the group info
+ */
+function createGroups(req, tableName) {
+		if(req.readyState == XMLHttpRequest.DONE) {
+			switch (req.status) {
+				case 200:
+					var message = JSON.parse(req.responseText);
+					const table = document.getElementById(tableName);
+
+					for (const group of message) {
+
+						const row = document.createElement("tr");
+
+						for (const [key, value] of Object.entries(group)) {
+
+							if (key === "creation_date") {
+								const td = document.createElement("td");
+								td.textContent = formatDate(value);
+								row.appendChild(td);
+					
+							} else if(key !== "min_participants" && key !== "max_participants" && key !== "id") {
+								const td = document.createElement("td");
+								td.textContent = value;
+								row.appendChild(td);
+							}
+
+						}
+						
+						// automatically set the boolean true if the user is the group's creator
+						row.appendChild(createDetailsAnchor(group.id, tableName === "created-groups-table"));
+						table.appendChild(row);
+					}
+					break;
+				case 400: // bad request
+					createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
+					break;
+				case 500: // server error
+					createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
+					break;
+		}
+	}
+}
+ 
+ /**
+ * create the button that loads the group's details
+ */
+function createDetailsAnchor(group_id, creator=false) {
+	const anchor = document.createElement("a");
+	anchor.textContent = "Dettagli";
+	anchor.href = "";
+	
+	anchor.addEventListener('click', (e) => {
+		e.preventDefault();
+		const params = new FormData();
+		params.append("groupId", group_id);
+		// get the group details
+		makeCall("POST", "GetGroup", params, function(x) {
+			if (x.readyState == XMLHttpRequest.DONE) {
+		
+				switch (x.status) {
+					case 200:
+						var details = JSON.parse(x.responseText);
+						// get the group participants
+						makeCall("POST", "GetGroupParticipants", params, function(x) {
+							if (x.readyState == XMLHttpRequest.DONE) {
+								
+								switch (x.status) {
+									case 200:
+										var participants = JSON.parse(x.responseText);
+										sessionStorage.setItem("group_id", group_id);
+										
+										viewGroup(details, participants, creator);
+										break;
+									case 400:
+										createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
+										break;
+									case 500:
+										createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
+										break;
+								}
+							}
+						});
+						break;
+					case 400:
+						createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
+						break;
+					case 500:
+						createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
+						break;
+				}
+			}
+		});
+		
+	});
+	
+	return anchor;
+}

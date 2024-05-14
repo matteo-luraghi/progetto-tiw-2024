@@ -1,50 +1,4 @@
 /**
- * users tavle creator
- */
-function showUsers() {
-	
-	makeCall("GET", 'GetRegisteredUsers', null, function(x) {
-		if (x.readyState == XMLHttpRequest.DONE) {
-								
-			switch (x.status) {
-				case 200:
-					var users = JSON.parse(x.responseText);
-					const users_table = document.getElementById("users-table-body");
-					
-					for (const user of users) {
-						const row = document.createElement("tr");
-						const user_values = ["name", "surname"];
-						for (const user_value of user_values) {
-							const td = document.createElement("td");
-							td.textContent = user[user_value];
-							row.appendChild(td);
-						}	
-						
-						// create the checkbox
-						const checkbox = document.createElement("input");
-						checkbox.setAttribute("type", "checkbox");
-						checkbox.setAttribute("name", "selected");
-						checkbox.setAttribute("value", user.id);
-						
-						row.appendChild(checkbox);
-						users_table.appendChild(row);
-					}
-					
-					break;
-				case 400:
-					createError("error-user-selection", "error-user-selection-container", x.responseText);
-					break;
-				case 500:
-					createError("error-user-selection", "error-user-selection-container", x.responseText);
-					break;
-			}
-		}
-
-	});
-	
-}
-
-/**
  * invite button handler
  */
 (function() {
@@ -102,16 +56,8 @@ function showUsers() {
 		}
 		
 		if (error == 3) {
-			
-			// hide the homepage
-			document.getElementById("homepage-container").classList.add("hidden");
-			// set the group name in the cancel page
-			document.getElementById("cancel-group-name").textContent = sessionStorage.getItem("title");
-			// reset form and close the modal panel
-			document.getElementById("modal-close-button").click();
-			document.getElementById("new-group-form").reset();
-			// show the cancel page
-			document.getElementById("cancel-container").classList.remove("hidden");
+	
+			showCancelPage();		
 
 		}
 		if (valid) {
@@ -137,39 +83,6 @@ function showUsers() {
 		
 	});
 })();
-
-/**
- * group creator
- */
-function createGroup(title, duration, min_participants, max_participants, selected) {
-	const params = new FormData();
-	params.append("title", title);
-	params.append("duration", duration);
-	params.append("min_participants", min_participants);
-	params.append("max_participants", max_participants);
-	params.append("selected", selected);
-	
-	makeCall("POST", 'CreateGroup', params, function(x) {
-		if (x.readyState == XMLHttpRequest.DONE) {
-			switch (x.status) {
-				case 200:
-					// delete all groups
-					clearTable("created-groups-table");
-					// reload created groups
-					loadCreatedGroups();
-					// show success message
-					showSavedMessage();
-					break;
-				case 400:
-					createError("error-user-selection", "error-user-selection-container", x.responseText);
-					break;
-				case 500:
-					createError("error-user-selection", "error-user-selection-container", x.responseText);
-					break;
-			}
-		}
-	});
-}
 
 // set the modal panel close button function
  (function() {
@@ -198,6 +111,103 @@ function createGroup(title, duration, min_participants, max_participants, select
 
 	})	 
  })();
+
+/**
+ * users tavle creator
+ */
+function showUsers() {
+	
+	makeCall("GET", 'GetRegisteredUsers', null, function(x) {
+		if (x.readyState == XMLHttpRequest.DONE) {
+								
+			switch (x.status) {
+				case 200:
+					var users = JSON.parse(x.responseText);
+					const users_table = document.getElementById("users-table-body");
+					
+					for (const user of users) {
+						const row = document.createElement("tr");
+						const user_values = ["name", "surname"];
+						for (const user_value of user_values) {
+							const td = document.createElement("td");
+							td.textContent = user[user_value];
+							row.appendChild(td);
+						}	
+						
+						// create the checkbox
+						const checkbox = document.createElement("input");
+						checkbox.setAttribute("type", "checkbox");
+						checkbox.setAttribute("name", "selected");
+						checkbox.setAttribute("value", user.id);
+						
+						row.appendChild(checkbox);
+						users_table.appendChild(row);
+					}
+					
+					break;
+				case 400:
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
+					break;
+				case 500:
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
+					break;
+			}
+		}
+	});
+}
+
+/**
+ * show the cancel page due to too many failed attempts
+ */
+function showCancelPage() {
+	// hide the homepage
+	document.getElementById("homepage-container").classList.add("hidden");
+	// set the group name in the cancel page
+	document.getElementById("cancel-group-name").textContent = sessionStorage.getItem("title");
+	// reset form and close the modal panel
+	document.getElementById("modal-close-button").click();
+	document.getElementById("new-group-form").reset();
+	// show the cancel page
+	document.getElementById("cancel-container").classList.remove("hidden");
+}
+
+/**
+ * group creator
+ */
+function createGroup(title, duration, min_participants, max_participants, selected) {
+	const params = new FormData();
+	params.append("title", title);
+	params.append("duration", duration);
+	params.append("min_participants", min_participants);
+	params.append("max_participants", max_participants);
+	params.append("selected", selected);
+	
+	makeCall("POST", 'CreateGroup', params, function(x) {
+		if (x.readyState == XMLHttpRequest.DONE) {
+			switch (x.status) {
+				case 200:
+					// delete all groups
+					clearTable("created-groups-table");
+					// reload created groups
+					loadCreatedGroups();
+					// show success message
+					showSavedMessage();
+					break;
+				case 400:
+					const errorMessage = x.responseText;
+					if (errorMessage === "Too many attempts\n") {
+						showCancelPage();
+					} else {
+						createError("error-user-selection", "error-user-selection-container", errorMessage);
+					}
+					break;
+				case 500:
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
+					break;
+			}
+		}
+	});
+}
 
 /**
  * success message handler

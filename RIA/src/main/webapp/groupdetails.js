@@ -1,62 +1,4 @@
 /**
- * set the group detail view
- */
-function viewGroup(details, participants, creator) {
-	
-	// clear the group details table
-	clearTable("group-participants-table");
-	
-	// set the homepage container as hidden
-	document.getElementById("homepage-container").classList.add("hidden");
-	// set the homepage button as visible
-	document.getElementById("homepage-button-container").classList.remove("hidden");
-	// set the group container as visible
-	document.getElementById("group-details-container").classList.remove("hidden");
-	
-	// hide or show the bin depending on user role
-	if (creator) {
-		document.getElementById("trash").classList.remove("hidden");
-	} else {
-		document.getElementById("trash").classList.add("hidden");
-	}
-	
-	// set the group's details
-	details["creation_date"] = formatDate(details["creation_date"]);
-	const attributes = ["title", "duration", "creation_date", "min_participants", "max_participants"];
-	for (const attribute of attributes) {
-		document.getElementById(`group-${attribute}`).textContent = details[attribute];
-	}
-	
-	// fill participants table
-	const group_table = document.getElementById("group-participants-table");
-	
-	for (const participant of participants) {
-
-		const row = document.createElement("tr");
-		const user_id = participant.id;
-		row.setAttribute("id", user_id);
-		
-		const participant_attributes = ["name", "surname"];
-		for (const p_attr of participant_attributes) {
-			const td = document.createElement("td");
-			td.textContent = participant[p_attr];
-			row.appendChild(td);
-		}
-		
-		if(creator) { 
-			row.setAttribute("draggable", true);
-			row.classList.add("draggable");
-			// add listeners to determine when the row is being dragged
-			row.addEventListener('dragstart', (e) => {
-				e.dataTransfer.setData('text/plain', e.target.id);
-			});
-		}
-
-		group_table.appendChild(row);
-	}
-}
-
-/**
  * user deleter
  */
 (function() {
@@ -127,6 +69,64 @@ function viewGroup(details, participants, creator) {
 		}
 	});
 })();
+
+/**
+ * set the group detail view
+ */
+function viewGroup(details, participants, creator) {
+	
+	// clear the group details table
+	clearTable("group-participants-table");
+	
+	// set the homepage container as hidden
+	document.getElementById("homepage-container").classList.add("hidden");
+	// set the homepage button as visible
+	document.getElementById("homepage-button-container").classList.remove("hidden");
+	// set the group container as visible
+	document.getElementById("group-details-container").classList.remove("hidden");
+	
+	// hide or show the bin depending on user role
+	if (creator) {
+		document.getElementById("trash").classList.remove("hidden");
+	} else {
+		document.getElementById("trash").classList.add("hidden");
+	}
+	
+	// set the group's details
+	details["creation_date"] = formatDate(details["creation_date"]);
+	const attributes = ["title", "duration", "creation_date", "min_participants", "max_participants"];
+	for (const attribute of attributes) {
+		document.getElementById(`group-${attribute}`).textContent = details[attribute];
+	}
+	
+	// fill participants table
+	const group_table = document.getElementById("group-participants-table");
+	
+	for (const participant of participants) {
+
+		const row = document.createElement("tr");
+		const user_id = participant.id;
+		row.setAttribute("id", user_id);
+		
+		const participant_attributes = ["name", "surname"];
+		for (const p_attr of participant_attributes) {
+			const td = document.createElement("td");
+			td.textContent = participant[p_attr];
+			row.appendChild(td);
+		}
+		
+		if(creator) { 
+			row.setAttribute("draggable", true);
+			row.classList.add("draggable");
+			// add listeners to determine when the row is being dragged
+			row.addEventListener('dragstart', (e) => {
+				e.dataTransfer.setData('text/plain', e.target.id);
+			});
+		}
+
+		group_table.appendChild(row);
+	}
+}
 
 /**
  * format the date in the format yyyy-MM-dd 
