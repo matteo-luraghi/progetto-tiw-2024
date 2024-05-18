@@ -38,45 +38,9 @@
 function createErrorWithTimeout(id, container_id, error_message, time) {
 	createError(id, container_id, error_message);
 	setTimeout(function() {
-		removeError(id);
+		const error_old = document.getElementById(id);
+		if (error_old) {
+			error_old.remove();
+		}
 	}, time);
-}
-
-/**
- * error message remover
- */
-function removeError(id) {
-	const error_old = document.getElementById(id);
-	if (error_old) {
-		error_old.remove();
-	}
-}
-
-/**
- * remove all rows from a table
- */
-function clearTable(table_id) {
-	const body = document.getElementById(table_id);
-	const table = body.parentNode;
-	body.remove();
-	const new_body = document.createElement("tbody");
-	new_body.setAttribute("id", table_id);
-	table.appendChild(new_body);
-}
-
-/**
- * format the date in the format yyyy-MM-dd 
- */
-function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [year, month, day].join('-');
 }

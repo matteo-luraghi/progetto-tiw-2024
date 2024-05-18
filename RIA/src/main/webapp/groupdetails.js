@@ -2,6 +2,17 @@
  * user deleter
  */
 (function() {
+	
+	/**
+	 * error message remover
+	 */
+	function removeError(id) {
+		const error_old = document.getElementById(id);
+		if (error_old) {
+			error_old.remove();
+		}
+	}
+	
 	const trash = document.getElementById("trash");
 	// change image when an item is dragged over the bin
 	trash.addEventListener('dragover', (e) => {

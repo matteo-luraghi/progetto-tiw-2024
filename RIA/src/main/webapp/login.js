@@ -3,6 +3,17 @@
  */
 
  (function() {
+	 
+	/**
+	* error message remover
+	*/
+	function removeError(id) {
+		const error_old = document.getElementById(id);
+		if (error_old) {
+			error_old.remove();
+		}
+	}
+	 
 	document.getElementById("login-button").addEventListener('click', (e) => {
 		var form = document.getElementById("login-form");
 
