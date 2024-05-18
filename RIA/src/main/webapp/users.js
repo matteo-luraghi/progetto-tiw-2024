@@ -113,50 +113,6 @@
  })();
 
 /**
- * users tavle creator
- */
-function showUsers() {
-	
-	makeCall("GET", 'GetRegisteredUsers', null, function(x) {
-		if (x.readyState == XMLHttpRequest.DONE) {
-								
-			switch (x.status) {
-				case 200:
-					var users = JSON.parse(x.responseText);
-					const users_table = document.getElementById("users-table-body");
-					
-					for (const user of users) {
-						const row = document.createElement("tr");
-						const user_values = ["name", "surname"];
-						for (const user_value of user_values) {
-							const td = document.createElement("td");
-							td.textContent = user[user_value];
-							row.appendChild(td);
-						}	
-						
-						// create the checkbox
-						const checkbox = document.createElement("input");
-						checkbox.setAttribute("type", "checkbox");
-						checkbox.setAttribute("name", "selected");
-						checkbox.setAttribute("value", user.id);
-						
-						row.appendChild(checkbox);
-						users_table.appendChild(row);
-					}
-					
-					break;
-				case 400:
-					createError("error-user-selection", "error-user-selection-container", x.responseText);
-					break;
-				case 500:
-					createError("error-user-selection", "error-user-selection-container", x.responseText);
-					break;
-			}
-		}
-	});
-}
-
-/**
  * show the cancel page due to too many failed attempts
  */
 function showCancelPage() {

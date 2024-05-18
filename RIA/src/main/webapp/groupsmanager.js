@@ -111,7 +111,7 @@
  */
 function loadCreatedGroups() {
 	makeCall("POST", 'GetCreatedGroups', null, function(x) {
-		createGroups(x, "created-groups-table");
+		fillGroup(x, "created-groups-table");
 	});
 }
 
@@ -120,14 +120,14 @@ function loadCreatedGroups() {
  */
 function loadActiveGroups() {
 	makeCall("POST", 'GetActiveGroups', null, function(x) {
-		createGroups(x, "active-groups-table");
+		fillGroup(x, "active-groups-table");
 	});
 }
  
 /**
  * create the table rows with the group info
  */
-function createGroups(req, tableName) {
+function fillGroup(req, tableName) {
 		if(req.readyState == XMLHttpRequest.DONE) {
 			switch (req.status) {
 				case 200:
@@ -165,6 +165,64 @@ function createGroups(req, tableName) {
 					createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 					break;
 		}
+	}
+}
+ 
+/**
+ * set the group detail view
+ */
+function viewGroup(details, participants, creator) {
+	
+	// clear the group details table
+	clearTable("group-participants-table");
+	
+	// set the homepage container as hidden
+	document.getElementById("homepage-container").classList.add("hidden");
+	// set the homepage button as visible
+	document.getElementById("homepage-button-container").classList.remove("hidden");
+	// set the group container as visible
+	document.getElementById("group-details-container").classList.remove("hidden");
+	
+	// hide or show the bin depending on user role
+	if (creator) {
+		document.getElementById("trash").classList.remove("hidden");
+	} else {
+		document.getElementById("trash").classList.add("hidden");
+	}
+	
+	// set the group's details
+	details["creation_date"] = formatDate(details["creation_date"]);
+	const attributes = ["title", "duration", "creation_date", "min_participants", "max_participants"];
+	for (const attribute of attributes) {
+		document.getElementById(`group-${attribute}`).textContent = details[attribute];
+	}
+	
+	// fill participants table
+	const group_table = document.getElementById("group-participants-table");
+	
+	for (const participant of participants) {
+
+		const row = document.createElement("tr");
+		const user_id = participant.id;
+		row.setAttribute("id", user_id);
+		
+		const participant_attributes = ["name", "surname"];
+		for (const p_attr of participant_attributes) {
+			const td = document.createElement("td");
+			td.textContent = participant[p_attr];
+			row.appendChild(td);
+		}
+		
+		if(creator) { 
+			row.setAttribute("draggable", true);
+			row.classList.add("draggable");
+			// add listeners to determine when the row is being dragged
+			row.addEventListener('dragstart', (e) => {
+				e.dataTransfer.setData('text/plain', e.target.id);
+			});
+		}
+
+		group_table.appendChild(row);
 	}
 }
  
@@ -221,4 +279,48 @@ function createDetailsAnchor(group_id, creator=false) {
 	});
 	
 	return anchor;
+}
+
+/**
+ * users tavle creator
+ */
+function showUsers() {
+	
+	makeCall("GET", 'GetRegisteredUsers', null, function(x) {
+		if (x.readyState == XMLHttpRequest.DONE) {
+								
+			switch (x.status) {
+				case 200:
+					var users = JSON.parse(x.responseText);
+					const users_table = document.getElementById("users-table-body");
+					
+					for (const user of users) {
+						const row = document.createElement("tr");
+						const user_values = ["name", "surname"];
+						for (const user_value of user_values) {
+							const td = document.createElement("td");
+							td.textContent = user[user_value];
+							row.appendChild(td);
+						}	
+						
+						// create the checkbox
+						const checkbox = document.createElement("input");
+						checkbox.setAttribute("type", "checkbox");
+						checkbox.setAttribute("name", "selected");
+						checkbox.setAttribute("value", user.id);
+						
+						row.appendChild(checkbox);
+						users_table.appendChild(row);
+					}
+					
+					break;
+				case 400:
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
+					break;
+				case 500:
+					createError("error-user-selection", "error-user-selection-container", x.responseText);
+					break;
+			}
+		}
+	});
 }
