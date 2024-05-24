@@ -238,3 +238,12 @@ button {
 	margin-left: 50%;
 	margin-right: 50%;
 }
+
+#users-table-body tr {
+    text-align: center;
+}
+
+#users-table-body input[type="checkbox"] {
+    margin: 10 auto;
+    display: block;
+}

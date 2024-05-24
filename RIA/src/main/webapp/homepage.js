@@ -126,6 +126,9 @@
 						// show users in the modal panel
 						this.showUsers();
 						
+						// scroll back to the top of the page	
+						window.scrollTo(0,0);	
+						
 						// save the group's info in the session storage
 						sessionStorage.setItem('title', title);
 						sessionStorage.setItem('duration', duration);
