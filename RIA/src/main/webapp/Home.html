@@ -2,6 +2,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
 <script src="utils.js" charset="utf-8" defer></script>
 <script src="homepage.js" charset="utf-8" defer></script>
@@ -21,7 +22,7 @@
 	</div>
 
 	
-	<div id="homepage-container" class="container">
+	<div id="homepage-container" class="container visible-container">
 		<div id="groups-table-error-container"></div>
 		<h3>Gruppi che hai creato:</h3>
 		<table>
@@ -80,15 +81,18 @@
 				
 	</div>
 	
-	<div id="group-details-container" class="container hidden">
+	<div id="group-details-container" class="container visible-container hidden">
 	
 		<h2 id="group-title"></h2>
-		<p>Data di creazione: <span id="group-creation_date"></span></p>
-		<p>Durata: <span id="group-duration"></span></p>
-		<p>Numero minimo di partecipanti: <span id="group-min_participants"></span></p>
-		<p>Numero massimo di partecipanti: <span id="group-max_participants"></span></p>
-		<p>Creatore del gruppo: <span id="group-creator"></span></p>
 		
+		<div class="group-info-list">
+			<p>Data di creazione: <span id="group-creation_date"></span></p>
+			<p>Durata: <span id="group-duration"></span></p>
+			<p>Numero minimo di partecipanti: <span id="group-min_participants"></span></p>
+			<p>Numero massimo di partecipanti: <span id="group-max_participants"></span></p>
+			<p>Creatore del gruppo: <span id="group-creator"></span></p>
+		</div>
+	
 		<table>
 			<thead>
 				<tr>
