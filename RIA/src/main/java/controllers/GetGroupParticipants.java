@@ -35,7 +35,8 @@ public class GetGroupParticipants extends HttpServlet {
 		User u = null;
 		HttpSession s = request.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.getWriter().println("User not logged in");
 			return;
 		} else {
 			u = (User) s.getAttribute("user");
@@ -56,6 +57,7 @@ public class GetGroupParticipants extends HttpServlet {
 
 		try {
 			participants = uDao.getGroupParticipants(groupId);
+			// add the group creator to the group participants
 			participants.add(uDao.getCreator(groupId));
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

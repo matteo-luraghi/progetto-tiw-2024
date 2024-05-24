@@ -44,7 +44,8 @@ public class CreateGroup extends HttpServlet {
 		User u = null;
 		HttpSession s = request.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.getWriter().println("User not logged in");
 			return;
 		} else {
 			u = (User) s.getAttribute("user");

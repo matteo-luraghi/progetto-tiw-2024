@@ -7,6 +7,7 @@
 <script src="homepage.js" charset="utf-8" defer></script>
 <script src="groupdetails.js" charset="utf-8" defer></script>
 <script src="cancel.js" charset="utf-8" defer></script>
+<script src="logout.js" charset="utf-8" defer></script>
 </head>
 
 <body>
@@ -16,7 +17,7 @@
 	</div>
 
 	<div align="right">
-		<a href="Logout">Logout</a>
+		<a id="logout-button" href="#">Logout</a>
 	</div>
 
 	
@@ -86,6 +87,7 @@
 		<p>Durata: <span id="group-duration"></span></p>
 		<p>Numero minimo di partecipanti: <span id="group-min_participants"></span></p>
 		<p>Numero massimo di partecipanti: <span id="group-max_participants"></span></p>
+		<p>Creatore del gruppo: <span id="group-creator"></span></p>
 		
 		<table>
 			<thead>
