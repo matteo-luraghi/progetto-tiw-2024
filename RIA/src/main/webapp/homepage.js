@@ -212,10 +212,10 @@
 							
 							break;
 						case 400:
-							createError("error-user-selection", "error-user-selection-container", x.responseText);
+							createError("server-error-user-selection", "error-user-selection-container", x.responseText);
 							break;
 						case 500:
-							createError("error-user-selection", "error-user-selection-container", x.responseText);
+							createError("server-error-user-selection", "error-user-selection-container", x.responseText);
 							break;
 					}
 				}
@@ -239,6 +239,7 @@
 				e.preventDefault();
 				
 				removeError("error-user-selection");
+				removeError("server-error-user-selection");
 				
 				const user_table = document.getElementById("users-table-body");
 				const inputs = user_table.getElementsByTagName("input");
@@ -290,7 +291,7 @@
 				
 				if (error == 3) {
 					// too many errors: showing cancellation page
-					this.showCancelPage();		
+					showCancelPage();		
 
 				}
 				if (valid) {
@@ -337,6 +338,7 @@
 				
 				// remove the error message
 				removeError("error-user-selection");
+				removeError("server-error-user-selection");
 				
 				// scroll back to the top of the page	
 				window.scrollTo(0,0);
@@ -347,22 +349,6 @@
 			});
 		}
 	
-		/**
-		 * show the cancel page due to too many failed attempts
-		 */
-		this.showCancelPage = function() {
-			// hide the homepage
-			document.getElementById("homepage-container").classList.add("hidden");
-			// set the group name in the cancel page
-			document.getElementById("cancel-group-name").textContent = sessionStorage.getItem("title");
-			// reset form and close the modal panel
-			document.getElementById("modal-close-button").click();
-			document.getElementById("new-group-form").reset();
-			// show the cancel page
-			document.getElementById("cancel-container").classList.remove("hidden");
-		}
-
-		
 		/**
 		 * group creator
 		 */
@@ -388,13 +374,13 @@
 						case 400:
 							const errorMessage = x.responseText;
 							if (errorMessage === "Too many attempts\n") {
-								this.showCancelPage();
+								showCancelPage();
 							} else {
-								createError("error-user-selection", "error-user-selection-container", errorMessage);
+								createError("server-error-user-selection", "error-user-selection-container", errorMessage);
 							}
 							break;
 						case 500:
-							createError("error-user-selection", "error-user-selection-container", x.responseText);
+							createError("server-error-user-selection", "error-user-selection-container", x.responseText);
 							break;
 					}
 				}
@@ -610,6 +596,21 @@
 		setTimeout(function () {
 			saved_message.classList.add("hidden");
 		}, 4*1000);
+	}
+	
+	/**
+	 * show the cancel page due to too many failed attempts
+	 */
+	function showCancelPage() {
+		// hide the homepage
+		document.getElementById("homepage-container").classList.add("hidden");
+		// set the group name in the cancel page
+		document.getElementById("cancel-group-name").textContent = sessionStorage.getItem("title");
+		// reset form and close the modal panel
+		document.getElementById("modal-close-button").click();
+		document.getElementById("new-group-form").reset();
+		// show the cancel page
+		document.getElementById("cancel-container").classList.remove("hidden");
 	}
 
 	/**
