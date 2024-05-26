@@ -36,7 +36,7 @@
 		if (element) {
 			const min_participants = document.getElementById("group-min_participants").textContent;
 			
-			const participants_num = document.querySelectorAll("tr.draggable").length - 1; 
+			const participants_num = document.querySelectorAll("tr.draggable").length; 
 			
 			if (participants_num - 1 < min_participants) {
 				createError("remove-user-error", "remove-user-error-container", "Numero minimo di partecipanti non rispettato!");

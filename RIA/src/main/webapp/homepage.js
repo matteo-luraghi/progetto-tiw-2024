@@ -50,11 +50,11 @@
 			document.getElementById("homepage-button").addEventListener("click", (e) => {
 				e.preventDefault();
 				// set the homepage container as visible
-				document.getElementById("homepage-container").classList.remove("hidden");
+				show("homepage-container");
 				// set the homepage button as hidden
-				document.getElementById("homepage-button-container").classList.add("hidden");
+				hide("homepage-button-container");
 				// set the group container as hidden
-				document.getElementById("group-details-container").classList.add("hidden");
+				hide("group-details-container");
 				// remove detail group id
 				sessionStorage.removeItem("group_id");
 			});
@@ -120,8 +120,8 @@
 
 					if (this.checkParams()) {
 						// show the modal window
-						document.getElementById("modal-panel").classList.remove("hidden");
-						document.getElementById("modal-overlay").classList.remove("hidden");
+						show("modal-panel");
+						show("modal-overlay");
 						
 						// show users in the modal panel
 						this.showUsers();
@@ -333,8 +333,8 @@
 				e.preventDefault();
 
 				// hide the modal window
-				document.getElementById("modal-panel").classList.add("hidden");
-				document.getElementById("modal-overlay").classList.add("hidden");
+				hide("modal-panel");
+				hide("modal-overlay");
 				
 				// remove the group info from session storage and the attempt number
 				sessionStorage.removeItem("title");
@@ -421,6 +421,20 @@
 	}
 	
 	/**
+	 * hide element by id
+	 */
+	function hide(id) {
+		document.getElementById(id).classList.add("hidden");
+	}
+	
+	/**
+	 * show element by id
+	 */
+	function show(id) {
+		document.getElementById(id).classList.remove("hidden");
+	}
+	
+	/**
 	 * create the table rows with the group info
 	 */
 	function fillGroup(req, tableName) {
@@ -500,8 +514,10 @@
 											var participants = JSON.parse(x.responseText);
 											sessionStorage.setItem("group_id", group_id);
 											
-											// show the GROUP DETAILS view
+											// show the GROUP DETAILS view setting the group's details and participants
 											viewGroup(details, participants, creator);
+											// scroll back to the top of the page	
+											window.scrollTo(0,0);	
 											break;
 										case 400:
 											createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
@@ -545,17 +561,17 @@
 		clearTable("group-participants-table");
 		
 		// set the homepage container as hidden
-		document.getElementById("homepage-container").classList.add("hidden");
+		hide("homepage-container");
 		// set the homepage button as visible
-		document.getElementById("homepage-button-container").classList.remove("hidden");
+		show("homepage-button-container");
 		// set the group container as visible
-		document.getElementById("group-details-container").classList.remove("hidden");
+		show("group-details-container");
 		
 		// hide or show the bin depending on user role
 		if (creator) {
-			document.getElementById("trash").classList.remove("hidden");
+			show("trash");
 		} else {
-			document.getElementById("trash").classList.add("hidden");
+			hide("trash");
 		}
 		
 		// set the group's details
@@ -608,12 +624,11 @@
 	 * success message handler
 	 */
 	function showSavedMessage() {
-		const saved_message = document.getElementById("group-saved-message");
-		saved_message.classList.remove("hidden");
+		show("group-saved-message");
 		
 		// remove the success message after 4 seconds
 		setTimeout(function () {
-			saved_message.classList.add("hidden");
+			hide("group-saved-message");
 		}, 4*1000);
 	}
 	
@@ -622,23 +637,25 @@
 	 */
 	function showCancelPage() {
 		// hide the homepage
-		document.getElementById("homepage-container").classList.add("hidden");
+		hide("homepage-container");
 		// set the group name in the cancel page
 		document.getElementById("cancel-group-name").textContent = sessionStorage.getItem("title");
 		// reset form and close the modal panel
 		document.getElementById("modal-close-button").click();
 		document.getElementById("new-group-form").reset();
 		// show the cancel page
-		document.getElementById("cancel-container").classList.remove("hidden");
+		show("cancel-container");
 	}
 
 	/**
 	 * remove all rows from a table
 	 */
 	function clearTable(table_id) {
+		// remove the table's body
 		const body = document.getElementById(table_id);
 		const table = body.parentNode;
 		body.remove();
+		// create an empty body for the table
 		const new_body = document.createElement("tbody");
 		new_body.setAttribute("id", table_id);
 		table.appendChild(new_body);
