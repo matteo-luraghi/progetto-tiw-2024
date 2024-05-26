@@ -406,7 +406,7 @@
 	 * created-groups getter
 	 */
 	function loadCreatedGroups() {
-		makeCall("POST", 'GetCreatedGroups', null, function(x) {
+		makeCall("GET", 'GetCreatedGroups', null, function(x) {
 			fillGroup(x, "created-groups-table");
 		});
 	}
@@ -415,7 +415,7 @@
 	 * active-groups getter
 	 */
 	function loadActiveGroups() {
-		makeCall("POST", 'GetActiveGroups', null, function(x) {
+		makeCall("GET", 'GetActiveGroups', null, function(x) {
 			fillGroup(x, "active-groups-table");
 		});
 	}
