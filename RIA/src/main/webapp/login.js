@@ -15,6 +15,8 @@
 	}
 	 
 	document.getElementById("login-button").addEventListener('click', (e) => {
+		e.preventDefault();
+		
 		var form = document.getElementById("login-form");
 
 		const errors = ["username", "password"];

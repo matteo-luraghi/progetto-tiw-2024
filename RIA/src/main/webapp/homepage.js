@@ -217,6 +217,10 @@
 						case 400:
 							createError("server-error-user-selection", "error-user-selection-container", x.responseText);
 							break;
+						case 403:
+							sessionStorage.removeItem("username");
+							window.location.href = "index.html";
+							break;
 						case 500:
 							createError("server-error-user-selection", "error-user-selection-container", x.responseText);
 							break;
@@ -382,6 +386,10 @@
 								createError("server-error-user-selection", "error-user-selection-container", errorMessage);
 							}
 							break;
+						case 403:
+							sessionStorage.removeItem("username");
+							window.location.href = "index.html";
+							break;
 						case 500:
 							createError("server-error-user-selection", "error-user-selection-container", x.responseText);
 							break;
@@ -498,6 +506,10 @@
 										case 400:
 											createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 											break;
+										case 403:
+											sessionStorage.removeItem("username");
+											window.location.href = "index.html";
+											break;	
 										case 500:
 											createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 											break;
@@ -508,6 +520,10 @@
 						case 400:
 							createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 							break;
+						case 403:
+							sessionStorage.removeItem("username");
+							window.location.href = "index.html";
+							break;	
 						case 500:
 							createErrorWithTimeout("groups-table-error", "groups-table-error-container", x.responseText, 4*1000);
 							break;

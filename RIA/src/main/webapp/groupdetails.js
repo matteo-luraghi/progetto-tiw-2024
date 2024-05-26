@@ -68,7 +68,8 @@
 								createErrorWithTimeout("remove-user-error", "remove-user-error-container", x.responseText, 4*1000);
 								break;
 							case 403: // forbidden
-								createErrorWithTimeout("remove-user-error", "remove-user-error-container", x.responseText, 4*1000);
+								sessionStorage.removeItem("username");
+								window.location.href = "index.html";
 								break;
 							case 500: // server error
 								createErrorWithTimeout("remove-user-error", "remove-user-error-container", x.responseText, 4*1000);

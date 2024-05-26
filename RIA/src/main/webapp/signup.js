@@ -15,6 +15,8 @@
 	}
 	 
 	document.getElementById("signup-button").addEventListener('click', (e) => {
+		e.preventDefault();
+
 		var form = document.getElementById("signup-form");
 		
 		const errors = ["name", "surname", "username", "email", "password", "repeat-password"];
