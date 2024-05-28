@@ -15,7 +15,7 @@
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
 	
-	<div class="container">
+	<div class="container visible-container">
 		<h2>Seleziona gli utenti da invitare nel gruppo</h2>	
 			
 		<p th:if="${error_message != ''}" th:text="${error_message}" class="error-message">Error message</p>
@@ -30,7 +30,7 @@
 						<th>Seleziona</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="table-selectable">
 					<tr th:each="user : ${registeredUsers}" th:class="${#lists.contains(selectedUsers, user.getId) && highlighted} ? 'highlighted' : ''">
 						<td th:text="${user.getName}">Name</td>
 						<td th:text="${user.getSurname}">Surname</td>

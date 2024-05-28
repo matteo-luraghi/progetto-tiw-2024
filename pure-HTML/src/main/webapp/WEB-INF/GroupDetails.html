@@ -15,12 +15,15 @@
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
 	
-	<div class="container">
+	<div class="container visible-container">
 		<h2><span th:text="${group.getTitle}">Group Title</span></h2>
-		<p>Data di creazione: <span th:text="${group.getDate}">Creation Date</span></p>
-		<p>Durata: <span th:text="${group.getDuration}">Duration</span></p>
-		<p>Numero minimo di partecipanti: <span th:text="${group.getMinParticipants}">Min Participants</span></p>
-		<p>Numero massimo di partecipanti: <span th:text="${group.getMaxParticipants}">Max Participants</span></p>
+		
+		<div class="group-info-list">
+			<p>Data di creazione: <span th:text="${group.getDate}">Creation Date</span></p>
+			<p>Durata: <span th:text="${group.getDuration}">Duration</span></p>
+			<p>Numero minimo di partecipanti: <span th:text="${group.getMinParticipants}">Min Participants</span></p>
+			<p>Numero massimo di partecipanti: <span th:text="${group.getMaxParticipants}">Max Participants</span></p>
+		</div>
 		
 		<table>
 			<thead>

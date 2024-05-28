@@ -11,7 +11,7 @@
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
 	
-	<div class="container">
+	<div class="container visible-container">
 		<h3>Gruppi che hai creato:</h3>
 		<table>
 			<thead>
@@ -22,7 +22,7 @@
 					<th>Dettagli</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="table-selectable">
 			  <tr th:each="group : ${createdGroups}">
 				  <td th:text="${group.getTitle}">Title</td>
 				  <td th:text="${group.getDate}">Creation Date</td>
@@ -44,7 +44,7 @@
 					<th>Dettagli</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="table-selectable">
 			  <tr th:each="group : ${activeGroups}">
 				  <td th:text="${group.getTitle}">Title</td>
 				  <td th:text="${group.getDate}">Creation Date</td>
