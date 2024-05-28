@@ -60,7 +60,8 @@ public class GetRegisteredUsers extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		String registeredUsers_json = gson.toJson(registeredUsers);
+		String registeredUsers_json = gson.toJson(registeredUsers.stream()
+				.map(user -> new User(user.getId(), null, null, user.getName(), user.getSurname())).toList());
 		response.getWriter().write(registeredUsers_json);
 
 	}

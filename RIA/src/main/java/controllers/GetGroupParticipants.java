@@ -58,7 +58,9 @@ public class GetGroupParticipants extends HttpServlet {
 		try {
 			participants = uDao.getGroupParticipants(groupId);
 			// add the group creator to the group participants
-			participants.add(uDao.getCreator(groupId));
+			if (participants != null) {
+				participants.add(uDao.getCreator(groupId));
+			}
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover group participants");

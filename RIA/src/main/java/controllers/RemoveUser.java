@@ -82,7 +82,7 @@ public class RemoveUser extends HttpServlet {
 
 		// prevents from removing the group creator
 		if (creator.getId() == userId) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().println("Can't remove the group creator");
 			return;
 		}
@@ -90,14 +90,14 @@ public class RemoveUser extends HttpServlet {
 		// check if the user is in the group participants
 		ArrayList<Integer> participants_ids = (ArrayList<Integer>) participants.stream().parallel().map(user -> user.getId()).collect(Collectors.toList());
 		if (!participants_ids.contains(userId)) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().println("User not present in group");
 			return;
 		}
 		
 		// check if the minimum number of participants is still satisfied
 		if (participants.size() != -1 && participants.size() - 1 < group.getMinParticipants()) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().println("Too few participants would remain");
 			return;		
 		}

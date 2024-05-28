@@ -61,7 +61,7 @@ public class GetGroupDetails extends HttpServlet {
 			group = gDao.getGroup(groupId);
 		} catch (SQLException | ParseException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Not possible to extract group details");
+			response.getWriter().println("Not possible to get group's details");
 			return;
 		}
 
@@ -70,10 +70,12 @@ public class GetGroupDetails extends HttpServlet {
 		ArrayList<User> participants = null;
 		try {
 			participants = uDao.getGroupParticipants(groupId);
-			participants.add(uDao.getCreator(groupId));
+			if (participants != null) {
+				participants.add(uDao.getCreator(groupId));
+			}
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Not possible to recover group participants");
+			response.getWriter().println("Not possible to get group's details");
 			return;
 		}
 
