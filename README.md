@@ -33,3 +33,6 @@
 - [tests](tests): 🔍 Contiene codice per la creazione di dati randomici da inserire nel database.
 
 - [db.sql](db.sql): 🗄 Script SQL per creare il database necessario per l'applicazione.
+
+http://localhost:8080/ria
+http://localhost:8080/pure-HTML

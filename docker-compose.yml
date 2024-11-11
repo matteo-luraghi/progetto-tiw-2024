@@ -25,7 +25,8 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql # persist the data
       - ./db.sql:/docker-entrypoint-initdb.d/db.sql  # Run the SQL script at initialization
-      # while the db is active the script will not be run again
+      - ./tests/dbfiller.sql:/docker-entrypoint-initdb.d/dbfiller.sql  # Fill the DB with random data at initialization
+      # while the db is active the scripts will not be run again
     networks:
       - app-network
 

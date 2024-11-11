@@ -5,9 +5,6 @@ FROM openjdk:16 AS build
 WORKDIR /app
 RUN mkdir -p /app/RIA/classes /app/pure-HTML/classes
 
-# Download the Servlet API JAR
-RUN curl -o /app/servlet-api.jar https://repo1.maven.org/maven2/javax/servlet/javax.servlet-api/4.0.1/javax.servlet-api-4.0.1.jar
-
 # Copy java source files for RIA and pure-HTML
 COPY RIA/src/main/java /app/RIA/src
 COPY pure-HTML/src/main/java /app/pure-HTML/src
