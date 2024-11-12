@@ -1,5 +1,5 @@
 services:
-  web:
+  tiw-web:
     build:
       context: .
       dockerfile: Dockerfile
@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      - tiw-mysql
     environment:
       - DB_URL=jdbc:mysql://mysql:3306/gruppidilavoro?serverTimezone=UTC
       - DB_USER=root
@@ -15,7 +15,7 @@ services:
     networks:
       - app-network
 
-  mysql:
+  tiw-mysql:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -23,7 +23,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql # persist the data
+      - tiw-mysql-data:/var/lib/mysql # persist the data
       - ./db.sql:/docker-entrypoint-initdb.d/db.sql  # Run the SQL script at initialization
       - ./tests/dbfiller.sql:/docker-entrypoint-initdb.d/dbfiller.sql  # Fill the DB with random data at initialization
       # while the db is active the scripts will not be run again
@@ -31,7 +31,7 @@ services:
       - app-network
 
 volumes:
-  mysql-data:
+  tiw-mysql-data:
     driver: local
 
 networks:

@@ -34,9 +34,5 @@ COPY --from=build /app/pure-HTML/classes /usr/local/tomcat/webapps/pure/WEB-INF/
 COPY --from=build /app/RIA/webapp /usr/local/tomcat/webapps/ria
 COPY --from=build /app/pure-HTML/webapp /usr/local/tomcat/webapps/pure
 
-# Copy web.xml files to configure servlets
-COPY RIA/src/main/webapp/WEB-INF/web.xml /usr/local/tomcat/webapps/ria/WEB-INF/web.xml
-COPY pure-HTML/src/main/webapp/WEB-INF/web.xml /usr/local/tomcat/webapps/pure/WEB-INF/web.xml
-
 # Expose the Tomcat port
 EXPOSE 8080
