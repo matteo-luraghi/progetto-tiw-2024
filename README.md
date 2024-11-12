@@ -15,7 +15,7 @@
 
 ### Versione RIA (JavaScript)
 
-- ⚡ Single Page Application: L'applicazione è gestita su un'unica pagina, con aggiornamenti in tempo reale senza ricaricare l'intera pagina.
+- ⚡ Single Page Application: L'applicazione è gestita su un'unica pagina, con aggiornamenti in tempo reale.
 - 🖱 Drag & Drop: Funzionalità di drag & drop per rimuovere partecipanti dai gruppi.
 - 💬 Modalità Modale: Invita i partecipanti utilizzando una finestra modale.
 - 🚦 Controlli Lato Client: Verifica dei vincoli sui partecipanti e conteggio dei tentativi direttamente sul client.
@@ -34,5 +34,33 @@
 
 - [db.sql](db.sql): 🗄 Script SQL per creare il database necessario per l'applicazione.
 
-http://localhost:8080/ria
-http://localhost:8080/pure
+## 🚀 Esecuzione Locale dell'Applicazione
+
+Per eseguire l'applicazione in locale, assicurati di avere [Docker](https://www.docker.com/) installato. 
+
+Segui i passaggi seguenti:
+
+1. **Clona la repo**:
+   ```bash
+   git clone https://github.com/matteo-luraghi/progetto-tiw-2024.git
+   cd progetto-tiw-2024
+   ```
+
+2. **Disabilita i dati randomici nel DB** (opzionale): Di default, il database viene popolato con dati randomici all'avvio.
+
+   Se desideri avviare l'applicazione senza questi dati, puoi rimuovere la seguente riga nel file [docker-compose.yaml](docker-compose.yaml), sotto la sezione **tiw-mysql**, **volumes**:
+   ```yaml
+   - ./tests/dbfiller.sql:/docker-entrypoint-initdb.d/dbfiller.sql  # Fill the DB with random data at initialization
+   ```
+
+3. **Compila e avvia i container Docker**: Nella directory del progetto, esegui il seguente comando:
+   ```bash
+   docker compose up --build
+   ```
+   Questo comando creerà e avvierà i container necessari per eseguire l'applicazione e il database MySQL.
+
+4. **Accedi all'applicazione**: Una volta avviati i container, puoi accedere alle due versioni della web app ai seguenti link:
+     - Versione RIA: http://localhost:8080/ria
+     - Versione Pure HTML: http://localhost:8080/pure
+       
+Con questi passaggi, l'applicazione sarà pronta per l'uso in locale 🎉!
